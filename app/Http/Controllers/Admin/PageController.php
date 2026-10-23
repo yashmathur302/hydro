@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\Product;
+use App\Models\Client;
 
 class PageController extends Controller
 {
@@ -35,13 +37,26 @@ class PageController extends Controller
     
     public function edit($id)
     {
-        // Page fetch karo aur uske sections ko sort_order ke hisaab se load karo (sirf home page ke liye kaam aayega)
         $page = Page::with(['sections' => function($query) {
             $query->orderBy('sort_order', 'asc');
         }])->findOrFail($id);
 
-        return view('admin.pages.update', compact('page'));
+        // Fetch items for specific sections dropdowns
+        $products = Product::where('status', 'published')->get(['id', 'name']);
+        $clients = Client::where('status', 'active')->get(['id', 'name']);
+
+        return view('admin.pages.update', compact('page', 'products', 'clients'));
     }
+
+    // public function edit($id)
+    // {
+    //     // Page fetch karo aur uske sections ko sort_order ke hisaab se load karo (sirf home page ke liye kaam aayega)
+    //     $page = Page::with(['sections' => function($query) {
+    //         $query->orderBy('sort_order', 'asc');
+    //     }])->findOrFail($id);
+
+    //     return view('admin.pages.update', compact('page'));
+    // }
 
     public function update(Request $request, $id)
     {
@@ -67,5 +82,16 @@ class PageController extends Controller
         ]);
 
         return redirect()->route('admin.pages.index')->with('success', 'Page updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $page = Page::findOrFail($id);
+        
+        // Page delete hote hi database ke foreign key cascade rules ke karan 
+        // iske saare sections bhi automatically delete ho jayenge.
+        $page->delete();
+
+        return redirect()->route('admin.pages.index')->with('success', 'Page and its sections deleted successfully.');
     }
 }

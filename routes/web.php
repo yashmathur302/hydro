@@ -15,6 +15,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('pages', PageController::class);
 
-    Route::resource('page-sections', PageSectionController::class)->except(['index', 'create', 'show']);
+    Route::resource('page-sections', PageSectionController::class)->except(['index', 'create']);
     Route::post('page-sections/update-order', [PageSectionController::class, 'updateOrder'])->name('page-sections.updateOrder');
 });

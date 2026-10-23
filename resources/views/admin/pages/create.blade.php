@@ -74,7 +74,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="content">Page Content</label>
-                                <textarea class="form-control" id="summernote" name="content">{{ old('content') }}</textarea>
+                                <textarea class="form-control summernote-editor" id="summernote" name="content">{{ old('content') }}</textarea>
                                 <small class="form-text text-muted">Leave blank for Home page as it uses dynamic sections.</small>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
 </div>
 @endsection
 
-@push('scripts')
+{{-- @push('scripts')
     <!-- Summernote Lite JS -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <script>
@@ -137,4 +137,4 @@
             });
         });
     </script>
-@endpush
+@endpush --}}

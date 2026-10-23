@@ -59,7 +59,7 @@
                                         <form action="{{ route('admin.pages.destroy', $page->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" data-bs-toggle="tooltip" title="Delete" class="btn btn-link btn-danger" onclick="return confirm('Are you sure you want to delete this page?')">
+                                            <button type="button" data-bs-toggle="tooltip" title="Delete" class="btn btn-link btn-danger global-delete-btn">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
