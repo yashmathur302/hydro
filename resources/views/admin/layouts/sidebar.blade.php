@@ -44,31 +44,38 @@
                     </a>
                 </li>
                 <!-- Pages Module -->
-                <li class="nav-item {{ request()->routeIs('#') ? 'active' : '' }}">
-                    <a href="{{ route('admin.pages.index') }}">
-                        <i class="fas fa-pen-nib"></i>
-                        <p>Blogs</p>
-                    </a>
-                </li>
-                <!-- Pages Module -->
-                <li class="nav-item {{ request()->routeIs('#') ? 'active' : '' }}">
-                    <a href="{{ route('admin.pages.index') }}">
+                <li class="nav-item {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.clients.index') }}">
                         <i class="fas fa-users"></i>
                         <p>Clients</p>
                     </a>
                 </li>
-                <!-- Pages Module -->
-                <li class="nav-item {{ request()->routeIs('#') ? 'active' : '' }}">
-                    <a href="{{ route('admin.pages.index') }}">
+                <!-- Product Categories Module -->
+                <li class="nav-item {{ request()->routeIs('admin.product_categories.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.product_categories.index') }}">
                         <i class="fas fa-tags"></i>
                         <p>Product Categories</p>
                     </a>
                 </li>
-                <!-- Pages Module -->
-                <li class="nav-item {{ request()->routeIs('#') ? 'active' : '' }}">
-                    <a href="{{ route('admin.pages.index') }}">
+                <!-- Product Module -->
+                <li class="nav-item {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.products.index') }}">
                         <i class="fas fa-box"></i>
                         <p>Product</p>
+                    </a>
+                </li>
+                <!-- Blogs Module -->
+                <li class="nav-item {{ request()->routeIs('admin.blog_posts.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.blog_posts.index') }}">
+                        <i class="fas fa-pen-nib"></i>
+                        <p>Blogs</p>
+                    </a>
+                </li>
+                <!-- Blogs Categories Module -->
+                <li class="nav-item {{ request()->routeIs('admin.blog_categories.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.blog_categories.index') }}">
+                        <i class="fas fa-tags"></i>
+                        <p>Blog Categories</p>
                     </a>
                 </li>
 

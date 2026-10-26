@@ -16,6 +16,7 @@ class PageSection extends Model
 
     protected $casts = [
         'settings' => 'array', // JSON column casting
+        'image' => 'array',
     ];
 
     public function page()

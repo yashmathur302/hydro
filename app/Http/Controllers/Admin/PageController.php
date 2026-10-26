@@ -7,7 +7,10 @@ use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Product;
+use App\Models\BlogPost;
 use App\Models\Client;
+use App\Models\ProductCategory;
+use App\Models\BlogCategory;
 
 class PageController extends Controller
 {
@@ -42,21 +45,17 @@ class PageController extends Controller
         }])->findOrFail($id);
 
         // Fetch items for specific sections dropdowns
+        // $products = Product::where('status', 'published')->get(['id', 'name']);
+        // $clients = Client::where('status', 'active')->get(['id', 'name']);
+
         $products = Product::where('status', 'published')->get(['id', 'name']);
+        $productCategories = ProductCategory::where('status', 'active')->get(['id', 'name']);
         $clients = Client::where('status', 'active')->get(['id', 'name']);
+        $blog_posts = BlogPost::where('status', 'published')->get(['id', 'title']);
+        $blogCategories = BlogCategory::where('status', 'active')->get(['id', 'name']);
 
-        return view('admin.pages.update', compact('page', 'products', 'clients'));
+        return view('admin.pages.update', compact('page', 'products', 'clients', 'blog_posts', 'productCategories', 'blogCategories'));
     }
-
-    // public function edit($id)
-    // {
-    //     // Page fetch karo aur uske sections ko sort_order ke hisaab se load karo (sirf home page ke liye kaam aayega)
-    //     $page = Page::with(['sections' => function($query) {
-    //         $query->orderBy('sort_order', 'asc');
-    //     }])->findOrFail($id);
-
-    //     return view('admin.pages.update', compact('page'));
-    // }
 
     public function update(Request $request, $id)
     {
