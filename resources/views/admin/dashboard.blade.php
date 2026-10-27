@@ -11,7 +11,7 @@
                     <div class="card-title">Welcome to Semi-Ecommerce Admin</div>
                 </div>
                 <div class="card-body">
-                    Admin Panel successfully setup ho gaya hai.
+                    This is the basic setup of admin panel.
                 </div>
             </div>
         </div>

@@ -17,6 +17,11 @@
         <li class="separator"><i class="icon-arrow-right"></i></li>
         <li class="nav-item"><a href="#">Create</a></li>
     </ul>
+    <div class="ms-auto">
+        <a href="{{ route('admin.pages.index') }}" class="btn btn-secondary btn-round btn-sm">
+            <i class="fa fa-arrow-left"></i> Back to List
+        </a>
+    </div>
 </div>
 
 <div class="row">

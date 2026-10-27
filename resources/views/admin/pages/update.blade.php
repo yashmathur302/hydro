@@ -21,6 +21,11 @@
         <li class="separator"><i class="icon-arrow-right"></i></li>
         <li class="nav-item"><a href="#">Edit</a></li>
     </ul>
+    <div class="ms-auto">
+        <a href="{{ route('admin.pages.index') }}" class="btn btn-secondary btn-round btn-sm">
+            <i class="fa fa-arrow-left"></i> Back to List
+        </a>
+    </div>
 </div>
 
 <div class="row">
@@ -185,7 +190,10 @@
             </div>
             <form id="editSectionForm">
                 <input type="hidden" id="edit_section_id">
+                <div id="removed_images_container"></div>
                 <div class="modal-body">
+                    <input type="hidden" id="edit_section_type_hidden" name="section_type">
+                    
                     <div class="form-group">
                         <label>Section Title</label>
                         <input type="text" class="form-control" id="edit_section_title" name="title">
@@ -195,40 +203,113 @@
                         <input type="text" class="form-control" id="edit_section_subtitle" name="subtitle">
                     </div>
                     
-                    <!-- Dynamic Fields -->
+                    <!-- Content Field -->
                     <div class="form-group mt-2 dynamic-field field-content d-none">
                         <label>Content (Text)</label>
                         <textarea class="form-control modal-summernote" id="edit_section_content" name="content"></textarea>
                     </div>
 
-                    <div class="form-group mt-2 dynamic-field field-image d-none">
-                        <label>Upload Image</label>
-                        <input type="file" class="form-control" id="edit_section_image" name="image" accept="image/*">
-                        <small class="text-muted mt-1" id="current_image_text"></small>
+                    <!-- Primary Image Upload -->
+                    <div class="form-group mt-2 dynamic-field field-image-primary d-none">
+                        <label>Primary Image</label>
+                        <input type="file" class="form-control live-image-upload" id="edit_section_image_primary" name="image_primary" accept="image/*" data-preview="#preview_image_primary">
+                        <div id="preview_image_primary" class="mt-2"></div>
                     </div>
 
-                    <div class="form-group mt-2 dynamic-field field-products d-none">
-                        <label>Select Products to Display</label>
-                        <select class="form-select select2-modal" id="edit_section_products" name="settings_product_ids[]" multiple="multiple" style="width: 100%;">
-                            @if(isset($products))
-                                @foreach($products as $product)
-                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
-                                @endforeach
-                            @endif
-                        </select>
+                    <!-- Secondary Image Upload (Only for Industries etc) -->
+                    <div class="form-group mt-2 dynamic-field field-image-secondary d-none">
+                        <label>Secondary Image</label>
+                        <input type="file" class="form-control live-image-upload" id="edit_section_image_secondary" name="image_secondary" accept="image/*" data-preview="#preview_image_secondary">
+                        <div id="preview_image_secondary" class="mt-2"></div>
                     </div>
 
+                    <!-- Products Settings -->
+                    <div class="row mt-2 dynamic-field field-products d-none">
+                        <div class="col-md-12 form-group">
+                            <label>Select Specific Products</label>
+                            <select class="form-select select2-modal" id="edit_section_products" name="settings[product_ids][]" multiple="multiple" style="width: 100%;">
+                                @if(isset($products)) 
+                                    @foreach($products as $product)
+                                        <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                    @endforeach 
+                                @endif
+                            </select>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>Filter by Category</label>
+                            <select class="form-select form-control" id="edit_section_prod_cat" name="settings[product_category]">
+                                <option value="all">All Categories</option>
+                                @if(isset($productCategories)) 
+                                    @foreach($productCategories as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                    @endforeach 
+                                @endif
+                            </select>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>Sort Order</label>
+                            <select class="form-select form-control" id="edit_section_prod_sort" name="settings[product_sort]">
+                                <option value="desc">Latest First</option>
+                                <option value="asc">Oldest First</option>
+                                <option value="featured">Featured First</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>Limit</label>
+                            <input type="number" class="form-control" id="edit_section_prod_limit" name="settings[product_limit]" value="4" min="1">
+                        </div>
+                    </div>
+
+                    <!-- Blogs Settings -->
+                    <div class="row mt-2 dynamic-field field-blogs d-none">
+                        <div class="col-md-12 form-group">
+                            <label>Select Specific Blogs</label>
+                            <select class="form-select select2-modal" id="edit_section_blogs" name="settings[blog_ids][]" multiple="multiple" style="width: 100%;">
+                                @if(isset($blog_posts)) 
+                                    @foreach($blog_posts as $blog)
+                                        <!-- Dhyan rahe, blogs me tumne name ki jagah title bheja hai -->
+                                        <option value="{{ $blog->id }}">{{ $blog->title }}</option>
+                                    @endforeach 
+                                @endif
+                            </select>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>Category</label>
+                            <select class="form-select form-control" id="edit_section_blog_cat" name="settings[blog_category]">
+                                <option value="all">All Categories</option>
+                                @if(isset($blogCategories)) 
+                                    @foreach($blogCategories as $bCat)
+                                        <option value="{{ $bCat->id }}">{{ $bCat->name }}</option>
+                                    @endforeach 
+                                @endif
+                            </select>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>Sort Order</label>
+                            <select class="form-select form-control" id="edit_section_blog_sort" name="settings[blog_sort]">
+                                <option value="desc">Latest First</option>
+                                <option value="asc">Oldest First</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>Limit</label>
+                            <input type="number" class="form-control" id="edit_section_blog_limit" name="settings[blog_limit]" value="3" min="1">
+                        </div>
+                    </div>
+
+                    <!-- Clients Multi-Select -->
                     <div class="form-group mt-2 dynamic-field field-clients d-none">
                         <label>Select Clients/Brands</label>
-                        <select class="form-select select2-modal" id="edit_section_clients" name="settings_client_ids[]" multiple="multiple" style="width: 100%;">
-                            @if(isset($clients))
+                        <select class="form-select select2-modal" id="edit_section_clients" name="settings[client_ids][]" multiple="multiple" style="width: 100%;">
+                            @if(isset($clients)) 
                                 @foreach($clients as $client)
                                     <option value="{{ $client->id }}">{{ $client->name }}</option>
-                                @endforeach
-                            @endif
+                                @endforeach 
+                                @endif
                         </select>
                     </div>
 
+                    <!-- CTA Settings -->
                     <div class="row mt-2 dynamic-field field-button d-none">
                         <div class="col-md-6 form-group">
                             <label>Button Text</label>
@@ -237,6 +318,17 @@
                         <div class="col-md-6 form-group">
                             <label>Button Link</label>
                             <input type="text" class="form-control" id="edit_section_button_link" name="button_link">
+                        </div>
+                        <div class="col-md-6 form-group field-cta-only d-none">
+                            <label>CTA Layout</label>
+                            <select class="form-select form-control" id="edit_section_cta_layout" name="settings[cta_layout]">
+                                <option value="center">Centered Align</option>
+                                <option value="left">Left Align</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group field-cta-only d-none">
+                            <label>Background Color</label>
+                            <input type="color" class="form-control form-control-color" id="edit_section_cta_color" name="settings[cta_bg_color]" value="#ffffff">
                         </div>
                     </div>
 
@@ -248,6 +340,7 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="saveEditBtn">Save Changes</button>
@@ -311,7 +404,6 @@
                     width: '100%'
                 });
                 
-                // Modal Summernote initialization
                 if (!$('.modal-summernote').hasClass('summernote-initialized')) {
                     $('.modal-summernote').summernote({
                         tabsize: 2, height: 200, dialogsInBody: true,
@@ -324,12 +416,48 @@
                 }
             });
 
-            // Open Edit Modal via AJAX
+            // --- UNIVERSAL LIVE IMAGE PREVIEW ---
+            $('.live-image-upload').on('change', function(e) {
+                let targetDiv = $(this).data('preview');
+                let key = $(this).attr('name'); // 'image_primary' or 'image_secondary'
+                // Remove 'image_' prefix to match the database key logic
+                let dbKey = key.replace('image_', ''); 
+                
+                $(targetDiv).empty(); 
+                
+                if(e.target.files[0]) {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        $(targetDiv).html(`
+                            <div class="position-relative d-inline-block image-preview-box mt-2">
+                                <img src="${e.target.result}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 5px; border: 2px solid #28a745;">
+                                <div class="mt-1 d-flex justify-content-between">
+                                    <a href="${e.target.result}" target="_blank" class="btn btn-info btn-sm py-0 px-2" title="View"><i class="fa fa-eye"></i></a>
+                                    <button type="button" class="btn btn-danger btn-sm py-0 px-2 remove-single-image-btn" data-key="${dbKey}" title="Remove"><i class="fa fa-times"></i></button>
+                                </div>
+                                <span class="badge badge-success position-absolute" style="top: -5px; right: -5px;">New</span>
+                            </div>
+                        `);
+                    }
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+
+            // --- DEFERRED IMAGE DELETION ---
+            $(document).on('click', '.remove-single-image-btn', function() {
+                let key = $(this).data('key'); // 'primary' ya 'secondary'
+                
+                $('#removed_images_container').append('<input type="hidden" name="remove_images[]" value="' + key + '">');
+                $(`input[name="image_${key}"]`).val('');
+                
+                $(this).closest('.image-preview-box').fadeOut(300, function() { $(this).remove(); });
+            });
+
+            // --- OPEN EDIT MODAL (AJAX Fetch) ---
             $(document).on('click', '.edit-section-btn', function() {
                 let sectionId = $(this).data('id');
                 let btn = $(this);
                 let originalText = btn.text();
-                
                 btn.prop('disabled', true).text('Loading...');
 
                 $.ajax({
@@ -342,56 +470,104 @@
                             if(response.success) {
                                 let data = response.data;
                                 
-                                // Clean previous data
                                 $('#editSectionForm')[0].reset();
-                                $('.dynamic-field').addClass('d-none');
-                                $('#current_image_text').text('');
+                                $('.dynamic-field, .field-cta-only').addClass('d-none');
+                                $('#preview_image_primary, #preview_image_secondary').empty();
+                                $('#removed_images_container').empty();
                                 
-                                // Reset Select2 & Summernote safely
-                                if($('#edit_section_products').hasClass("select2-hidden-accessible")) {
-                                    $('#edit_section_products').val(null).trigger('change');
-                                }
-                                if($('#edit_section_clients').hasClass("select2-hidden-accessible")) {
-                                    $('#edit_section_clients').val(null).trigger('change');
-                                }
-                                if ($('.modal-summernote').hasClass('summernote-initialized')) {
-                                    $('.modal-summernote').summernote('code', '');
-                                }
+                                if($('#edit_section_products').hasClass("select2-hidden-accessible")) $('#edit_section_products').val(null).trigger('change');
+                                if($('#edit_section_blogs').hasClass("select2-hidden-accessible")) $('#edit_section_blogs').val(null).trigger('change');
+                                if($('#edit_section_clients').hasClass("select2-hidden-accessible")) $('#edit_section_clients').val(null).trigger('change');
+                                if ($('.modal-summernote').hasClass('summernote-initialized')) $('.modal-summernote').summernote('code', '');
 
-                                // Set Base Fields
                                 $('#edit_section_id').val(data.id);
+                                $('#edit_section_type_hidden').val(data.section_type);
                                 $('#edit_section_title').val(data.title);
                                 $('#edit_section_subtitle').val(data.subtitle);
                                 $('#edit_section_status').val(data.status);
                                 
                                 let type = data.section_type;
                                 
-                                // Conditional Fields Display
                                 if(['about', 'cta', 'industries'].includes(type)) {
-                                    $('.field-content, .field-button').removeClass('d-none');
-                                    if ($('.modal-summernote').hasClass('summernote-initialized')) {
-                                        $('.modal-summernote').summernote('code', data.content);
-                                    } else {
-                                        $('#edit_section_content').val(data.content);
-                                    }
+                                    $('.field-content').removeClass('d-none');
+                                    if ($('.modal-summernote').hasClass('summernote-initialized')) $('.modal-summernote').summernote('code', data.content || '');
+                                }
+                                if(['about', 'cta'].includes(type)) {
+                                    $('.field-button').removeClass('d-none');
                                     $('#edit_section_button_text').val(data.button_text);
                                     $('#edit_section_button_link').val(data.button_link);
                                 }
+                                if(type === 'cta') {
+                                    $('.field-cta-only').removeClass('d-none');
+                                    if(data.settings) {
+                                        $('#edit_section_cta_layout').val(data.settings.cta_layout || 'center');
+                                        $('#edit_section_cta_color').val(data.settings.cta_bg_color || '#ffffff');
+                                    }
+                                }
                                 
-                                if(['banner', 'about'].includes(type)) {
-                                    $('.field-image').removeClass('d-none');
-                                    if(data.image) {
-                                        $('#current_image_text').html('Current: <a href="/'+data.image+'" target="_blank">View Image</a>');
+                                if(['banner', 'about', 'industries'].includes(type)) {
+                                    $('.field-image-primary').removeClass('d-none');
+                                }
+                                if(['industries'].includes(type)) {
+                                    $('.field-image-secondary').removeClass('d-none');
+                                }
+
+                                // DB Images Rendering with View/Remove Icons
+                                if(data.image) {
+                                    let primaryImg = null;
+                                    let secondaryImg = null;
+
+                                    if (typeof data.image === 'string') {
+                                        primaryImg = data.image; 
+                                    } else if (typeof data.image === 'object') {
+                                        primaryImg = data.image.primary;
+                                        secondaryImg = data.image.secondary;
+                                    }
+
+                                    if(primaryImg) {
+                                        $('#preview_image_primary').html(`
+                                            <div class="position-relative d-inline-block image-preview-box mt-2">
+                                                <img src="/${primaryImg}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">
+                                                <div class="mt-1 d-flex justify-content-between">
+                                                    <a href="/${primaryImg}" target="_blank" class="btn btn-info btn-sm py-0 px-2" title="View"><i class="fa fa-eye"></i></a>
+                                                    <button type="button" class="btn btn-danger btn-sm py-0 px-2 remove-single-image-btn" data-key="primary" title="Remove"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        `);
+                                    }
+                                    if(secondaryImg) {
+                                        $('#preview_image_secondary').html(`
+                                            <div class="position-relative d-inline-block image-preview-box mt-2">
+                                                <img src="/${secondaryImg}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">
+                                                <div class="mt-1 d-flex justify-content-between">
+                                                    <a href="/${secondaryImg}" target="_blank" class="btn btn-info btn-sm py-0 px-2" title="View"><i class="fa fa-eye"></i></a>
+                                                    <button type="button" class="btn btn-danger btn-sm py-0 px-2 remove-single-image-btn" data-key="secondary" title="Remove"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        `);
                                     }
                                 }
 
                                 if(type === 'products') {
                                     $('.field-products').removeClass('d-none');
-                                    if(data.settings && data.settings.product_ids) {
-                                        $('#edit_section_products').val(data.settings.product_ids).trigger('change');
+                                    if(data.settings) {
+                                        if(data.settings.product_ids) $('#edit_section_products').val(data.settings.product_ids).trigger('change');
+                                        $('#edit_section_prod_cat').val(data.settings.product_category || 'all');
+                                        $('#edit_section_prod_sort').val(data.settings.product_sort || 'desc');
+                                        $('#edit_section_prod_limit').val(data.settings.product_limit || 4); 
                                     }
                                 }
 
+                                if(type === 'blogs') {
+                                    $('.field-blogs').removeClass('d-none');
+                                    if(data.settings) {
+                                        if(data.settings.blog_ids) $('#edit_section_blogs').val(data.settings.blog_ids).trigger('change'); 
+                                        $('#edit_section_blog_cat').val(data.settings.blog_category || 'all');
+                                        $('#edit_section_blog_sort').val(data.settings.blog_sort || 'desc');
+                                        $('#edit_section_blog_limit').val(data.settings.blog_limit || 3);
+                                    }
+                                }
+                                
                                 if(type === 'clients') {
                                     $('.field-clients').removeClass('d-none');
                                     if(data.settings && data.settings.client_ids) {
@@ -399,13 +575,11 @@
                                     }
                                 }
 
-                                // Open Modal Safely
                                 let myModal = new bootstrap.Modal(document.getElementById('editSectionModal'));
                                 myModal.show();
                             }
                         } catch (error) {
-                            console.error("Javascript Error in success block: ", error);
-                            Toast.fire({ icon: 'error', title: 'A javascript error occurred while opening modal.' });
+                            Toast.fire({ icon: 'error', title: 'Error opening modal.' });
                         }
                     },
                     error: function() {
@@ -503,3 +677,322 @@
         });
     </script>
 @endpush
+
+{{-- @push('scripts')
+    <script>
+        $(document).ready(function() {
+            
+            // Auto-generate slug
+            $('#title').on('keyup', function() {
+                var title = $(this).val();
+                var slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');   
+                $('#slug').val(slug);
+            });
+
+            // UI Switching
+            $('#page_type').on('change', function() {
+                if($(this).val() === 'home') {
+                    $('#standard-editor-wrapper').slideUp();
+                    $('#section-builder-wrapper').slideDown();
+                } else {
+                    $('#section-builder-wrapper').slideUp();
+                    $('#standard-editor-wrapper').slideDown();
+                }
+            });
+
+            // jQuery UI Sortable
+            $('#sortable-sections-list').sortable({
+                handle: '.handle',
+                update: function(event, ui) {
+                    let orderData = [];
+                    $('.section-item').each(function(index) {
+                        orderData.push({ id: $(this).data('id'), sort_order: index + 1 });
+                    });
+
+                    $.ajax({
+                        url: "{{ route('admin.page-sections.updateOrder') }}",
+                        type: 'POST',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            orders: orderData
+                        },
+                        success: function(response) {
+                            if(response.success) { Toast.fire({ icon: 'success', title: response.message }); }
+                        }
+                    });
+                }
+            });
+
+            // Initialize plugins inside modal
+            $('#editSectionModal').on('shown.bs.modal', function () {
+                $('.select2-modal').select2({
+                    dropdownParent: $('#editSectionModal'),
+                    width: '100%'
+                });
+                
+                // Modal Summernote initialization
+                if (!$('.modal-summernote').hasClass('summernote-initialized')) {
+                    $('.modal-summernote').summernote({
+                        tabsize: 2, height: 200, dialogsInBody: true,
+                        toolbar: [
+                            ['style', ['bold', 'italic', 'underline', 'clear']],
+                            ['para', ['ul', 'ol']],
+                            ['view', ['codeview']]
+                        ]
+                    }).addClass('summernote-initialized');
+                }
+            });
+
+            // --- Live Image Preview ---
+            function handleLivePreview(inputId, previewId) {
+                $(document).on('change', inputId, function(e) {
+                    let file = e.target.files[0];
+                    if (file) {
+                        let reader = new FileReader();
+                        reader.onload = function(e) {
+                            $(previewId).html(`
+                                <div class="position-relative d-inline-block">
+                                    <img src="${e.target.result}" style="height: 80px; width: 80px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">
+                                    <span class="badge badge-warning position-absolute" style="top: -5px; right: -5px; font-size: 10px;">New</span>
+                                </div>
+                            `);
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            handleLivePreview('#edit_section_image_primary', '#preview_image_primary');
+            handleLivePreview('#edit_section_image_secondary', '#preview_image_secondary');
+
+            // --- Remove Existing Image (Only from UI initially) ---
+            $(document).on('click', '.remove-image-btn', function() {
+                let btn = $(this);
+                let imageKey = btn.data('key'); // 'primary' ya 'secondary' aayega
+                
+                // Form ke andar hidden input add karenge backend ko batane ke liye ki ye delete honi chahiye
+                $('#removed_images_container').append('<input type="hidden" name="remove_images[]" value="' + imageKey + '">');
+                
+                // Sirf UI se preview hide karenge (confirm popup hata diya hai)
+                btn.closest('.position-relative').fadeOut(300, function() { $(this).remove(); });
+            });
+
+            // --- Open Edit Modal (AJAX Fetch) ---
+            $(document).on('click', '.edit-section-btn', function() {
+                let sectionId = $(this).data('id');
+                let btn = $(this);
+                let originalText = btn.text();
+                btn.prop('disabled', true).text('Loading...');
+
+                $.ajax({
+                    url: '/admin/page-sections/' + sectionId,
+                    type: 'GET',
+                    success: function(response) {
+                        btn.prop('disabled', false).text(originalText);
+                        
+                        try {
+                            if(response.success) {
+                                let data = response.data;
+                                
+                                $('#editSectionForm')[0].reset();
+                                $('.dynamic-field, .field-cta-only').addClass('d-none');
+                                $('#preview_image_primary, #preview_image_secondary').empty();
+                                $('#removed_images_container').empty();
+                                
+                                if($('#edit_section_products').hasClass("select2-hidden-accessible")) $('#edit_section_products').val(null).trigger('change');
+                                if($('#edit_section_blogs').hasClass("select2-hidden-accessible")) $('#edit_section_blogs').val(null).trigger('change');
+                                if($('#edit_section_clients').hasClass("select2-hidden-accessible")) $('#edit_section_clients').val(null).trigger('change');
+                                if ($('.modal-summernote').hasClass('summernote-initialized')) $('.modal-summernote').summernote('code', '');
+
+                                $('#edit_section_id').val(data.id);
+                                $('#edit_section_title').val(data.title);
+                                $('#edit_section_subtitle').val(data.subtitle);
+                                $('#edit_section_status').val(data.status);
+                                
+                                let type = data.section_type;
+                                
+                                // Text Editor & CTA Buttons
+                                if(['about', 'cta', 'industries'].includes(type)) {
+                                    $('.field-content').removeClass('d-none');
+                                    if ($('.modal-summernote').hasClass('summernote-initialized')) $('.modal-summernote').summernote('code', data.content || '');
+                                }
+                                if(['about', 'cta'].includes(type)) {
+                                    $('.field-button').removeClass('d-none');
+                                    $('#edit_section_button_text').val(data.button_text);
+                                    $('#edit_section_button_link').val(data.button_link);
+                                }
+                                if(type === 'cta') {
+                                    $('.field-cta-only').removeClass('d-none');
+                                    if(data.settings) {
+                                        $('#edit_section_cta_layout').val(data.settings.cta_layout || 'center');
+                                        $('#edit_section_cta_color').val(data.settings.cta_bg_color || '#ffffff');
+                                    }
+                                }
+                                
+                                // Image Logic (Associative Array or String Fallback)
+                                if(['banner', 'about', 'industries'].includes(type)) {
+                                    $('.field-image-primary').removeClass('d-none');
+                                }
+                                if(['industries'].includes(type)) {
+                                    $('.field-image-secondary').removeClass('d-none');
+                                }
+
+                                if(data.image) {
+                                    let primaryImg = null;
+                                    let secondaryImg = null;
+
+                                    if (typeof data.image === 'string') {
+                                        primaryImg = data.image; // Purana data support
+                                    } else if (typeof data.image === 'object') {
+                                        primaryImg = data.image.primary;
+                                        secondaryImg = data.image.secondary;
+                                    }
+
+                                    if(primaryImg) {
+                                        $('#preview_image_primary').html(`
+                                            <div class="position-relative d-inline-block">
+                                                <img src="/${primaryImg}" style="height: 80px; width: 80px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">
+                                                <button type="button" class="btn btn-danger btn-sm position-absolute remove-image-btn" data-key="primary" style="top: -5px; right: -5px; padding: 0px 5px; font-size: 12px; border-radius: 50%;"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        `);
+                                    }
+                                    if(secondaryImg) {
+                                        $('#preview_image_secondary').html(`
+                                            <div class="position-relative d-inline-block">
+                                                <img src="/${secondaryImg}" style="height: 80px; width: 80px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">
+                                                <button type="button" class="btn btn-danger btn-sm position-absolute remove-image-btn" data-key="secondary" style="top: -5px; right: -5px; padding: 0px 5px; font-size: 12px; border-radius: 50%;"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        `);
+                                    }
+                                }
+
+                                // Products Logic
+                                if(type === 'products') {
+                                    $('.field-products').removeClass('d-none');
+                                    if(data.settings) {
+                                        if(data.settings.product_ids) $('#edit_section_products').val(data.settings.product_ids).trigger('change');
+                                        $('#edit_section_prod_cat').val(data.settings.product_category || 'all');
+                                        $('#edit_section_prod_sort').val(data.settings.product_sort || 'desc');
+                                        $('#edit_section_prod_limit').val(data.settings.product_limit || 4); // Naya Add Hua
+                                    }
+                                }
+
+                                // Blogs Logic
+                                if(type === 'blogs') {
+                                    $('.field-blogs').removeClass('d-none');
+                                    if(data.settings) {
+                                        if(data.settings.blog_ids) $('#edit_section_blogs').val(data.settings.blog_ids).trigger('change'); // Naya Add Hua
+                                        $('#edit_section_blog_cat').val(data.settings.blog_category || 'all');
+                                        $('#edit_section_blog_sort').val(data.settings.blog_sort || 'desc');
+                                        $('#edit_section_blog_limit').val(data.settings.blog_limit || 3);
+                                    }
+                                }
+                                
+                                if(type === 'clients') {
+                                    $('.field-clients').removeClass('d-none');
+                                    if(data.settings && data.settings.client_ids) {
+                                        $('#edit_section_clients').val(data.settings.client_ids).trigger('change');
+                                    }
+                                }
+
+                                let myModal = new bootstrap.Modal(document.getElementById('editSectionModal'));
+                                myModal.show();
+                            }
+                        } catch (error) {
+                            Toast.fire({ icon: 'error', title: 'Error opening modal.' });
+                        }
+                    },
+                    error: function() {
+                        btn.prop('disabled', false).text(originalText);
+                        Toast.fire({ icon: 'error', title: 'Failed to fetch section data.' });
+                    }
+                });
+            });
+
+            // Submit Edit Form (AJAX Update)
+            $('#editSectionForm').on('submit', function(e) {
+                e.preventDefault();
+                let sectionId = $('#edit_section_id').val();
+                let saveBtn = $('#saveEditBtn');
+                
+                let formData = new FormData(this);
+                formData.append('_method', 'PUT');
+                formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+
+                saveBtn.prop('disabled', true).text('Saving...');
+
+                $.ajax({
+                    url: '/admin/page-sections/' + sectionId,
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, processData: false,
+                    success: function(response) {
+                        saveBtn.prop('disabled', false).text('Save Changes');
+                        if(response.success) {
+                            var myModalEl = document.getElementById('editSectionModal');
+                            var modal = bootstrap.Modal.getInstance(myModalEl);
+                            modal.hide();
+                            
+                            Toast.fire({ icon: 'success', title: response.message });
+                            
+                            let updatedTitle = $('#edit_section_title').val();
+                            $(`.section-item[data-id="${sectionId}"] small.text-muted`).text(updatedTitle ? updatedTitle : 'No title provided');
+                            let statusText = $('#edit_section_status').val();
+                            let badgeClass = statusText === 'active' ? 'badge-success' : 'badge-danger';
+                            $(`.section-item[data-id="${sectionId}"] .badge`).removeClass('badge-success badge-danger').addClass(badgeClass).text(statusText.charAt(0).toUpperCase() + statusText.slice(1));
+                        }
+                    },
+                    error: function(xhr) {
+                        saveBtn.prop('disabled', false).text('Save Changes');
+                        let errorMsg = 'Something went wrong!';
+                        if(xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            errorMsg = '<ul style="text-align: left; margin: 0; padding-left: 20px;">';
+                            $.each(errors, function(key, value) { errorMsg += '<li>' + value[0] + '</li>'; });
+                            errorMsg += '</ul>';
+                        }
+                        Toast.fire({ icon: 'error', title: 'Validation Failed', html: errorMsg });
+                    }
+                });
+            });
+
+            // Delete Section
+            $(document).on('click', '.delete-section-btn', function() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to remove this section?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, remove it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let button = $(this);
+                        let sectionId = button.data('id');
+                        let sectionItem = button.closest('.section-item');
+
+                        button.prop('disabled', true).text('Removing...');
+
+                        $.ajax({
+                            url: '/admin/page-sections/' + sectionId,
+                            type: 'POST',
+                            data: { _method: 'DELETE', _token: $('meta[name="csrf-token"]').attr('content') },
+                            success: function(response) {
+                                if(response.success) {
+                                    Toast.fire({ icon: 'success', title: response.message });
+                                    sectionItem.fadeOut(300, function() {
+                                        $(this).remove();
+                                        if($('.section-item').length === 0) {
+                                            $('#sortable-sections-list').html('<div class="alert alert-warning text-center" id="no-sections-msg">No sections added yet. Click "Add New Section" to start building your home page.</div>');
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+@endpush --}}
