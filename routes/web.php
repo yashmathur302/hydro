@@ -32,3 +32,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('blog_posts', BlogPostController::class);
 
 });
+
+
+// Load Frontend Routes
+Route::middleware('web')->group(base_path('routes/frontend.php'));

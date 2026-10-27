@@ -817,20 +817,10 @@
                                 
                                 let type = data.section_type;
                                 
-<<<<<<< HEAD
                                 if(['about', 'cta', 'industries'].includes(type)) {
                                     $('.field-content').removeClass('d-none');
                                     if ($('.modal-summernote').hasClass('summernote-initialized')) $('.modal-summernote').summernote('code', data.content || '');
                                 }
-=======
-                                // 1. Content (Summernote) - Ab CTA me nahi dikhega
-                                if(['about', 'industries'].includes(type)) {
-                                    $('.field-content').removeClass('d-none');
-                                    if ($('.modal-summernote').hasClass('summernote-initialized')) $('.modal-summernote').summernote('code', data.content || '');
-                                }
-                                
-                                // 2. Button Fields - CTA aur About me dikhenge
->>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
                                 if(['about', 'cta'].includes(type)) {
                                     $('.field-button').removeClass('d-none');
                                     $('#edit_section_button_text').val(data.button_text);
@@ -844,18 +834,9 @@
                                     }
                                 }
                                 
-<<<<<<< HEAD
                                 if(['banner', 'about', 'industries'].includes(type)) {
                                     $('.field-image-primary').removeClass('d-none');
                                 }
-=======
-                                // 3. Primary Image (Banner) - Ab CTA me bhi dikhega
-                                if(['banner', 'about', 'industries', 'cta'].includes(type)) {
-                                    $('.field-image-primary').removeClass('d-none');
-                                }
-                                
-                                // 4. Secondary Image
->>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
                                 if(['industries'].includes(type)) {
                                     $('.field-image-secondary').removeClass('d-none');
                                 }
@@ -1024,7 +1005,6 @@
 
         });
     </script>
-<<<<<<< HEAD
 @endpush
 
 {{-- @push('scripts')
@@ -1344,6 +1324,4 @@
 
         });
     </script>
-=======
->>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
 @endpush --}}
