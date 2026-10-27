@@ -13,11 +13,7 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h4 class="card-title mb-0">All Posts</h4>
-<<<<<<< HEAD
         <a href="{{ route('admin.blog_posts.create') }}" class="btn btn-primary btn-round btn-sm">
-=======
-        <a href="{{ route('admin.blog_posts.create') }}" class="btn btn-primary btn-round ms-auto">
->>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
             <i class="fa fa-plus"></i> Add New Post
         </a>
     </div>

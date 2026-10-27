@@ -11,7 +11,7 @@
         <li class="nav-item"><a href="#">Add</a></li>
     </ul>
     <div class="ms-auto">
-        <a href="{{ route('admin.blog_posts.index') }}" class="btn btn-secondary btn-round btn-sm">
+        <a href="{{ route('admin.blog_posts.index') }}" class="btn btn-secondary btn-round ms-auto">
             <i class="fa fa-arrow-left"></i> Back to List
         </a>
     </div>
