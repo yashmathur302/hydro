@@ -121,11 +121,14 @@ class PageSectionController extends Controller
         if ($type === 'clients') {
             $settings['client_ids'] = $request->input('settings.client_ids', []);
         }
+<<<<<<< HEAD
         
         if ($type === 'cta') {
             $settings['cta_layout'] = $request->input('settings.cta_layout', 'center');
             $settings['cta_bg_color'] = $request->input('settings.cta_bg_color', '#ffffff');
         }
+=======
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
 
         $data['settings'] = $settings;
         $section->update($data);

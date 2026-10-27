@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+<<<<<<< HEAD
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
+=======
+use Illuminate\Http\Request;
+use App\Models\BlogCategory;
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
 
 class BlogCategoryController extends Controller
 {
@@ -13,6 +18,7 @@ class BlogCategoryController extends Controller
         $categories = BlogCategory::orderBy('id', 'desc')->paginate(10);
         return view('admin.blog_categories.list', compact('categories'));
     }
+<<<<<<< HEAD
 
     public function store(Request $request)
     {
@@ -56,3 +62,6 @@ class BlogCategoryController extends Controller
         return redirect()->route('admin.blog-categories.index')->with('success', 'Category deleted successfully.');
     }
 }
+=======
+}
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7

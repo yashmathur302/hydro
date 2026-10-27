@@ -354,6 +354,335 @@
 
 @push('scripts')
     <script>
+        // Project ka Base URL lene ke liye Laravel ka url helper use karte hain
+        var baseUrl = "{{ url('/') }}"; 
+
+        $(document).ready(function() {
+            
+            // Auto-generate slug
+            $('#title').on('keyup', function() {
+                var title = $(this).val();
+                var slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');   
+                $('#slug').val(slug);
+            });
+
+            // UI Switching
+            $('#page_type').on('change', function() {
+                if($(this).val() === 'home') {
+                    $('#standard-editor-wrapper').slideUp();
+                    $('#section-builder-wrapper').slideDown();
+                } else {
+                    $('#section-builder-wrapper').slideUp();
+                    $('#standard-editor-wrapper').slideDown();
+                }
+            });
+
+            // jQuery UI Sortable
+            $('#sortable-sections-list').sortable({
+                handle: '.handle',
+                update: function(event, ui) {
+                    let orderData = [];
+                    $('.section-item').each(function(index) {
+                        orderData.push({ id: $(this).data('id'), sort_order: index + 1 });
+                    });
+
+                    $.ajax({
+                        url: "{{ route('admin.page-sections.updateOrder') }}", // Ye pehle se theek tha
+                        type: 'POST',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            orders: orderData
+                        },
+                        success: function(response) {
+                            if(response.success) { Toast.fire({ icon: 'success', title: response.message }); }
+                        }
+                    });
+                }
+            });
+
+            // Initialize plugins inside modal
+            $('#editSectionModal').on('shown.bs.modal', function () {
+                $('.select2-modal').select2({
+                    dropdownParent: $('#editSectionModal'),
+                    width: '100%'
+                });
+                
+                if (!$('.modal-summernote').hasClass('summernote-initialized')) {
+                    $('.modal-summernote').summernote({
+                        tabsize: 2, height: 200, dialogsInBody: true,
+                        toolbar: [
+                            ['style', ['bold', 'italic', 'underline', 'clear']],
+                            ['para', ['ul', 'ol']],
+                            ['view', ['codeview']]
+                        ]
+                    }).addClass('summernote-initialized');
+                }
+            });
+
+            // --- UNIVERSAL LIVE IMAGE PREVIEW ---
+            $('.live-image-upload').on('change', function(e) {
+                let targetDiv = $(this).data('preview');
+                let key = $(this).attr('name'); 
+                let dbKey = key.replace('image_', ''); 
+                
+                $(targetDiv).empty(); 
+                
+                if(e.target.files[0]) {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        $(targetDiv).html(`
+                            <div class="position-relative d-inline-block image-preview-box mt-2">
+                                <img src="${e.target.result}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 5px; border: 2px solid #28a745;">
+                                <div class="mt-1 d-flex justify-content-between">
+                                    <a href="${e.target.result}" target="_blank" class="btn btn-info btn-sm py-0 px-2" title="View"><i class="fa fa-eye"></i></a>
+                                    <button type="button" class="btn btn-danger btn-sm py-0 px-2 remove-single-image-btn" data-key="${dbKey}" title="Remove"><i class="fa fa-times"></i></button>
+                                </div>
+                                <span class="badge badge-success position-absolute" style="top: -5px; right: -5px;">New</span>
+                            </div>
+                        `);
+                    }
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+
+            // --- DEFERRED IMAGE DELETION ---
+            $(document).on('click', '.remove-single-image-btn', function() {
+                let key = $(this).data('key');
+                $('#removed_images_container').append('<input type="hidden" name="remove_images[]" value="' + key + '">');
+                $(`input[name="image_${key}"]`).val('');
+                $(this).closest('.image-preview-box').fadeOut(300, function() { $(this).remove(); });
+            });
+
+            // --- OPEN EDIT MODAL (AJAX Fetch) ---
+            $(document).on('click', '.edit-section-btn', function() {
+                let sectionId = $(this).data('id');
+                let btn = $(this);
+                let originalText = btn.text();
+                btn.prop('disabled', true).text('Loading...');
+
+                $.ajax({
+                    // FIX: Hardcoded URL hatai gayi, BaseUrl use kiya gaya
+                    url: baseUrl + '/admin/page-sections/' + sectionId,
+                    type: 'GET',
+                    success: function(response) {
+                        btn.prop('disabled', false).text(originalText);
+                        
+                        try {
+                            if(response.success) {
+                                let data = response.data;
+                                
+                                $('#editSectionForm')[0].reset();
+                                $('.dynamic-field, .field-cta-only').addClass('d-none');
+                                $('#preview_image_primary, #preview_image_secondary').empty();
+                                $('#removed_images_container').empty();
+                                
+                                if($('#edit_section_products').hasClass("select2-hidden-accessible")) $('#edit_section_products').val(null).trigger('change');
+                                if($('#edit_section_blogs').hasClass("select2-hidden-accessible")) $('#edit_section_blogs').val(null).trigger('change');
+                                if($('#edit_section_clients').hasClass("select2-hidden-accessible")) $('#edit_section_clients').val(null).trigger('change');
+                                if ($('.modal-summernote').hasClass('summernote-initialized')) $('.modal-summernote').summernote('code', '');
+
+                                $('#edit_section_id').val(data.id);
+                                $('#edit_section_type_hidden').val(data.section_type);
+                                $('#edit_section_title').val(data.title);
+                                $('#edit_section_subtitle').val(data.subtitle);
+                                $('#edit_section_status').val(data.status);
+                                
+                                let type = data.section_type;
+                                
+                                // 1. Content (Summernote) 
+                                if(['about', 'industries'].includes(type)) {
+                                    $('.field-content').removeClass('d-none');
+                                    if ($('.modal-summernote').hasClass('summernote-initialized')) $('.modal-summernote').summernote('code', data.content || '');
+                                }
+                                
+                                // 2. Button Fields 
+                                if(['about', 'cta'].includes(type)) {
+                                    $('.field-button').removeClass('d-none');
+                                    $('#edit_section_button_text').val(data.button_text);
+                                    $('#edit_section_button_link').val(data.button_link);
+                                }
+                                
+                                // 3. Primary Image (Banner)
+                                if(['banner', 'about', 'industries', 'cta'].includes(type)) {
+                                    $('.field-image-primary').removeClass('d-none');
+                                }
+                                
+                                // 4. Secondary Image
+                                if(['industries'].includes(type)) {
+                                    $('.field-image-secondary').removeClass('d-none');
+                                }
+
+                                // DB Images Rendering with View/Remove Icons
+                                if(data.image) {
+                                    let primaryImg = null;
+                                    let secondaryImg = null;
+
+                                    if (typeof data.image === 'string') {
+                                        primaryImg = data.image; 
+                                    } else if (typeof data.image === 'object') {
+                                        primaryImg = data.image.primary;
+                                        secondaryImg = data.image.secondary;
+                                    }
+
+                                    // FIX: Images ko render karte waqt bhi BaseUrl use kiya gaya hai taaki subdomain me break na ho
+                                    if(primaryImg) {
+                                        $('#preview_image_primary').html(`
+                                            <div class="position-relative d-inline-block image-preview-box mt-2">
+                                                <img src="${baseUrl}/${primaryImg}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">
+                                                <div class="mt-1 d-flex justify-content-between">
+                                                    <a href="${baseUrl}/${primaryImg}" target="_blank" class="btn btn-info btn-sm py-0 px-2" title="View"><i class="fa fa-eye"></i></a>
+                                                    <button type="button" class="btn btn-danger btn-sm py-0 px-2 remove-single-image-btn" data-key="primary" title="Remove"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        `);
+                                    }
+                                    if(secondaryImg) {
+                                        $('#preview_image_secondary').html(`
+                                            <div class="position-relative d-inline-block image-preview-box mt-2">
+                                                <img src="${baseUrl}/${secondaryImg}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">
+                                                <div class="mt-1 d-flex justify-content-between">
+                                                    <a href="${baseUrl}/${secondaryImg}" target="_blank" class="btn btn-info btn-sm py-0 px-2" title="View"><i class="fa fa-eye"></i></a>
+                                                    <button type="button" class="btn btn-danger btn-sm py-0 px-2 remove-single-image-btn" data-key="secondary" title="Remove"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        `);
+                                    }
+                                }
+
+                                if(type === 'products') {
+                                    $('.field-products').removeClass('d-none');
+                                    if(data.settings) {
+                                        if(data.settings.product_ids) $('#edit_section_products').val(data.settings.product_ids).trigger('change');
+                                        $('#edit_section_prod_cat').val(data.settings.product_category || 'all');
+                                        $('#edit_section_prod_sort').val(data.settings.product_sort || 'desc');
+                                        $('#edit_section_prod_limit').val(data.settings.product_limit || 4); 
+                                    }
+                                }
+
+                                if(type === 'blogs') {
+                                    $('.field-blogs').removeClass('d-none');
+                                    if(data.settings) {
+                                        if(data.settings.blog_ids) $('#edit_section_blogs').val(data.settings.blog_ids).trigger('change'); 
+                                        $('#edit_section_blog_cat').val(data.settings.blog_category || 'all');
+                                        $('#edit_section_blog_sort').val(data.settings.blog_sort || 'desc');
+                                        $('#edit_section_blog_limit').val(data.settings.blog_limit || 3);
+                                    }
+                                }
+                                
+                                if(type === 'clients') {
+                                    $('.field-clients').removeClass('d-none');
+                                    if(data.settings && data.settings.client_ids) {
+                                        $('#edit_section_clients').val(data.settings.client_ids).trigger('change');
+                                    }
+                                }
+
+                                let myModal = new bootstrap.Modal(document.getElementById('editSectionModal'));
+                                myModal.show();
+                            }
+                        } catch (error) {
+                            Toast.fire({ icon: 'error', title: 'Error opening modal.' });
+                        }
+                    },
+                    error: function() {
+                        btn.prop('disabled', false).text(originalText);
+                        Toast.fire({ icon: 'error', title: 'Failed to fetch section data.' });
+                    }
+                });
+            });
+
+            // Submit Edit Form (AJAX Update)
+            $('#editSectionForm').on('submit', function(e) {
+                e.preventDefault();
+                let sectionId = $('#edit_section_id').val();
+                let saveBtn = $('#saveEditBtn');
+                
+                let formData = new FormData(this);
+                formData.append('_method', 'PUT');
+                formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+
+                saveBtn.prop('disabled', true).text('Saving...');
+
+                $.ajax({
+                    // FIX: Hardcoded URL hatai gayi, BaseUrl use kiya gaya
+                    url: baseUrl + '/admin/page-sections/' + sectionId,
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, processData: false,
+                    success: function(response) {
+                        saveBtn.prop('disabled', false).text('Save Changes');
+                        if(response.success) {
+                            var myModalEl = document.getElementById('editSectionModal');
+                            var modal = bootstrap.Modal.getInstance(myModalEl);
+                            modal.hide();
+                            
+                            Toast.fire({ icon: 'success', title: response.message });
+                            
+                            let updatedTitle = $('#edit_section_title').val();
+                            $(`.section-item[data-id="${sectionId}"] small.text-muted`).text(updatedTitle ? updatedTitle : 'No title provided');
+                            let statusText = $('#edit_section_status').val();
+                            let badgeClass = statusText === 'active' ? 'badge-success' : 'badge-danger';
+                            $(`.section-item[data-id="${sectionId}"] .badge`).removeClass('badge-success badge-danger').addClass(badgeClass).text(statusText.charAt(0).toUpperCase() + statusText.slice(1));
+                        }
+                    },
+                    error: function(xhr) {
+                        saveBtn.prop('disabled', false).text('Save Changes');
+                        let errorMsg = 'Something went wrong!';
+                        if(xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            errorMsg = '<ul style="text-align: left; margin: 0; padding-left: 20px;">';
+                            $.each(errors, function(key, value) { errorMsg += '<li>' + value[0] + '</li>'; });
+                            errorMsg += '</ul>';
+                        }
+                        Toast.fire({ icon: 'error', title: 'Validation Failed', html: errorMsg });
+                    }
+                });
+            });
+
+            // Delete Section
+            $(document).on('click', '.delete-section-btn', function() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to remove this section?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, remove it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let button = $(this);
+                        let sectionId = button.data('id');
+                        let sectionItem = button.closest('.section-item');
+
+                        button.prop('disabled', true).text('Removing...');
+
+                        $.ajax({
+                            // FIX: Hardcoded URL hatai gayi, BaseUrl use kiya gaya
+                            url: baseUrl + '/admin/page-sections/' + sectionId,
+                            type: 'POST',
+                            data: { _method: 'DELETE', _token: $('meta[name="csrf-token"]').attr('content') },
+                            success: function(response) {
+                                if(response.success) {
+                                    Toast.fire({ icon: 'success', title: response.message });
+                                    sectionItem.fadeOut(300, function() {
+                                        $(this).remove();
+                                        if($('.section-item').length === 0) {
+                                            $('#sortable-sections-list').html('<div class="alert alert-warning text-center" id="no-sections-msg">No sections added yet. Click "Add New Section" to start building your home page.</div>');
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+@endpush
+
+{{-- @push('scripts')
+    <script>
         $(document).ready(function() {
             
             // Auto-generate slug
@@ -488,10 +817,20 @@
                                 
                                 let type = data.section_type;
                                 
+<<<<<<< HEAD
                                 if(['about', 'cta', 'industries'].includes(type)) {
                                     $('.field-content').removeClass('d-none');
                                     if ($('.modal-summernote').hasClass('summernote-initialized')) $('.modal-summernote').summernote('code', data.content || '');
                                 }
+=======
+                                // 1. Content (Summernote) - Ab CTA me nahi dikhega
+                                if(['about', 'industries'].includes(type)) {
+                                    $('.field-content').removeClass('d-none');
+                                    if ($('.modal-summernote').hasClass('summernote-initialized')) $('.modal-summernote').summernote('code', data.content || '');
+                                }
+                                
+                                // 2. Button Fields - CTA aur About me dikhenge
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
                                 if(['about', 'cta'].includes(type)) {
                                     $('.field-button').removeClass('d-none');
                                     $('#edit_section_button_text').val(data.button_text);
@@ -505,9 +844,18 @@
                                     }
                                 }
                                 
+<<<<<<< HEAD
                                 if(['banner', 'about', 'industries'].includes(type)) {
                                     $('.field-image-primary').removeClass('d-none');
                                 }
+=======
+                                // 3. Primary Image (Banner) - Ab CTA me bhi dikhega
+                                if(['banner', 'about', 'industries', 'cta'].includes(type)) {
+                                    $('.field-image-primary').removeClass('d-none');
+                                }
+                                
+                                // 4. Secondary Image
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
                                 if(['industries'].includes(type)) {
                                     $('.field-image-secondary').removeClass('d-none');
                                 }
@@ -676,6 +1024,7 @@
 
         });
     </script>
+<<<<<<< HEAD
 @endpush
 
 {{-- @push('scripts')
@@ -995,4 +1344,6 @@
 
         });
     </script>
+=======
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
 @endpush --}}

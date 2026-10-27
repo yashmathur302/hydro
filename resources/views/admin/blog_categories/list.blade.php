@@ -6,18 +6,28 @@
     <ul class="breadcrumbs">
         <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="icon-home"></i></a></li>
         <li class="separator"><i class="icon-arrow-right"></i></li>
+<<<<<<< HEAD
         <li class="nav-item"><a href="{{ route('admin.blog_categories.index') }}">Blogs</a></li>
         <li class="separator"><i class="icon-arrow-right"></i></li>
         <li class="nav-item"><a href="#">Categories</a></li>
+=======
+        <li class="nav-item"><a href="#">Blogs</a></li>
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
     </ul>
 </div>
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h4 class="card-title mb-0">All Categories</h4>
+<<<<<<< HEAD
         <button type="button" class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
             <i class="fa fa-plus"></i> Add New Category
         </button>
+=======
+        <a href="{{ route('admin.blog_categories.create') }}" class="btn btn-primary btn-round ms-auto">
+            <i class="fa fa-plus"></i> Add New Category
+        </a>
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
     </div>
     
     <div class="card-body">
@@ -26,7 +36,11 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+<<<<<<< HEAD
                         <th>NAME</th>
+=======
+                        <th>TITLE</th>
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
                         <th>SLUG</th>
                         <th>STATUS</th>
                         <th class="text-center">ACTION</th>
@@ -36,6 +50,7 @@
                     @forelse($categories as $item)
                     <tr>
                         <td>{{ $item->id }}</td>
+<<<<<<< HEAD
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->slug }}</td>
                         <td>
@@ -45,6 +60,17 @@
                             <button type="button" class="btn btn-link btn-primary px-2 py-1 edit-category-btn" data-id="{{ $item->id }}" data-bs-toggle="tooltip" title="Edit">
                                 <i class="fa fa-edit"></i>
                             </button>
+=======
+                        <td>{{ Str::limit($item->name, 40) }}</td>
+                        <td>{{ $item->slug }}</td>
+                        <td>
+                            <span class="badge {{ $item->status == 'published' ? 'badge-success' : 'badge-warning' }}">{{ ucfirst($item->status) }}</span>
+                        </td>
+                        <td class="text-center">
+                            <a href="{{ route('admin.blog_categories.edit', $item->id) }}" class="btn btn-link btn-primary px-2 py-1" data-bs-toggle="tooltip" title="Edit">
+                                <i class="fa fa-edit"></i>
+                            </a>
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
                             <form action="{{ route('admin.blog_categories.destroy', $item->id) }}" method="POST" class="d-inline">
                                 @csrf @method('DELETE')
                                 <button type="button" class="btn btn-link btn-danger px-2 py-1 global-delete-btn" data-bs-toggle="tooltip" title="Delete">
@@ -55,7 +81,11 @@
                     </tr>
                     @empty
                     <tr>
+<<<<<<< HEAD
                         <td colspan="5" class="text-center">No categories found.</td>
+=======
+                        <td colspan="6" class="text-center">No categories found.</td>
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
                     </tr>
                     @endforelse
                 </tbody>
@@ -69,6 +99,7 @@
     </div>
     @endif
 </div>
+<<<<<<< HEAD
 
 <!-- ================= ADD MODAL ================= -->
 <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-hidden="true">
@@ -262,3 +293,6 @@
     });
 </script>
 @endpush
+=======
+@endsection
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7

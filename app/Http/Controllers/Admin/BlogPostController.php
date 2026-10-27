@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\BlogPost;
+<<<<<<< HEAD
 use App\Models\BlogCategory; // Ye model required hoga
+=======
+use App\Models\BlogCategory;
+>>>>>>> 06adde4e3eeec26c7c33e9693393cc10486864c7
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
