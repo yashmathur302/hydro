@@ -33,8 +33,25 @@ class PageController extends Controller
             'page_type' => 'required|in:home,about,contact,certificates,custom',
         ]);
 
-        Page::create($request->all());
+        $data = $request->except(['breadcrumb_image']);
 
+        if ($request->hasFile('breadcrumb_image')) {
+            $file = $request->file('breadcrumb_image');
+            $fileName = time() . '-' . uniqid() . '.' . $file->extension();
+            $file->move(public_path('uploads/pages/breadcrumbs'), $fileName);
+            $data['breadcrumb_image'] = 'uploads/pages/breadcrumbs/' . $fileName;
+        }
+
+        if ($request->hasFile('certificate_file')) {
+            $file = $request->file('certificate_file');
+            $fileName = time() . '-cert.' . $file->extension();
+            $file->move(public_path('uploads/pages/certificates'), $fileName);
+            $data['certificate_file'] = 'uploads/pages/certificates/' . $fileName;
+        }
+
+        Page::create($data);
+
+        // Page::create($request->all());
         return redirect()->route('admin.pages.index')->with('success', 'Page created successfully.');
     }
     
@@ -70,15 +87,60 @@ class PageController extends Controller
             'meta_description' => 'nullable|max:500',
         ]);
 
-        $page->update([
+        $data = [
             'title' => $request->title,
             'slug' => $request->slug,
             'page_type' => $request->page_type,
-            // Agar page_type home hai, toh content null kar do taaki garbage data save na ho
             'content' => $request->page_type === 'home' ? null : $request->content,
             'meta_title' => $request->meta_title,
             'meta_description' => $request->meta_description,
-        ]);
+        ];
+
+        $removeImages = $request->input('remove_images', []);
+
+        if ($request->hasFile('breadcrumb_image')) {
+            if ($page->breadcrumb_image && file_exists(public_path($page->breadcrumb_image))) {
+                unlink(public_path($page->breadcrumb_image));
+            }
+            $file = $request->file('breadcrumb_image');
+            $fileName = time() . '-' . uniqid() . '.' . $file->extension();
+            $file->move(public_path('uploads/pages/breadcrumbs'), $fileName);
+            $data['breadcrumb_image'] = 'uploads/pages/breadcrumbs/' . $fileName;
+        } elseif (in_array('breadcrumb_image', $removeImages)) {
+            if ($page->breadcrumb_image && file_exists(public_path($page->breadcrumb_image))) {
+                unlink(public_path($page->breadcrumb_image));
+            }
+            $data['breadcrumb_image'] = null;
+        }
+
+        // Certificate File (Image or PDF) for Inner Page
+        if ($request->hasFile('certificate_file')) {
+            if ($page->certificate_file && file_exists(public_path($page->certificate_file))) {
+                unlink(public_path($page->certificate_file));
+            }
+            $file = $request->file('certificate_file');
+            $fileName = time() . '-cert.' . $file->extension();
+            $file->move(public_path('uploads/pages/certificates'), $fileName);
+            $data['certificate_file'] = 'uploads/pages/certificates/' . $fileName;
+        } elseif (in_array('certificate_file', $removeImages)) {
+            if ($page->certificate_file && file_exists(public_path($page->certificate_file))) {
+                unlink(public_path($page->certificate_file));
+            }
+            $data['certificate_file'] = null;
+        }
+
+
+        $page->update($data);
+
+        // $page->update([
+        //     'title' => $request->title,
+        //     'slug' => $request->slug,
+        //     'page_type' => $request->page_type,
+        //     // Agar page_type home hai, toh content null kar do taaki garbage data save na ho
+        //     'content' => $request->page_type === 'home' ? null : $request->content,
+        //     'meta_title' => $request->meta_title,
+        //     'meta_description' => $request->meta_description,
+        // ]);
 
         return redirect()->route('admin.pages.index')->with('success', 'Page updated successfully.');
     }

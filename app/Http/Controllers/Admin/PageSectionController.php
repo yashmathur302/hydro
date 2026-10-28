@@ -45,24 +45,31 @@ class PageSectionController extends Controller
             'status' => 'required|in:active,inactive',
             'image_primary' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'image_secondary' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'banner_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Banner validation added
             'button_text' => 'nullable|string|max:50',
             'button_link' => 'nullable|string|max:255',
+            'certificate_file' => 'nullable|mimes:jpeg,png,jpg,webp,pdf|max:5120',
         ]);
 
         $section = PageSection::findOrFail($id);
-        $data = $request->except(['image_primary', 'image_secondary', 'settings', 'section_type', 'page_id', 'remove_images', '_token', '_method']);
+        
+        // Remove all unnecessary fields from data
+        $data = $request->except([
+            'image_primary', 'image_secondary', 'banner_images', 'certificate_file', 
+            'remove_images', 'remove_banner_images', 
+            'settings', 'section_type', 'page_id', '_token', '_method'
+        ]);
 
-        // --- Associative Array Logic for Images (Handling Replacement & Removal) ---
+        // --- 1. Master Image Column Logic (JSON Associative Array) ---
         $existingImages = is_array($section->image) ? $section->image : [];
         if (is_string($section->image) && !empty($section->image)) {
             $existingImages = ['primary' => $section->image];
         }
 
-        $removeImages = $request->input('remove_images', []); // Frontend se aayega agar admin image hatayega
+        $removeImages = $request->input('remove_images', []);
 
-        // Primary Image Logic
+        // A. Primary Image Logic
         if ($request->hasFile('image_primary')) {
-            // Delete old if exists (Replacement fix)
             if (isset($existingImages['primary']) && file_exists(public_path($existingImages['primary']))) {
                 unlink(public_path($existingImages['primary']));
             }
@@ -71,16 +78,14 @@ class PageSectionController extends Controller
             $file->move(public_path('uploads/sections'), $imageName);
             $existingImages['primary'] = 'uploads/sections/' . $imageName; 
         } elseif (in_array('primary', $removeImages)) {
-            // User removed the image and didn't upload a new one
             if (isset($existingImages['primary']) && file_exists(public_path($existingImages['primary']))) {
                 unlink(public_path($existingImages['primary']));
             }
             unset($existingImages['primary']);
         }
 
-        // Secondary Image Logic
+        // B. Secondary Image Logic
         if ($request->hasFile('image_secondary')) {
-            // Delete old if exists (Replacement fix)
             if (isset($existingImages['secondary']) && file_exists(public_path($existingImages['secondary']))) {
                 unlink(public_path($existingImages['secondary']));
             }
@@ -89,40 +94,91 @@ class PageSectionController extends Controller
             $file->move(public_path('uploads/sections'), $imageName);
             $existingImages['secondary'] = 'uploads/sections/' . $imageName; 
         } elseif (in_array('secondary', $removeImages)) {
-            // User removed the image and didn't upload a new one
             if (isset($existingImages['secondary']) && file_exists(public_path($existingImages['secondary']))) {
                 unlink(public_path($existingImages['secondary']));
             }
             unset($existingImages['secondary']);
         }
 
+        // C. Multiple Banner Slider Images Logic (Saved inside 'banners' array in image column)
+        $bannerArray = $existingImages['banners'] ?? [];
+        
+        if ($request->hasFile('banner_images')) {
+            foreach ($request->file('banner_images') as $file) {
+                $fileName = time() . '-' . uniqid() . '.' . $file->extension();
+                $file->move(public_path('uploads/sections/banners'), $fileName);
+                $bannerArray[] = 'uploads/sections/banners/' . $fileName;
+            }
+        }
+
+        // Deferred Deletion for Multiple Banner Images
+        if ($request->filled('remove_banner_images')) {
+            foreach ($request->remove_banner_images as $removeImgPath) {
+                if (file_exists(public_path($removeImgPath))) {
+                    unlink(public_path($removeImgPath));
+                }
+                $bannerArray = array_filter($bannerArray, function($img) use ($removeImgPath) {
+                    return $img !== $removeImgPath;
+                });
+            }
+            $bannerArray = array_values($bannerArray); // Re-index array perfectly
+        }
+
+        if (!empty($bannerArray)) {
+            $existingImages['banners'] = $bannerArray;
+        } else {
+            unset($existingImages['banners']);
+        }
+
+        // Save Final Images Array to DB
         $data['image'] = empty($existingImages) ? null : $existingImages;
 
-        // --- Settings Logic ---
+        // --- 2. Settings Logic (Only non-image config data) ---
         $settings = $section->settings ?? [];
+        if (is_string($settings)) {
+            $settings = json_decode($settings, true) ?? [];
+        }
         $type = $section->section_type; 
         
-        // Products Settings (Limit add kiya gaya)
         if ($type === 'products') {
             $settings['product_ids'] = $request->input('settings.product_ids', []);
             $settings['product_category'] = $request->input('settings.product_category', 'all');
             $settings['product_sort'] = $request->input('settings.product_sort', 'desc');
-            $settings['product_limit'] = $request->input('settings.product_limit', 4); // New
+            $settings['product_limit'] = $request->input('settings.product_limit', 4);
         }
-        
-        // Blogs Settings (Specific Blogs IDs add kiya gaya)
         if ($type === 'blogs') {
-            $settings['blog_ids'] = $request->input('settings.blog_ids', []); // New
+            $settings['blog_ids'] = $request->input('settings.blog_ids', []);
             $settings['blog_category'] = $request->input('settings.blog_category', 'all');
             $settings['blog_sort'] = $request->input('settings.blog_sort', 'desc');
             $settings['blog_limit'] = $request->input('settings.blog_limit', 3);
         }
-
         if ($type === 'clients') {
             $settings['client_ids'] = $request->input('settings.client_ids', []);
         }
+        // if ($type === 'cta') {
+        //     $settings['cta_layout'] = $request->input('settings.cta_layout', 'center');
+        //     $settings['cta_bg_color'] = $request->input('settings.cta_bg_color', '#ffffff');
+        // }
 
-        $data['settings'] = $settings;
+        // --- Certificate File Logic Add Kiya ---
+        if ($type === 'certificate_download') {
+            if ($request->hasFile('certificate_file')) {
+                if (isset($settings['certificate_file']) && file_exists(public_path($settings['certificate_file']))) {
+                    unlink(public_path($settings['certificate_file']));
+                }
+                $file = $request->file('certificate_file');
+                $fileName = time() . '-cert.' . $file->extension();
+                $file->move(public_path('uploads/sections/certificates'), $fileName);
+                $settings['certificate_file'] = 'uploads/sections/certificates/' . $fileName;
+            } elseif (in_array('certificate_file', $removeImages)) {
+                if (isset($settings['certificate_file']) && file_exists(public_path($settings['certificate_file']))) {
+                    unlink(public_path($settings['certificate_file']));
+                }
+                unset($settings['certificate_file']);
+            }
+        }
+
+        $data['settings'] = empty($settings) ? null : $settings;
         $section->update($data);
 
         return response()->json(['success' => true, 'message' => 'Section updated successfully.']);
@@ -141,28 +197,76 @@ class PageSectionController extends Controller
     //     ]);
 
     //     $section = PageSection::findOrFail($id);
-    //     $data = $request->except(['image_primary', 'image_secondary', 'settings', 'section_type', 'page_id', '_token', '_method']);
+    //     $data = $request->except(['image_primary', 'image_secondary', 'settings', 'section_type', 'page_id', 'remove_images', '_token', '_method']);
 
-    //     // --- Associative Array Logic for Images ---
+    //     // --- Associative Array Logic for Images (Handling Replacement & Removal) ---
     //     $existingImages = is_array($section->image) ? $section->image : [];
-        
-    //     // Agar purani single string image DB me padi hai, usko array me convert karlo safely
     //     if (is_string($section->image) && !empty($section->image)) {
     //         $existingImages = ['primary' => $section->image];
     //     }
 
+    //     $removeImages = $request->input('remove_images', []); // Frontend se aayega agar admin image hatayega
+
+    //     // Primary Image Logic
     //     if ($request->hasFile('image_primary')) {
+    //         // Delete old if exists (Replacement fix)
+    //         if (isset($existingImages['primary']) && file_exists(public_path($existingImages['primary']))) {
+    //             unlink(public_path($existingImages['primary']));
+    //         }
     //         $file = $request->file('image_primary');
     //         $imageName = time() . '-1.' . $file->extension();
     //         $file->move(public_path('uploads/sections'), $imageName);
     //         $existingImages['primary'] = 'uploads/sections/' . $imageName; 
+    //     } elseif (in_array('primary', $removeImages)) {
+    //         // User removed the image and didn't upload a new one
+    //         if (isset($existingImages['primary']) && file_exists(public_path($existingImages['primary']))) {
+    //             unlink(public_path($existingImages['primary']));
+    //         }
+    //         unset($existingImages['primary']);
     //     }
 
+    //     // Secondary Image Logic
     //     if ($request->hasFile('image_secondary')) {
+    //         // Delete old if exists (Replacement fix)
+    //         if (isset($existingImages['secondary']) && file_exists(public_path($existingImages['secondary']))) {
+    //             unlink(public_path($existingImages['secondary']));
+    //         }
     //         $file = $request->file('image_secondary');
     //         $imageName = time() . '-2.' . $file->extension();
     //         $file->move(public_path('uploads/sections'), $imageName);
     //         $existingImages['secondary'] = 'uploads/sections/' . $imageName; 
+    //     } elseif (in_array('secondary', $removeImages)) {
+    //         // User removed the image and didn't upload a new one
+    //         if (isset($existingImages['secondary']) && file_exists(public_path($existingImages['secondary']))) {
+    //             unlink(public_path($existingImages['secondary']));
+    //         }
+    //         unset($existingImages['secondary']);
+    //     }
+
+    //     // --- Multiple Banner Images Logic ---
+    //     $settings = $section->settings ?? [];
+    //     if ($request->hasFile('banner_images')) {
+    //         $bannerImages = $settings['banner_images'] ?? [];
+    //         foreach ($request->file('banner_images') as $file) {
+    //             $fileName = time() . '-' . uniqid() . '.' . $file->extension();
+    //             $file->move(public_path('uploads/sections/banners'), $fileName);
+    //             $bannerImages[] = 'uploads/sections/banners/' . $fileName;
+    //         }
+    //         $settings['banner_images'] = $bannerImages;
+    //     }
+
+    //     // Deferred Deletion for Banner Images
+    //     if ($request->filled('remove_banner_images')) {
+    //         $bannerImages = $settings['banner_images'] ?? [];
+    //         foreach ($request->remove_banner_images as $removeImgPath) {
+    //             if (file_exists(public_path($removeImgPath))) {
+    //                 unlink(public_path($removeImgPath));
+    //             }
+    //             $bannerImages = array_filter($bannerImages, function($img) use ($removeImgPath) {
+    //                 return $img !== $removeImgPath;
+    //             });
+    //         }
+    //         $settings['banner_images'] = array_values($bannerImages);
     //     }
 
     //     $data['image'] = empty($existingImages) ? null : $existingImages;
@@ -171,22 +275,24 @@ class PageSectionController extends Controller
     //     $settings = $section->settings ?? [];
     //     $type = $section->section_type; 
         
+    //     // Products Settings (Limit add kiya gaya)
     //     if ($type === 'products') {
     //         $settings['product_ids'] = $request->input('settings.product_ids', []);
     //         $settings['product_category'] = $request->input('settings.product_category', 'all');
     //         $settings['product_sort'] = $request->input('settings.product_sort', 'desc');
+    //         $settings['product_limit'] = $request->input('settings.product_limit', 4); // New
     //     }
+        
+    //     // Blogs Settings (Specific Blogs IDs add kiya gaya)
     //     if ($type === 'blogs') {
+    //         $settings['blog_ids'] = $request->input('settings.blog_ids', []); // New
     //         $settings['blog_category'] = $request->input('settings.blog_category', 'all');
     //         $settings['blog_sort'] = $request->input('settings.blog_sort', 'desc');
     //         $settings['blog_limit'] = $request->input('settings.blog_limit', 3);
     //     }
+
     //     if ($type === 'clients') {
     //         $settings['client_ids'] = $request->input('settings.client_ids', []);
-    //     }
-    //     if ($type === 'cta') {
-    //         $settings['cta_layout'] = $request->input('settings.cta_layout', 'center');
-    //         $settings['cta_bg_color'] = $request->input('settings.cta_bg_color', '#ffffff');
     //     }
 
     //     $data['settings'] = $settings;

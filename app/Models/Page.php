@@ -10,7 +10,7 @@ class Page extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'slug', 'page_type', 'content', 'meta_title', 'meta_description', 'og_image'
+        'title', 'slug', 'page_type', 'breadcrumb_image', 'certificate_file', 'content', 'meta_title', 'meta_description', 'og_image'
     ];
 
     // Ek page ke multiple sections ho sakte hain

@@ -20,8 +20,8 @@
                 @include('frontend.sections.products', ['section' => $section])
             @endif
 
-            @if($section->section_type == 'certificates')
-                @include('frontend.sections.certificates', ['section' => $section])
+            @if($section->section_type == 'certificate_download')
+                @include('frontend.sections.certificate_download', ['section' => $section])
             @endif
 
             @if($section->section_type == 'blogs')

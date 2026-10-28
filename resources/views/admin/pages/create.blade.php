@@ -30,7 +30,7 @@
             <div class="card-header">
                 <div class="card-title">Add New Page</div>
             </div>
-            <form action="{{ route('admin.pages.store') }}" method="POST">
+            <form action="{{ route('admin.pages.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
                     
@@ -75,6 +75,15 @@
                         </div>
                     </div>
 
+                    <div class="row" id="breadcrumb-image-wrapper">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Breadcrumb Banner Image (For Inner Pages)</label>
+                                <input type="file" class="form-control" name="breadcrumb_image" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -111,35 +120,17 @@
 </div>
 @endsection
 
-{{-- @push('scripts')
-    <!-- Summernote Lite JS -->
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Summernote initialize
-            $('#summernote').summernote({
-                placeholder: 'Write page content here...',
-                tabsize: 2,
-                height: 300,
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'underline', 'clear']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['table', ['table']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview', 'help']]
-                ]
-            });
-
-            // Auto-generate slug from title
-            $('#title').on('keyup', function() {
-                var title = $(this).val();
-                var slug = title.toLowerCase()
-                                .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with hyphen
-                                .replace(/(^-|-$)+/g, '');   // Remove leading/trailing hyphens
-                $('#slug').val(slug);
-            });
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('#page_type').on('change', function() {
+            if($(this).val() === 'home') {
+                $('#breadcrumb-image-wrapper').slideUp();
+            } else {
+                $('#breadcrumb-image-wrapper').slideDown();
+            }
         });
-    </script>
-@endpush --}}
+        $('#page_type').trigger('change');
+    });
+</script>
+@endpush

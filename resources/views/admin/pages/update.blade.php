@@ -31,7 +31,9 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <form action="{{ route('admin.pages.update', $page->id) }}" method="POST">
+            <form action="{{ route('admin.pages.update', $page->id) }}" method="POST" enctype="multipart/form-data">
+                <!-- Inner pages image removal track -->
+                <div id="removed_page_images_container"></div>
                 @csrf
                 @method('PUT')
                 <div class="card-body">
@@ -60,6 +62,53 @@
                                     <option value="certificates" {{ old('page_type', $page->page_type) == 'certificates' ? 'selected' : '' }}>Certificates</option>
                                     <option value="custom" {{ old('page_type', $page->page_type) == 'custom' ? 'selected' : '' }}>Custom Page</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BREADCRUMB IMAGE -->
+                    <div class="row" id="breadcrumb-image-wrapper">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Breadcrumb Image (For Inner Pages)</label>
+                                <input type="file" class="form-control live-image-upload" name="breadcrumb_image" accept="image/*" data-preview="#breadcrumb_preview">
+                                <div id="breadcrumb_preview" class="mt-2">
+                                    @if($page->breadcrumb_image)
+                                        <div class="position-relative d-inline-block image-preview-box mt-2">
+                                            <img src="{{ asset($page->breadcrumb_image) }}" style="width: 250px; height: 100px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">
+                                            <div class="mt-1 d-flex justify-content-between">
+                                                <a href="{{ asset($page->breadcrumb_image) }}" target="_blank" class="btn btn-info btn-sm py-0 px-2" title="View"><i class="fa fa-eye"></i></a>
+                                                <!-- Notice data-key="breadcrumb_image" and target container -->
+                                                <button type="button" class="btn btn-danger btn-sm py-0 px-2 remove-page-image-btn" data-key="breadcrumb_image" title="Remove"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CERTIFICATE FILE (Only for Certificate Page) -->
+                    <div class="row" id="certificate-file-wrapper" style="display: none;">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Upload Certificate (Image or PDF)</label>
+                                <input type="file" class="form-control live-cert-upload" name="certificate_file" accept=".png,.jpg,.jpeg,.pdf" data-preview="#page_cert_preview" data-key="certificate_file">
+                                <div id="page_cert_preview" class="mt-2">
+                                    @if(isset($page->certificate_file))
+                                        <div class="position-relative d-inline-block image-preview-box mt-2">
+                                            @if(Str::endsWith($page->certificate_file, '.pdf'))
+                                                <div class="p-4 bg-light border text-center" style="width:120px; height:120px; border-radius:5px;"><i class="fas fa-file-pdf fa-3x text-danger"></i></div>
+                                            @else
+                                                <img src="{{ asset($page->certificate_file) }}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">
+                                            @endif
+                                            <div class="mt-1 d-flex justify-content-between">
+                                                <a href="{{ asset($page->certificate_file) }}" target="_blank" class="btn btn-info btn-sm py-0 px-2" title="View"><i class="fa fa-eye"></i></a>
+                                                <button type="button" class="btn btn-danger btn-sm py-0 px-2 remove-page-image-btn" data-key="certificate_file" title="Remove"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -157,12 +206,13 @@
                         <label>Select Section Type <span class="text-danger">*</span></label>
                         <select class="form-select form-control" name="section_type" required>
                             <option value="" disabled selected>-- Select Type --</option>
-                            <option value="banner">Banner (Slider)</option>
-                            <option value="about">About Us (Text & Image)</option>
+                            <option value="banner">Banner</option>
+                            <option value="about">About Us</option>
                             <option value="industries">Industries We Serve</option>
                             <option value="products">Products Grid</option>
-                            <option value="clients">Clients / Brands Slider</option>
+                            <option value="clients">Clients</option>
                             <option value="blogs">Latest Blogs</option>
+                            <option value="certificate_download">Certificate</option>
                             <option value="cta">Call To Action (CTA)</option>
                         </select>
                     </div>
@@ -207,6 +257,21 @@
                     <div class="form-group mt-2 dynamic-field field-content d-none">
                         <label>Content (Text)</label>
                         <textarea class="form-control modal-summernote" id="edit_section_content" name="content"></textarea>
+                    </div>
+
+                    <!-- Multiple Banner Slider Images (Only for Banner) -->
+                    <div class="form-group mt-2 dynamic-field field-banner-images d-none">
+                        <label>Slider Images (Multiple)</label>
+                        <input type="file" class="form-control live-gallery-upload" name="banner_images[]" accept="image/*" multiple data-preview="#preview_banner_images">
+                        <div id="existing_banner_images" class="d-flex flex-wrap mt-3 gap-2"></div>
+                        <div id="preview_banner_images" class="d-flex flex-wrap mt-2 gap-2"></div>
+                    </div>
+
+                    <!-- Certificate File Upload for Section -->
+                    <div class="form-group mt-2 dynamic-field field-cert-file d-none">
+                        <label>Upload Certificate (Image or PDF)</label>
+                        <input type="file" class="form-control live-cert-upload" id="edit_section_cert_file" name="certificate_file" accept=".png,.jpg,.jpeg,.pdf" data-preview="#preview_cert_file" data-key="certificate_file">
+                        <div id="preview_cert_file" class="mt-2"></div>
                     </div>
 
                     <!-- Primary Image Upload -->
@@ -445,13 +510,72 @@
                 }
             });
 
-            // --- DEFERRED IMAGE DELETION ---
+            // --- UNIVERSAL LIVE CERTIFICATE (PDF/IMAGE) PREVIEW ---
+            $('.live-cert-upload').on('change', function(e) {
+                let targetDiv = $(this).data('preview');
+                let key = $(this).data('key'); 
+                $(targetDiv).empty(); 
+                
+                if(e.target.files[0]) {
+                    let file = e.target.files[0];
+                    let isPdf = file.type === 'application/pdf';
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        let htmlContent = isPdf 
+                            ? `<div class="p-4 bg-light border text-center" style="width:120px; height:120px; border-radius:5px; border: 2px solid #28a745;"><i class="fas fa-file-pdf fa-3x text-danger"></i></div>` 
+                            : `<img src="${e.target.result}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 5px; border: 2px solid #28a745;">`;
+                        
+                        $(targetDiv).html(`
+                            <div class="position-relative d-inline-block image-preview-box mt-2">
+                                ${htmlContent}
+                                <div class="mt-1 text-center">
+                                    <button type="button" class="btn btn-danger btn-sm py-0 px-2 remove-single-image-btn" data-key="${key}" title="Remove"><i class="fa fa-times"></i></button>
+                                </div>
+                                <span class="badge badge-success position-absolute" style="top: -5px; right: -5px;">New</span>
+                            </div>
+                        `);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // --- DEFERRED IMAGE DELETION (Modal Single Images) ---
             $(document).on('click', '.remove-single-image-btn', function() {
                 let key = $(this).data('key');
                 $('#removed_images_container').append('<input type="hidden" name="remove_images[]" value="' + key + '">');
                 $(`input[name="image_${key}"]`).val('');
                 $(this).closest('.image-preview-box').fadeOut(300, function() { $(this).remove(); });
             });
+
+            // --- DEFERRED IMAGE DELETION (Main Page Breadcrumb) ---
+            $(document).on('click', '.remove-page-image-btn', function() {
+                let key = $(this).data('key');
+                $('#removed_page_images_container').append('<input type="hidden" name="remove_images[]" value="' + key + '">');
+                $(`input[name="${key}"]`).val('');
+                $(this).closest('.image-preview-box').fadeOut(300, function() { $(this).remove(); });
+            });
+
+            // --- DEFERRED IMAGE DELETION (Banner Slider Multiple) ---
+            $(document).on('click', '.remove-banner-img-btn', function() {
+                let imgPath = $(this).data('path');
+                $('#removed_images_container').append(`<input type="hidden" name="remove_banner_images[]" value="${imgPath}">`);
+                $(this).closest('.image-preview-box').fadeOut(300, function(){ $(this).remove(); });
+            });
+            
+            // Breadcrumb & Certificate UI Toggle
+            $('#page_type').on('change', function() {
+                if($(this).val() === 'home') {
+                    $('#breadcrumb-image-wrapper').slideUp();
+                    $('#certificate-file-wrapper').slideUp();
+                } else if($(this).val() === 'certificates') {
+                    $('#breadcrumb-image-wrapper').slideDown();
+                    $('#certificate-file-wrapper').slideDown();
+                } else {
+                    $('#breadcrumb-image-wrapper').slideDown();
+                    $('#certificate-file-wrapper').slideUp();
+                }
+            });
+            $('#page_type').trigger('change');
 
             // --- OPEN EDIT MODAL (AJAX Fetch) ---
             $(document).on('click', '.edit-section-btn', function() {
@@ -490,6 +614,12 @@
                                 let type = data.section_type;
                                 
                                 // 1. Content (Summernote) 
+                                // if(['about', 'industries'].includes(type)) {
+                                //     $('.field-content').removeClass('d-none');
+                                //     if ($('.modal-summernote').hasClass('summernote-initialized')) $('.modal-summernote').summernote('code', data.content || '');
+                                // }
+
+                                // 1. Content (Summernote) 
                                 if(['about', 'industries'].includes(type)) {
                                     $('.field-content').removeClass('d-none');
                                     if ($('.modal-summernote').hasClass('summernote-initialized')) $('.modal-summernote').summernote('code', data.content || '');
@@ -502,14 +632,58 @@
                                     $('#edit_section_button_link').val(data.button_link);
                                 }
                                 
-                                // 3. Primary Image (Banner)
-                                if(['banner', 'about', 'industries', 'cta'].includes(type)) {
+                                // 3. Primary Image 
+                                if(['about', 'industries', 'cta'].includes(type)) {
                                     $('.field-image-primary').removeClass('d-none');
+                                }
+                                
+                                // Banner Slider Images
+                                // Banner Slider Images (Now reading from data.image instead of settings)
+                                if(type === 'banner') {
+                                    $('.field-banner-images').removeClass('d-none');
+                                    $('#existing_banner_images').empty();
+                                    
+                                    if(data.image && data.image.banners && data.image.banners.length > 0) {
+                                        data.image.banners.forEach(function(imgPath) {
+                                            $('#existing_banner_images').append(`
+                                                <div class="position-relative d-inline-block image-preview-box" style="width: 120px;">
+                                                    <img src="${baseUrl}/${imgPath}" style="width: 100%; height: 70px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">
+                                                    <div class="mt-1 d-flex justify-content-between">
+                                                        <a href="${baseUrl}/${imgPath}" target="_blank" class="btn btn-info btn-sm py-0 px-2"><i class="fa fa-eye"></i></a>
+                                                        <button type="button" class="btn btn-danger btn-sm py-0 px-2 remove-banner-img-btn" data-path="${imgPath}"><i class="fa fa-times"></i></button>
+                                                    </div>
+                                                </div>
+                                            `);
+                                        });
+                                    }
                                 }
                                 
                                 // 4. Secondary Image
                                 if(['industries'].includes(type)) {
                                     $('.field-image-secondary').removeClass('d-none');
+                                }
+
+                                // 5. Certificate File (PDF/Image)
+                                if(['certificate_download', 'certificates'].includes(type)) {
+                                    $('.field-cert-file').removeClass('d-none');
+                                    
+                                    if(data.settings && data.settings.certificate_file) {
+                                        let certPath = data.settings.certificate_file;
+                                        let isPdf = certPath.endsWith('.pdf');
+                                        let previewHtml = isPdf 
+                                            ? `<div class="p-4 bg-light border text-center" style="width:120px; height:120px; border-radius:5px;"><i class="fas fa-file-pdf fa-3x text-danger"></i></div>`
+                                            : `<img src="${baseUrl}/${certPath}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">`;
+                                            
+                                        $('#preview_cert_file').html(`
+                                            <div class="position-relative d-inline-block image-preview-box mt-2">
+                                                ${previewHtml}
+                                                <div class="mt-1 d-flex justify-content-between">
+                                                    <a href="${baseUrl}/${certPath}" target="_blank" class="btn btn-info btn-sm py-0 px-2"><i class="fa fa-eye"></i></a>
+                                                    <button type="button" class="btn btn-danger btn-sm py-0 px-2 remove-single-image-btn" data-key="certificate_file"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        `);
+                                    }
                                 }
 
                                 // DB Images Rendering with View/Remove Icons
