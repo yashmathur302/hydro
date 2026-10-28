@@ -9,11 +9,14 @@ use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\BlogPostController;
 use App\Http\Controllers\Admin\BlogCategoryController;
 
-Route::get('/', function () {
-    return view('admin.dashboard');
-});
-
+// Admin Routes Group
 Route::prefix('admin')->name('admin.')->group(function () {
+    
+    // Agar koi sirf /admin type kare, toh usko dashboard par bhej do
+    Route::get('/', function () {
+        return redirect()->route('admin.dashboard');
+    });
+
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
@@ -26,6 +29,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('products', ProductController::class);
     Route::post('product-images/{id}/delete', [ProductController::class, 'deleteGalleryImage'])->name('product-images.delete');
+    
     Route::resource('product_categories', ProductCategoryController::class);
     Route::resource('clients', ClientController::class);
     Route::resource('blog_categories', BlogCategoryController::class);
@@ -33,6 +37,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 });
 
-
-// Load Frontend Routes
+// Load Frontend Routes (Ye ab tumhara main '/' route handle karega)
 Route::middleware('web')->group(base_path('routes/frontend.php'));
