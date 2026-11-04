@@ -42,12 +42,13 @@ return [
          * Public uploads (product images, logos, brochures). Normally they live in
          * storage/app/public behind the "php artisan storage:link" symlink. Hosting
          * without a terminal cannot create that link, so PUBLIC_UPLOADS_IN_WEBROOT=true
-         * stores them directly in <public folder>/storage instead.
+         * stores them directly in <public folder>/uploads instead. ("uploads", not
+         * "storage", so it can never clash with the private storage folder.)
          */
         'public' => [
             'driver' => 'local',
-            'root' => env('PUBLIC_UPLOADS_IN_WEBROOT', false) ? public_path('storage') : storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            'root' => env('PUBLIC_UPLOADS_IN_WEBROOT', false) ? public_path('uploads') : storage_path('app/public'),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').(env('PUBLIC_UPLOADS_IN_WEBROOT', false) ? '/uploads' : '/storage'),
             'visibility' => 'public',
             'throw' => false,
             'report' => false,

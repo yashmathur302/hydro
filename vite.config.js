@@ -14,6 +14,13 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    experimental: {
+        // Fonts and images referenced from CSS use paths relative to the CSS file,
+        // so the site also works when installed in a sub-folder (e.g. /hydro).
+        renderBuiltUrl(filename, { hostType }) {
+            return hostType === 'css' ? { relative: true } : undefined;
+        },
+    },
     build: {
         cssMinify: true,
         // Small assets are inlined only when they are tiny; fonts stay as separate cached files.
