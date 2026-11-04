@@ -9,3 +9,6 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+
+# Compiled assets are committed for shared hosting without Node.js; regenerate with "npm run build".
+public/build/** linguist-generated=true -diff

@@ -47,8 +47,9 @@ Run the tests with `php artisan test`.
 
 ## Deploying to shared hosting (cPanel)
 
-1. Run `npm run build` on your computer. Shared hosting usually has no Node.js, so upload
-   the generated `public/build` folder together with the code.
+1. The compiled CSS/JS in `public/build` is committed, because the hosting has no Node.js.
+   After changing anything in `resources/css` or `resources/js`, run `npm run build` locally
+   and commit the updated `public/build` folder.
 2. Upload the project **outside** `public_html` (for example `~/hydro`) and point the
    domain's document root at `~/hydro/public`. If the document root cannot be changed,
    copy the contents of `public` into `public_html` and update the two paths in `index.php`.
