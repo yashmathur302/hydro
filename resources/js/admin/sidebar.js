@@ -1,10 +1,48 @@
 /**
- * Off-canvas sidebar for screens narrower than the desktop breakpoint.
- * Handles open/close buttons, the backdrop, the Escape key and focus return.
+ * Sidebar behaviour.
+ * - Below the desktop breakpoint: off-canvas drawer with backdrop, Escape key
+ *   and focus return.
+ * - On desktop: collapsible to an icon rail; the choice is remembered.
  */
 const DESKTOP_QUERY = window.matchMedia('(min-width: 1024px)');
+const COLLAPSED_CLASS = 'is-sidebar-collapsed';
+const STORAGE_KEY = 'admin.sidebar';
 
-export function initSidebar() {
+function rememberCollapsed(isCollapsed) {
+    try {
+        localStorage.setItem(STORAGE_KEY, isCollapsed ? 'collapsed' : 'expanded');
+    } catch {
+        // Storage can be unavailable (private mode); the preference is optional.
+    }
+}
+
+function initCollapseToggle() {
+    const button = document.querySelector('[data-sidebar-collapse]');
+
+    if (!button) {
+        return;
+    }
+
+    const root = document.documentElement;
+
+    const sync = () => {
+        const isCollapsed = root.classList.contains(COLLAPSED_CLASS);
+
+        button.setAttribute('aria-expanded', String(!isCollapsed));
+        button.setAttribute('aria-label', isCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
+    };
+
+    button.addEventListener('click', () => {
+        const isCollapsed = root.classList.toggle(COLLAPSED_CLASS);
+
+        rememberCollapsed(isCollapsed);
+        sync();
+    });
+
+    sync();
+}
+
+function initDrawer() {
     const sidebar = document.querySelector('[data-sidebar]');
     const openButton = document.querySelector('[data-sidebar-open]');
 
@@ -13,7 +51,6 @@ export function initSidebar() {
     }
 
     const backdrop = document.querySelector('.sidebar-backdrop');
-    const closeTriggers = document.querySelectorAll('[data-sidebar-close]');
 
     const setOpen = (isOpen) => {
         sidebar.classList.toggle('is-open', isOpen);
@@ -36,7 +73,7 @@ export function initSidebar() {
     };
 
     openButton.addEventListener('click', () => setOpen(true));
-    closeTriggers.forEach((trigger) => trigger.addEventListener('click', close));
+    document.querySelectorAll('[data-sidebar-close]').forEach((trigger) => trigger.addEventListener('click', close));
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
@@ -49,4 +86,9 @@ export function initSidebar() {
             setOpen(false);
         }
     });
+}
+
+export function initSidebar() {
+    initDrawer();
+    initCollapseToggle();
 }

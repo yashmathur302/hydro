@@ -1,9 +1,9 @@
-{{-- Success message flashed to the session after an action. --}}
+{{-- Success message flashed to the session after an action, shown as a dismissible banner. --}}
 @if (session('status'))
-    <div class="alert alert--success" role="status" data-dismissible>
-        <x-admin.icon name="success" class="alert__icon" />
-        <p class="alert__message">{{ session('status') }}</p>
-        <button type="button" class="alert__close" data-dismiss aria-label="Dismiss message">
+    <div class="banner banner--success" role="status" data-dismissible>
+        <x-admin.icon name="success" class="banner__icon" />
+        <p class="banner__text">{{ session('status') }}</p>
+        <button type="button" class="banner__close" data-dismiss aria-label="Dismiss message">
             <x-admin.icon name="close" />
         </button>
     </div>

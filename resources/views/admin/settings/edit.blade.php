@@ -15,10 +15,10 @@
     <x-admin.page-header title="Site settings" description="Branding, contact details, default SEO and tracking used across the whole website." />
 
     <div class="settings">
-        <nav class="settings__nav" aria-label="Settings sections">
-            <ul>
+        <nav class="segmented" aria-label="Settings sections">
+            <ul class="segmented__list">
                 @foreach ($sections as $anchor => $label)
-                    <li><a href="#{{ $anchor }}">{{ $label }}</a></li>
+                    <li><a class="segmented__item" href="#{{ $anchor }}" data-section-link>{{ $label }}</a></li>
                 @endforeach
             </ul>
         </nav>
@@ -74,6 +74,7 @@
             </x-admin.card>
 
             <div class="savebar">
+                <x-admin.icon name="globe" class="savebar__icon" />
                 <p class="savebar__text">Changes apply to the live website as soon as you save.</p>
                 <x-admin.button type="submit" icon="check">Save settings</x-admin.button>
             </div>

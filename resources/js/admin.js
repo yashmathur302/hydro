@@ -3,14 +3,16 @@
  * attributes, so pages only get the behaviour they actually contain.
  */
 import { initSidebar } from './admin/sidebar';
+import { initSectionNav } from './admin/section-nav';
 import { initPasswordToggles } from './admin/password-toggle';
 import { initCharacterCounters } from './admin/character-counter';
 import { initImageUploads } from './admin/image-upload';
-import { initDismissibleAlerts, focusErrorSummary } from './admin/alerts';
+import { initDismissibleAlerts, focusFirstInvalidField } from './admin/alerts';
 
 initSidebar();
+initSectionNav();
 initPasswordToggles();
 initCharacterCounters();
 initImageUploads();
 initDismissibleAlerts();
-focusErrorSummary();
+focusFirstInvalidField();

@@ -1,21 +1,31 @@
-{{-- Content card with an optional heading; renders as a <section> when titled. --}}
-@props(['title' => null, 'description' => null])
+{{--
+    Content panel: heading (and optional actions) above a bordered box.
+    Slots: default (box content), "actions" (beside the heading), "footer" (inside the box, bottom).
+--}}
+@props(['title' => null, 'description' => null, 'flush' => false])
 
-@php($headingId = $title ? 'card-'.Str::slug($title) : null)
+@php($headingId = $title ? 'panel-'.Str::slug($title) : null)
 
-<section {{ $attributes->merge(['class' => 'card']) }} @if ($headingId) aria-labelledby="{{ $headingId }}" @endif>
+<section {{ $attributes->merge(['class' => 'panel']) }} @if ($headingId) aria-labelledby="{{ $headingId }}" @endif>
     @if ($title)
-        <header class="card__header">
-            <h2 class="card__title" id="{{ $headingId }}">{{ $title }}</h2>
-            @if ($description)
-                <p class="card__description">{{ $description }}</p>
-            @endif
+        <header class="panel__header">
+            <div>
+                <h2 class="panel__title" id="{{ $headingId }}">{{ $title }}</h2>
+                @if ($description)
+                    <p class="panel__description">{{ $description }}</p>
+                @endif
+            </div>
+            @isset($actions)
+                <div class="panel__actions">{{ $actions }}</div>
+            @endisset
         </header>
     @endif
-    <div class="card__body">
+
+    <div @class(['panel__box', 'panel__box--flush' => $flush])>
         {{ $slot }}
+
+        @isset($footer)
+            <footer class="panel__footer">{{ $footer }}</footer>
+        @endisset
     </div>
-    @isset($footer)
-        <footer class="card__footer">{{ $footer }}</footer>
-    @endisset
 </section>

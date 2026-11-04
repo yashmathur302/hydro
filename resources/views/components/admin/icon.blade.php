@@ -1,7 +1,7 @@
 {{-- Inline stroke icons for the admin panel. Decorative by default (aria-hidden). --}}
 @props(['name'])
 
-<svg {{ $attributes->merge(['class' => 'icon']) }} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+<svg {{ $attributes->merge(['class' => 'icon']) }} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
     @switch($name)
         @case('dashboard')
             <rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>
@@ -47,6 +47,21 @@
             @break
         @case('arrow-right')
             <path d="M5 12h14M13 6l6 6-6 6"/>
+            @break
+        @case('globe')
+            <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/>
+            @break
+        @case('chevrons-left')
+            <path d="M11 17l-5-5 5-5"/><path d="M18 17l-5-5 5-5"/>
+            @break
+        @case('chevron-down')
+            <path d="M6 9l6 6 6-6"/>
+            @break
+        @case('arrow-up-right')
+            <path d="M7 17L17 7"/><path d="M8 7h9v9"/>
+            @break
+        @case('sparkle')
+            <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.7 1.8 1.8.7-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7z"/>
             @break
     @endswitch
 </svg>

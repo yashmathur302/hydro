@@ -11,7 +11,7 @@ export function initDismissibleAlerts() {
  * Moves focus to the first invalid field after a failed submit, so keyboard
  * and screen reader users land where the problem is.
  */
-export function focusErrorSummary() {
+export function focusFirstInvalidField() {
     const firstInvalid = document.querySelector('[aria-invalid="true"]');
 
     firstInvalid?.focus();
