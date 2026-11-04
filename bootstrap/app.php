@@ -20,6 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
         then: static function (): void {
             RateLimiter::for('admin-login', static fn (Request $request): Limit => Limit::perMinute(10)->by($request->ip()));
             RateLimiter::for('admin-password-reset', static fn (Request $request): Limit => Limit::perMinute(3)->by($request->ip()));
+            RateLimiter::for('enquiries', static fn (Request $request): array => [
+                Limit::perMinute(3)->by('minute|'.$request->ip()),
+                Limit::perDay(30)->by('day|'.$request->ip()),
+            ]);
             RateLimiter::for('admin-password-change', static fn (Request $request): Limit => Limit::perMinute(5)->by((string) $request->user()?->getAuthIdentifier()));
 
             Route::middleware(['web', AdminResponseHeaders::class])

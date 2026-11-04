@@ -7,7 +7,7 @@
         'contact' => 'Contact & enquiries',
         'social' => 'Social profiles',
         'seo' => 'Default SEO',
-        'tracking' => 'Tracking',
+        'tracking' => 'Tracking & verification',
     ];
 @endphp
 
@@ -66,10 +66,11 @@
                 </div>
             </x-admin.card>
 
-            <x-admin.card id="tracking" title="Tracking" description="Enter only the ID. The website adds the official tracking code automatically. Leave empty to turn tracking off.">
+            <x-admin.card id="tracking" title="Tracking & verification" description="Enter only the ID. The website adds the official tracking code automatically. Leave empty to turn tracking off.">
                 <div class="form-grid">
                     <x-admin.form.input :name="Key::Ga4MeasurementId->value" label="Google Analytics 4 Measurement ID" :value="$settings[Key::Ga4MeasurementId->value] ?? null" maxlength="24" placeholder="G-XXXXXXXXXX" autocomplete="off" spellcheck="false" hint="Google Analytics › Admin › Data streams › your web stream." />
                     <x-admin.form.input :name="Key::FacebookPixelId->value" label="Facebook (Meta) Pixel ID" :value="$settings[Key::FacebookPixelId->value] ?? null" maxlength="20" inputmode="numeric" placeholder="123456789012345" autocomplete="off" hint="Meta Events Manager › Data sources › your pixel." />
+                    <x-admin.form.input :name="Key::GoogleSiteVerification->value" label="Google Search Console verification" :value="$settings[Key::GoogleSiteVerification->value] ?? null" maxlength="255" autocomplete="off" spellcheck="false" class="form-grid__full" hint="Search Console › Add property › HTML tag. Paste the code or the whole tag; only the code is kept." />
                 </div>
             </x-admin.card>
 

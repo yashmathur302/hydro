@@ -10,6 +10,10 @@
 @endif
 <meta name="robots" content="{{ $seo->indexable ? 'index, follow' : 'noindex, nofollow' }}">
 <link rel="canonical" href="{{ $seo->canonicalUrl }}">
+@inject('siteSettings', 'App\Services\SiteSettingService')
+@if ($verification = $siteSettings->get(\App\Enums\SiteSettingKey::GoogleSiteVerification))
+    <meta name="google-site-verification" content="{{ $verification }}">
+@endif
 
 <meta property="og:type" content="{{ $seo->type }}">
 <meta property="og:site_name" content="{{ $seo->siteName }}">

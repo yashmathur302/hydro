@@ -38,6 +38,7 @@ enum SiteSettingKey: string
     // Tracking
     case Ga4MeasurementId = 'ga4_measurement_id';
     case FacebookPixelId = 'facebook_pixel_id';
+    case GoogleSiteVerification = 'google_site_verification';
 
     /**
      * Keys whose value is an uploaded file path rather than plain text.

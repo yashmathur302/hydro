@@ -63,5 +63,62 @@
         @case('sparkle')
             <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.7 1.8 1.8.7-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7z"/>
             @break
+        @case('box')
+            <path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>
+            @break
+        @case('folder')
+            <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            @break
+        @case('inbox')
+            <path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5.5 5h13L21 13v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z"/>
+            @break
+        @case('mail')
+            <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/>
+            @break
+        @case('file')
+            <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/>
+            @break
+        @case('plus')
+            <path d="M12 5v14M5 12h14"/>
+            @break
+        @case('search')
+            <circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>
+            @break
+        @case('edit')
+            <path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>
+            @break
+        @case('trash')
+            <path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12"/><path d="M9 7V4h6v3"/>
+            @break
+        @case('phone')
+            <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/>
+            @break
+        @case('whatsapp')
+            <path d="M4 20l1.3-3.9A8 8 0 1 1 8 18.8z"/><path d="M9 9.5c.3 1.7 2.8 4.3 4.5 4.6l1.2-1.2 1.6.8c-.3 1-1.2 1.6-2.2 1.5-2.8-.3-5.5-3-5.9-5.8-.1-1 .5-1.9 1.5-2.2l.8 1.6z"/>
+            @break
+        @case('image')
+            <rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/>
+            @break
+        @case('bold')
+            <path d="M7 5h6a3.5 3.5 0 0 1 0 7H7zM7 12h7a3.5 3.5 0 0 1 0 7H7z"/>
+            @break
+        @case('italic')
+            <path d="M15 5h-5M14 19H9M14 5l-4 14"/>
+            @break
+        @case('heading')
+            <path d="M6 5v14M18 5v14M6 12h12"/>
+            @break
+        @case('list')
+            <path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>
+            @break
+        @case('link')
+            <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>
+            @break
+        @case('grip')
+            <circle cx="9" cy="6" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="18" r="1"/>
+            @break
+        @case('star')
+            <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>
+            @break
     @endswitch
 </svg>

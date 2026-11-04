@@ -1,4 +1,4 @@
-# Product Showcase Website
+# Lucky Instru Hydro — Product Showcase Website
 
 A product showcase website with an admin panel. Visitors browse products and
 send enquiries (form or WhatsApp). There is no cart, no payment and no visitor
@@ -10,11 +10,20 @@ login. Only the single admin logs in, to manage content.
 - Blade templates with hand-written CSS and vanilla JavaScript (no CSS/JS framework)
 - Vite to minify and fingerprint assets; fonts are self-hosted
 
-## Built so far (step 1: foundation)
+## Built so far
 
 - **Admin login** at `/admin/login`: login, logout, forgot/reset password, change password, edit profile
+- **Products**: categories (one level), products with gallery images (auto-converted to WebP,
+  large + thumbnail), specification table, brochure PDF, featured/active flags, sort order, SEO fields
+- **Enquiries**: product enquiries and Contact Us messages in two inboxes, with unread counts,
+  status (new / in progress / closed), private notes, call / WhatsApp / email shortcuts. Every new
+  enquiry is saved and emailed to the address in Site settings
+- **Static pages**: privacy policy, terms and conditions (created as drafts) and any others,
+  written with simple Markdown formatting
+- **Public form endpoints**: `POST /enquiries` and `POST /contact`, rate limited (3 per minute,
+  30 per day per IP) with a hidden spam trap. The forms themselves are added with the page designs
 - **Site settings**: site name, tagline, logo, favicon, contact details, WhatsApp number,
-  enquiry email, social links, default SEO, GA4 Measurement ID, Meta Pixel ID
+  enquiry email, social links, default SEO, GA4 Measurement ID, Meta Pixel ID, Google Search Console verification
 - **Tracking**: the admin enters only the IDs; the official GA4 and Pixel code is generated
 - **SEO base**: title, description, keywords, canonical, Open Graph and Twitter tags on every page
 - **Security**: see below
@@ -72,6 +81,11 @@ After every later deployment run `php artisan migrate --force` and `php artisan 
   Analytics and Meta Pixel hosts, can load scripts.
 - Other headers: X-Frame-Options, X-Content-Type-Options, Referrer-Policy,
   Permissions-Policy, and HSTS on HTTPS. Admin pages are sent with `no-store` and `noindex`.
+- Product and category images are re-encoded to WebP, which also strips EXIF data and anything
+  hidden in the file. Brochures must have a real PDF signature, not just a .pdf name.
+- Page and product text uses Markdown with raw HTML escaped and `javascript:` links removed.
+- Enquiry emails are plain HTML with every visitor value escaped. Visitors can never set an
+  enquiry's status, notes or type.
 - Uploads: only PNG/JPG/WebP logos and PNG/ICO favicons, size-limited, checked by real file
   type, saved under random names. SVG is not accepted (it can carry scripts).
 - Logins, failed logins, lockouts, logouts, password changes and settings changes are written to
@@ -84,6 +98,10 @@ After every later deployment run `php artisan migrate --force` and `php artisan 
 | `app/Enums/SiteSettingKey.php` | Every allowed setting key |
 | `app/Services/SiteSettingService.php` | Cached reading and writing of settings |
 | `app/Support/Seo/` | `SeoMeta` value object and the `SeoMetaFactory` that fills in defaults |
+| `app/Services/ProductService.php` | Saves products with images, specifications and brochure in one transaction |
+| `app/Services/Images/WebpImageProcessor.php` | Resizes and converts uploads to WebP with GD |
+| `app/Services/EnquiryService.php` | Saves website enquiries and emails the site owner |
+| `app/Support/Content/MarkdownRenderer.php` | Safe Markdown to HTML for pages and product descriptions |
 | `app/Http/Middleware/SecurityHeaders.php` | CSP and the other security headers |
 | `app/Listeners/LogSecurityEvents.php` | Security log for authentication events |
 | `resources/views/components/admin/` | Reusable admin components (layout, card, form fields, buttons) |

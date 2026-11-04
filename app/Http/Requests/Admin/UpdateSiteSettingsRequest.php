@@ -52,6 +52,7 @@ final class UpdateSiteSettingsRequest extends FormRequest
 
             SiteSettingKey::Ga4MeasurementId->value => ['nullable', 'string', 'regex:/^G-[A-Z0-9]{4,20}$/'],
             SiteSettingKey::FacebookPixelId->value => ['nullable', 'string', 'regex:/^[0-9]{10,20}$/'],
+            SiteSettingKey::GoogleSiteVerification->value => ['nullable', 'string', 'regex:/^[A-Za-z0-9_\-]{10,100}$/'],
         ];
     }
 
@@ -65,6 +66,7 @@ final class UpdateSiteSettingsRequest extends FormRequest
             SiteSettingKey::WhatsappNumber->value.'.regex' => 'Enter the number with country code and digits only, e.g. 919876543210.',
             SiteSettingKey::Ga4MeasurementId->value.'.regex' => 'A GA4 Measurement ID looks like G-XXXXXXXXXX.',
             SiteSettingKey::FacebookPixelId->value.'.regex' => 'A Pixel ID contains digits only, e.g. 123456789012345.',
+            SiteSettingKey::GoogleSiteVerification->value.'.regex' => 'Paste only the code from the content="..." part of the Google meta tag.',
         ];
     }
 
@@ -104,11 +106,21 @@ final class UpdateSiteSettingsRequest extends FormRequest
         $ga4Id = $this->input(SiteSettingKey::Ga4MeasurementId->value);
         $whatsapp = $this->input(SiteSettingKey::WhatsappNumber->value);
         $pixelId = $this->input(SiteSettingKey::FacebookPixelId->value);
+        $verification = $this->input(SiteSettingKey::GoogleSiteVerification->value);
 
         $this->merge([
             SiteSettingKey::Ga4MeasurementId->value => is_string($ga4Id) ? strtoupper(trim($ga4Id)) : $ga4Id,
             SiteSettingKey::WhatsappNumber->value => is_string($whatsapp) ? preg_replace('/[\s+\-()]/', '', $whatsapp) : $whatsapp,
             SiteSettingKey::FacebookPixelId->value => is_string($pixelId) ? trim($pixelId) : $pixelId,
+            SiteSettingKey::GoogleSiteVerification->value => is_string($verification) ? $this->extractVerificationCode($verification) : $verification,
         ]);
+    }
+
+    /**
+     * Accept either the bare code or the whole <meta name="google-site-verification" content="..."> tag.
+     */
+    private function extractVerificationCode(string $value): string
+    {
+        return preg_match('/content=["\']([^"\']+)["\']/', $value, $matches) === 1 ? trim($matches[1]) : trim($value);
     }
 }

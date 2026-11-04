@@ -7,6 +7,10 @@ use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EnquiryController;
+use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +39,19 @@ Route::middleware('guest')->group(function (): void {
 Route::middleware(['auth', 'auth.session'])->group(function (): void {
     Route::redirect('/', '/admin/dashboard')->name('home');
     Route::get('dashboard', DashboardController::class)->name('dashboard');
+
+    Route::resource('products', ProductController::class)->except('show');
+    Route::resource('categories', ProductCategoryController::class)
+        ->except('show')
+        ->parameters(['categories' => 'category']);
+
+    Route::get('enquiries', [EnquiryController::class, 'index'])->defaults('type', 'product')->name('enquiries.index');
+    Route::get('contact-messages', [EnquiryController::class, 'index'])->defaults('type', 'contact')->name('contact-messages.index');
+    Route::get('enquiries/{enquiry}', [EnquiryController::class, 'show'])->whereNumber('enquiry')->name('enquiries.show');
+    Route::put('enquiries/{enquiry}', [EnquiryController::class, 'update'])->whereNumber('enquiry')->name('enquiries.update');
+    Route::delete('enquiries/{enquiry}', [EnquiryController::class, 'destroy'])->whereNumber('enquiry')->name('enquiries.destroy');
+
+    Route::resource('pages', PageController::class)->except('show');
 
     Route::get('settings', [SiteSettingController::class, 'edit'])->name('settings.edit');
     Route::put('settings', [SiteSettingController::class, 'update'])->name('settings.update');

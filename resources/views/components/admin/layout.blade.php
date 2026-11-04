@@ -43,8 +43,21 @@
                     <x-admin.nav-link :href="route('admin.dashboard')" icon="dashboard" :active="request()->routeIs('admin.dashboard')">Dashboard</x-admin.nav-link>
                 </ul>
 
-                <p class="sidebar__heading" id="nav-config">Configuration</p>
-                <ul class="nav-list" aria-labelledby="nav-config">
+                <p class="sidebar__heading" id="nav-catalog">Catalog</p>
+                <ul class="nav-list" aria-labelledby="nav-catalog">
+                    <x-admin.nav-link :href="route('admin.products.index')" icon="box" :active="request()->routeIs('admin.products.*')">Products</x-admin.nav-link>
+                    <x-admin.nav-link :href="route('admin.categories.index')" icon="folder" :active="request()->routeIs('admin.categories.*')">Categories</x-admin.nav-link>
+                </ul>
+
+                <p class="sidebar__heading" id="nav-inbox">Inbox</p>
+                <ul class="nav-list" aria-labelledby="nav-inbox">
+                    <x-admin.nav-link :href="route('admin.enquiries.index')" icon="inbox" :count="$unreadCounts['product']" :active="request()->routeIs('admin.enquiries.index') || (request()->routeIs('admin.enquiries.show') && request()->route('enquiry')?->type === \App\Enums\EnquiryType::Product)">Enquiries</x-admin.nav-link>
+                    <x-admin.nav-link :href="route('admin.contact-messages.index')" icon="mail" :count="$unreadCounts['contact']" :active="request()->routeIs('admin.contact-messages.*') || (request()->routeIs('admin.enquiries.show') && request()->route('enquiry')?->type === \App\Enums\EnquiryType::Contact)">Contact messages</x-admin.nav-link>
+                </ul>
+
+                <p class="sidebar__heading" id="nav-content">Content</p>
+                <ul class="nav-list" aria-labelledby="nav-content">
+                    <x-admin.nav-link :href="route('admin.pages.index')" icon="file" :active="request()->routeIs('admin.pages.*')">Static pages</x-admin.nav-link>
                     <x-admin.nav-link :href="route('admin.settings.edit')" icon="settings" :active="request()->routeIs('admin.settings.*')">Site settings</x-admin.nav-link>
                 </ul>
             </nav>
@@ -88,5 +101,7 @@
             </main>
         </div>
     </div>
+
+    <x-admin.confirm-dialog />
 </body>
 </html>
