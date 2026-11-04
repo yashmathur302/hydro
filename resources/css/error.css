@@ -1,0 +1,63 @@
+/* Friendly error pages (403, 404, 419, 429, 500, 503). */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    color: #101828;
+    background: #f8f9fb;
+}
+
+.error-page {
+    display: grid;
+    gap: 0.75rem;
+    place-content: center;
+    justify-items: center;
+    min-height: 100vh;
+    padding: 1.5rem 1rem;
+    text-align: center;
+}
+
+.error-page__code {
+    margin: 0;
+    font-size: clamp(3.5rem, 14vw, 6rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #3b52e6;
+    letter-spacing: -0.04em;
+}
+
+.error-page__title {
+    margin: 0;
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+}
+
+.error-page__message {
+    max-width: 28rem;
+    margin: 0;
+    color: #667085;
+}
+
+.error-page__link {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    background: #3b52e6;
+    border-radius: 6px;
+}
+
+.error-page__link:hover {
+    background: #2a3fc7;
+}
+
+.error-page__link:focus-visible {
+    outline: 2px solid #5468ff;
+    outline-offset: 3px;
+}
