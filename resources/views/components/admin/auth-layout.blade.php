@@ -3,7 +3,10 @@
 
 @inject('siteSettings', 'App\Services\SiteSettingService')
 
-@php($siteName = $siteSettings->get(\App\Enums\SiteSettingKey::SiteName, config('app.name')))
+@php
+    $siteName = $siteSettings->get(\App\Enums\SiteSettingKey::SiteName, config('app.name'));
+    $logoUrl = $siteSettings->fileUrl(\App\Enums\SiteSettingKey::LogoPath);
+@endphp
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +17,13 @@
     <main class="auth">
         <div class="auth__frame">
             <section class="auth__panel">
-                <p class="auth__brand">{{ $siteName }}</p>
+                <div class="auth__brand">
+                    @if ($logoUrl)
+                        <img class="auth__logo" src="{{ $logoUrl }}" alt="{{ $siteName }}">
+                    @else
+                        <p class="auth__brand-name">{{ $siteName }}</p>
+                    @endif
+                </div>
 
                 <h1 class="auth__heading">{{ $heading }}</h1>
                 @if ($intro)
