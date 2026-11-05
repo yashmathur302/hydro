@@ -27,10 +27,8 @@
             </section>
 
             <aside class="auth__aside" aria-hidden="true">
-                <div class="auth__preview">
-                    <div class="auth__preview-row"><span>Products</span><strong>Showcase</strong></div>
-                    <div class="auth__preview-row"><span>Enquiries</span><strong>Form &amp; WhatsApp</strong></div>
-                    <div class="auth__preview-row"><span>SEO</span><strong>Every page</strong></div>
+                <div class="auth__art">
+                    @include('admin.partials.pigging-illustration')
                 </div>
                 <p class="auth__aside-title">Your website, managed in one calm place.</p>
                 <p class="auth__aside-text">{{ $siteName }} admin panel</p>
