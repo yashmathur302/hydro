@@ -55,7 +55,7 @@ Run the tests with `php artisan test`.
 - A deploy never touches `.env`, `vendor/`, `uploads/` or `storage/`. It refuses to run if the
   target has no `.env` or `vendor/`, so a wrong `DEPLOYPATH` cannot create a half-installed site.
 - `vendor/` is not in git: when `composer.lock` changes, a new `vendor` upload is provided.
-- New database tables are delivered as SQL files to import in phpMyAdmin.
+- New database tables are delivered as SQL files in `database/sql-updates/` to import in phpMyAdmin.
 
 ## Deploying to shared hosting (cPanel) manually
 

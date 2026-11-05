@@ -1,9 +1,5 @@
-{{-- Temporary holding page. Replaced when the Home page design is shared. --}}
-@inject('siteSettings', 'App\Services\SiteSettingService')
-
+{{-- Home page. Sections are added one by one as each part of the design is approved. --}}
 <x-site.layout :seo="$seo">
-    <section class="holding">
-        <h1 class="holding__title">{{ $siteSettings->get(\App\Enums\SiteSettingKey::SiteName, config('app.name')) }}</h1>
-        <p class="holding__text">Our new website is on its way.</p>
-    </section>
+    @include('site.home.hero')
+    @include('site.home.about')
 </x-site.layout>

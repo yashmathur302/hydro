@@ -1173,6 +1173,20 @@ button {
     }
 }
 
+.form-stack--tight {
+    gap: var(--space-3);
+}
+
+.fieldset {
+    display: grid;
+    gap: var(--space-3);
+    min-width: 0;
+    padding: var(--space-4);
+    margin: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
 .form-row {
     display: flex;
     font-size: var(--text-sm);

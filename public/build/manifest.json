@@ -1,4 +1,12 @@
 {
+  "node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-ext-wght-normal.woff2": {
+    "file": "assets/dm-sans-latin-ext-wght-normal-BOFOeGcA.woff2",
+    "src": "node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-ext-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2": {
+    "file": "assets/dm-sans-latin-wght-normal-Xz1IZZA0.woff2",
+    "src": "node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2"
+  },
   "node_modules/@fontsource-variable/inter/files/inter-cyrillic-ext-wght-normal.woff2": {
     "file": "assets/inter-cyrillic-ext-wght-normal-BOeWTOD4.woff2",
     "src": "node_modules/@fontsource-variable/inter/files/inter-cyrillic-ext-wght-normal.woff2"
@@ -27,8 +35,24 @@
     "file": "assets/inter-vietnamese-wght-normal-CBcvBZtf.woff2",
     "src": "node_modules/@fontsource-variable/inter/files/inter-vietnamese-wght-normal.woff2"
   },
+  "node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-wght-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-wght-normal-lLTsRRxN.woff2",
+    "src": "node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-wght-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-ext-wght-normal-DmpS2jIq.woff2",
+    "src": "node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-wght-normal-eXO_dkmS.woff2",
+    "src": "node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-wght-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-vietnamese-wght-normal-qRpaaN48.woff2",
+    "src": "node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-wght-normal.woff2"
+  },
   "resources/css/admin.css": {
-    "file": "assets/admin-qy5LVanD.css",
+    "file": "assets/admin-hd1WDWyD.css",
     "src": "resources/css/admin.css",
     "isEntry": true,
     "name": "admin",
@@ -46,7 +70,7 @@
     ]
   },
   "resources/css/site.css": {
-    "file": "assets/site-DcECu0MP.css",
+    "file": "assets/site-D7m3t12U.css",
     "src": "resources/css/site.css",
     "isEntry": true,
     "name": "site",
@@ -61,7 +85,7 @@
     "isEntry": true
   },
   "resources/js/site.js": {
-    "file": "assets/site-l0sNRNKZ.js",
+    "file": "assets/site-CXUNDHaa.js",
     "name": "site",
     "src": "resources/js/site.js",
     "isEntry": true

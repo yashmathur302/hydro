@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Site\ContactMessageController;
 use App\Http\Controllers\Site\HomeController;
+use App\Http\Controllers\Site\PlaceholderPageController;
 use App\Http\Controllers\Site\ProductEnquiryController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', HomeController::class)->name('home');
+
+// Temporary pages until each design is built (replaced by real controllers).
+Route::get('about-us', PlaceholderPageController::class)->defaults('title', 'About Us')->name('about');
+Route::get('products', PlaceholderPageController::class)->defaults('title', 'Products')->name('products.index');
+Route::get('certificates', PlaceholderPageController::class)->defaults('title', 'Certificates')->name('certificates');
+Route::get('contact-us', PlaceholderPageController::class)->defaults('title', 'Contact Us')->name('contact');
 
 Route::middleware('throttle:enquiries')->group(function (): void {
     Route::post('enquiries', [ProductEnquiryController::class, 'store'])->name('enquiries.store');

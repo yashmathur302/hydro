@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Services\HomePageService;
 use App\Services\Images\WebpImageProcessor;
 use App\Services\ProductService;
 use App\Services\SiteSettingService;
@@ -25,6 +26,12 @@ final class AppServiceProvider extends ServiceProvider
         ));
 
         $this->app->bind(WebpImageProcessor::class, static fn (): WebpImageProcessor => new WebpImageProcessor(Storage::disk('public')));
+
+        $this->app->singleton(HomePageService::class, static fn ($app): HomePageService => new HomePageService(
+            $app->make(CacheRepository::class),
+            Storage::disk('public'),
+            $app->make(WebpImageProcessor::class),
+        ));
 
         $this->app->bind(ProductService::class, static fn ($app): ProductService => new ProductService(
             $app->make(WebpImageProcessor::class),

@@ -1,7 +1,6 @@
 {{--
     Public website shell. Every page passes a SeoMeta object built with
-    App\Support\Seo\SeoMetaFactory. Header and footer are added once the
-    page designs are shared.
+    App\Support\Seo\SeoMetaFactory. The footer is added with its design.
 --}}
 @props(['seo'])
 
@@ -22,9 +21,16 @@
 </head>
 <body>
     <x-site.tracking.body />
+    <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <main id="main-content">
+    <x-site.header />
+
+    <main id="main-content" tabindex="-1">
         {{ $slot }}
     </main>
+
+    <a class="back-to-top" href="#main-content" data-back-to-top aria-label="Back to top">
+        <x-site.icon name="arrow-up" />
+    </a>
 </body>
 </html>

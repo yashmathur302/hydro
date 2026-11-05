@@ -23,8 +23,9 @@ export default defineConfig({
     },
     build: {
         cssMinify: true,
-        // Small assets are inlined only when they are tiny; fonts stay as separate cached files.
-        assetsInlineLimit: 2048,
+        // Never inline assets as data: URIs: the Content Security Policy only allows
+        // fonts and images from our own domain, and separate files cache better.
+        assetsInlineLimit: 0,
     },
     server: {
         watch: {

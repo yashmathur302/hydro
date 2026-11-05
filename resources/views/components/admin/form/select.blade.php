@@ -10,13 +10,14 @@
 ])
 
 @php
-    $id = $attributes->get('id', 'field-'.str_replace(['_', '.'], '-', $name));
-    $hasError = $errors->getBag($bag)->has($name);
+    $key = trim(str_replace(['[', ']'], ['.', ''], $name), '.');
+    $id = $attributes->get('id', 'field-'.str_replace(['_', '.'], '-', $key));
+    $hasError = $errors->getBag($bag)->has($key);
     $describedBy = collect([$hint ? $id.'-hint' : null, $hasError ? $id.'-error' : null])->filter()->implode(' ');
-    $selected = (string) old($name, $value);
+    $selected = (string) old($key, $value);
 @endphp
 
-<x-admin.form.field :$name :$label :$id :$hint :$required :$bag>
+<x-admin.form.field :name="$key" :$label :$id :$hint :$required :$bag>
     <div class="select-wrap">
         <select
             {{ $attributes->except('id')->class(['input', 'input--select']) }}

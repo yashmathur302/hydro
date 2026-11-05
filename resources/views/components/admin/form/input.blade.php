@@ -11,13 +11,14 @@
 ])
 
 @php
-    $id = $attributes->get('id', 'field-'.str_replace('_', '-', $name));
-    $hasError = $errors->getBag($bag)->has($name);
+    $key = trim(str_replace(['[', ']'], ['.', ''], $name), '.');
+    $id = $attributes->get('id', 'field-'.str_replace(['_', '.'], '-', $key));
+    $hasError = $errors->getBag($bag)->has($key);
     $describedBy = collect([$hint ? $id.'-hint' : null, $hasError ? $id.'-error' : null])->filter()->implode(' ');
-    $currentValue = $type === 'password' ? null : old($name, $value);
+    $currentValue = $type === 'password' ? null : old($key, $value);
 @endphp
 
-<x-admin.form.field :$name :$label :$id :$hint :$required :$bag :$maxlength :$counter>
+<x-admin.form.field :name="$key" :$label :$id :$hint :$required :$bag :$maxlength :$counter>
     <div @class(['input-wrap', 'input-wrap--password' => $type === 'password'])>
         <input
             {{ $attributes->except('id')->class(['input']) }}
