@@ -45,7 +45,19 @@ php artisan serve
 
 Run the tests with `php artisan test`.
 
-## Deploying to shared hosting (cPanel)
+## Deploying with cPanel Git Version Control (current staging: public_html/hydro)
+
+`.cpanel.yml` copies the application from the git checkout into the live folder
+(`DEPLOYPATH`) when you click **Manage → Pull or Deploy → Update from Remote**, then
+**Deploy HEAD Commit**. It uses the single-folder layout from `deploy/subfolder`.
+
+- The cPanel repository path must be **outside** `public_html` (e.g. `/home2/USER/repositories/hydro`).
+- A deploy never touches `.env`, `vendor/`, `uploads/` or `storage/`. It refuses to run if the
+  target has no `.env` or `vendor/`, so a wrong `DEPLOYPATH` cannot create a half-installed site.
+- `vendor/` is not in git: when `composer.lock` changes, a new `vendor` upload is provided.
+- New database tables are delivered as SQL files to import in phpMyAdmin.
+
+## Deploying to shared hosting (cPanel) manually
 
 1. The compiled CSS/JS in `public/build` is committed, because the hosting has no Node.js.
    After changing anything in `resources/css` or `resources/js`, run `npm run build` locally
