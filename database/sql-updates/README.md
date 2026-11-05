@@ -8,3 +8,4 @@ from the deployment package instead.
 | File | Migration |
 | --- | --- |
 | 001-page-sections.sql | 2026_11_06_000001_create_page_sections_table |
+| 002-industries-and-clients.sql | 2026_11_07_000001_create_industries_table, 2026_11_07_000002_create_clients_table |

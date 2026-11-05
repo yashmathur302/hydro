@@ -120,6 +120,12 @@
         @case('star')
             <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>
             @break
+        @case('factory')
+            <path d="M3 20V11l5 3v-3l5 3v-3l5 3V4h3v16z"/><path d="M3 20h18"/>
+            @break
+        @case('handshake')
+            <path d="M3 12l4-4 4 2 3-2 3 1 4 3"/><path d="M7 8l-4 4 6 6 2-1 2 1 2-1 2 1 3-3"/><path d="M11 14l2 1.5M13 12.5l2 1.5"/>
+            @break
         @case('home')
             <path d="M4 10.5L12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/>
             @break

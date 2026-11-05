@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Admin;
 
+use App\Enums\FeatureIcon;
 use App\Enums\HomeSection;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Validation\Rule;
 
 /**
  * Validates the home page editor. Text fields arrive as section[field]
@@ -53,6 +55,24 @@ final class UpdateHomePageRequest extends FormRequest
             'about.person_role' => ['nullable', 'string', 'max:80'],
             'about.button_label' => ['nullable', 'string', 'max:40'],
             'about.button_url' => $link,
+
+            'industries.eyebrow' => ['nullable', 'string', 'max:80'],
+            'industries.heading' => ['required', 'string', 'max:120'],
+
+            'stats.word' => ['nullable', 'string', 'max:20'],
+            'stats.subtitle' => ['nullable', 'string', 'max:160'],
+            'stats.items' => ['nullable', 'array', 'max:'.HomeSection::STAT_COUNT],
+            'stats.items.*.value' => ['nullable', 'string', 'max:12', 'required_with:stats.items.*.label'],
+            'stats.items.*.label' => ['nullable', 'string', 'max:60'],
+
+            'why_us.eyebrow' => ['nullable', 'string', 'max:80'],
+            'why_us.heading' => ['required', 'string', 'max:120'],
+            'why_us.items' => ['nullable', 'array', 'max:'.HomeSection::MAX_WHY_ITEMS],
+            'why_us.items.*.icon' => ['nullable', Rule::enum(FeatureIcon::class)],
+            'why_us.items.*.title' => ['nullable', 'string', 'max:60'],
+            'why_us.footer_text' => ['nullable', 'string', 'max:200'],
+            'why_us.link_label' => ['nullable', 'string', 'max:40'],
+            'why_us.link_url' => $link,
         ];
 
         foreach (HomeSection::cases() as $section) {
@@ -74,6 +94,8 @@ final class UpdateHomePageRequest extends FormRequest
         return [
             'hero.button_url.regex' => 'Use a page path such as /products, or a full https:// link.',
             'about.button_url.regex' => 'Use a page path such as /about-us, or a full https:// link.',
+            'why_us.link_url.regex' => 'Use a page path such as /products, or a full https:// link.',
+            'stats.items.*.value.required_with' => 'Enter the number for this counter.',
         ];
     }
 
@@ -85,6 +107,8 @@ final class UpdateHomePageRequest extends FormRequest
         return [
             'hero.heading' => 'banner heading',
             'about.heading' => 'about heading',
+            'industries.heading' => 'industries heading',
+            'why_us.heading' => 'why choose us heading',
         ];
     }
 
@@ -104,7 +128,37 @@ final class UpdateHomePageRequest extends FormRequest
             ));
         }
 
+        if ($section === HomeSection::Stats) {
+            $text['items'] = $this->filledRows($text['items'] ?? [], 'value', ['value', 'label']);
+        }
+
+        if ($section === HomeSection::WhyUs) {
+            $text['items'] = $this->filledRows($text['items'] ?? [], 'title', ['icon', 'title']);
+        }
+
         return $text;
+    }
+
+    /**
+     * Keep only rows whose required field is filled, with just the known keys, in order.
+     *
+     * @param  array<int|string, mixed>  $rows
+     * @param  list<string>  $keys
+     * @return list<array<string, string>>
+     */
+    private function filledRows(array $rows, string $requiredKey, array $keys): array
+    {
+        $clean = [];
+
+        foreach ($rows as $row) {
+            if (! is_array($row) || blank($row[$requiredKey] ?? null)) {
+                continue;
+            }
+
+            $clean[] = array_map(static fn (string $key): string => (string) ($row[$key] ?? ''), array_combine($keys, $keys));
+        }
+
+        return $clean;
     }
 
     /**

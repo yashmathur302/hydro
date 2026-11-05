@@ -6,9 +6,11 @@ use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EnquiryController;
 use App\Http\Controllers\Admin\HomePageController;
+use App\Http\Controllers\Admin\IndustryController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
@@ -54,6 +56,9 @@ Route::middleware(['auth', 'auth.session'])->group(function (): void {
 
     Route::get('home-page', [HomePageController::class, 'edit'])->name('home-page.edit');
     Route::put('home-page', [HomePageController::class, 'update'])->name('home-page.update');
+
+    Route::resource('industries', IndustryController::class)->except('show');
+    Route::resource('clients', ClientController::class)->except('show');
 
     Route::resource('pages', PageController::class)->except('show');
 

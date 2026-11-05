@@ -12,21 +12,31 @@ enum HomeSection: string
 {
     case Hero = 'hero';
     case About = 'about';
+    case Industries = 'industries';
+    case Stats = 'stats';
+    case WhyUs = 'why_us';
 
     public const MAX_ABOUT_POINTS = 5;
+
+    public const STAT_COUNT = 4;
+
+    public const MAX_WHY_ITEMS = 6;
 
     public function label(): string
     {
         return match ($this) {
             self::Hero => 'Banner',
             self::About => 'About us',
+            self::Industries => 'Industries',
+            self::Stats => 'Counters',
+            self::WhyUs => 'Why choose us',
         };
     }
 
     /**
      * Default text content.
      *
-     * @return array<string, string|list<string>>
+     * @return array<string, string|list<string>|list<array<string, string>>>
      */
     public function defaults(): array
     {
@@ -56,6 +66,34 @@ enum HomeSection: string
                 'button_label' => 'More About Us',
                 'button_url' => '/about-us',
             ],
+            self::Industries => [
+                'eyebrow' => 'Industries We Serve',
+                'heading' => 'Pigging Solutions For The Industries We Serve',
+            ],
+            self::Stats => [
+                'word' => 'Hydro',
+                'subtitle' => 'Pigging equipment that goes beyond the benchmark',
+                'items' => [
+                    ['value' => '25+', 'label' => 'Years of experience'],
+                    ['value' => '500+', 'label' => 'Projects delivered'],
+                    ['value' => '20+', 'label' => 'Product types'],
+                    ['value' => '98%', 'label' => 'Client satisfaction'],
+                ],
+            ],
+            self::WhyUs => [
+                'eyebrow' => 'Why Choose Us',
+                'heading' => 'Why Industries Trust Our Pigging Solutions',
+                'items' => [
+                    ['icon' => 'quality', 'title' => 'Precision Engineered Products'],
+                    ['icon' => 'custom', 'title' => 'Custom Sizes And Designs'],
+                    ['icon' => 'certificate', 'title' => 'Tested And Certified'],
+                    ['icon' => 'delivery', 'title' => 'On-Time Delivery'],
+                    ['icon' => 'support', 'title' => 'Expert Technical Support'],
+                ],
+                'footer_text' => 'Engineering, quality and support in one place.',
+                'link_label' => 'View our products',
+                'link_url' => '/products',
+            ],
         };
     }
 
@@ -77,6 +115,10 @@ enum HomeSection: string
                 'person_photo' => 200,
                 'signature_image' => 400,
                 'decoration_image' => 700,
+            ],
+            self::Industries, self::WhyUs => [],
+            self::Stats => [
+                'word_image' => 1600,
             ],
         };
     }

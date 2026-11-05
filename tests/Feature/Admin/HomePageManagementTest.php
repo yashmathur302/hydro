@@ -86,6 +86,36 @@ final class HomePageManagementTest extends TestCase
             ->assertSessionHasErrors(['hero.button_url', 'about_image_main']);
     }
 
+    public function test_counters_and_why_us_cards_are_saved_without_empty_rows(): void
+    {
+        $this->actingAs(Admin::factory()->create())
+            ->put(route('admin.home-page.update'), $this->payload([
+                'stats' => ['word' => 'Hydro', 'items' => [
+                    ['value' => '500+', 'label' => 'Projects'],
+                    ['value' => '', 'label' => ''],
+                    ['value' => '98%', 'label' => 'Happy clients'],
+                ]],
+                'why_us' => ['heading' => 'Why us', 'items' => [
+                    ['icon' => 'quality', 'title' => 'Quality'],
+                    ['icon' => 'support', 'title' => ''],
+                ]],
+            ]))
+            ->assertSessionHasNoErrors();
+
+        $service = app(HomePageService::class);
+        $this->assertSame(['500+', '98%'], array_column($service->section(HomeSection::Stats)['items'], 'value'));
+        $this->assertSame([['icon' => 'quality', 'title' => 'Quality']], $service->section(HomeSection::WhyUs)['items']);
+    }
+
+    public function test_unknown_why_us_icon_is_rejected(): void
+    {
+        $this->actingAs(Admin::factory()->create())
+            ->put(route('admin.home-page.update'), $this->payload([
+                'why_us' => ['heading' => 'Why us', 'items' => [['icon' => 'bogus', 'title' => 'X']]],
+            ]))
+            ->assertSessionHasErrors('why_us.items.0.icon');
+    }
+
     public function test_heading_is_required(): void
     {
         $this->actingAs(Admin::factory()->create())
@@ -102,6 +132,8 @@ final class HomePageManagementTest extends TestCase
         return array_replace([
             'hero' => ['heading' => 'New banner heading', 'button_label' => 'Products', 'button_url' => '/products'],
             'about' => ['heading' => 'About heading', 'points' => ['First point', '', 'Second point']],
+            'industries' => ['heading' => 'Industries heading'],
+            'why_us' => ['heading' => 'Why heading'],
         ], $overrides);
     }
 }

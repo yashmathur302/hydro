@@ -960,7 +960,305 @@ main:focus {
 }
 
 /* --------------------------------------------------------------------------
-   7. Temporary pages, back-to-top button
+   7. Home: shared section heading
+   -------------------------------------------------------------------------- */
+.section-head {
+    margin-bottom: clamp(2rem, 4vw, 3.25rem);
+}
+
+.section-head--center {
+    text-align: center;
+}
+
+.section-head--center .section-title {
+    max-width: 40rem;
+    margin-inline: auto;
+}
+
+/* --------------------------------------------------------------------------
+   8. Home: industries we serve
+   -------------------------------------------------------------------------- */
+.industries {
+    background: #fdf3ef;
+}
+
+.industries .section-title {
+    max-width: 36rem;
+}
+
+.industry-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.industry-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 31.5%;
+    min-height: 21rem;
+    background: var(--color-surface);
+}
+
+.industry-card__body {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.75rem 2.25rem 2rem;
+}
+
+.industry-card__icon {
+    width: 4rem;
+    height: 4rem;
+    color: var(--color-primary);
+}
+
+.industry-card__number {
+    margin-top: auto;
+    padding-top: 2.5rem;
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-green);
+}
+
+.industry-card__title {
+    margin-top: 0.75rem;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--color-heading);
+}
+
+.industry-card__text {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.industry-card__media {
+    overflow: hidden;
+}
+
+.industry-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (min-width: 768px) {
+    .industry-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1100px) {
+    .industry-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .industry-card {
+        min-height: 24.75rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   9. Home: counters
+   -------------------------------------------------------------------------- */
+.stats__inner {
+    text-align: center;
+}
+
+.stats__word {
+    font-family: var(--font-heading);
+    font-size: clamp(4.5rem, 17vw, 11.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-primary);
+    overflow-wrap: anywhere;
+}
+
+/* The photo shows through the letters (background-clip: text). */
+.stats__word--image {
+    color: transparent;
+    background-color: var(--color-primary);
+    background-position: center;
+    background-size: cover;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.stats__subtitle {
+    margin-top: 1.75rem;
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 1.8vw, 1.1875rem);
+    font-weight: 600;
+    color: var(--color-heading);
+}
+
+.stats__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 1rem;
+    max-width: 66rem;
+    margin: 3.5rem auto 0;
+}
+
+.stat-pill {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: center;
+}
+
+.stat-pill__value {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    max-width: 13.75rem;
+    min-height: 5rem;
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-primary);
+    background: linear-gradient(90deg, #e2e7e9 0%, #edf0f1 55%, rgb(255 255 255 / 0) 100%);
+    border-radius: 999px;
+}
+
+.stat-pill__label {
+    font-family: var(--font-heading);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-heading);
+}
+
+@media (min-width: 992px) {
+    .stats__list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 2.5rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   10. Home: why choose us
+   -------------------------------------------------------------------------- */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    max-width: 63.5rem;
+    margin-inline: auto;
+}
+
+.feature-card {
+    display: grid;
+    gap: 1.5rem;
+    align-content: start;
+    justify-items: center;
+    padding: 3rem 1rem 2.25rem;
+    text-align: center;
+    background: var(--color-surface);
+    border: 1px solid #eef0f1;
+    border-radius: 6px;
+    box-shadow: 0 12px 30px rgb(13 43 49 / 0.05);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.feature-card:hover {
+    box-shadow: 0 16px 36px rgb(13 43 49 / 0.1);
+    transform: translateY(-4px);
+}
+
+.feature-card__icon {
+    width: 4rem;
+    height: 4rem;
+    color: var(--color-primary);
+}
+
+.feature-card__title {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--color-heading);
+}
+
+.why-us__footer {
+    margin-top: 3.25rem;
+    font-size: 1rem;
+    color: var(--color-text-strong);
+    text-align: center;
+}
+
+.why-us__link {
+    display: inline-flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-left: 0.25rem;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color var(--transition);
+}
+
+.why-us__link:hover {
+    color: var(--color-accent);
+}
+
+.why-us__plus {
+    display: inline-grid;
+    place-items: center;
+    width: 1.625rem;
+    height: 1.625rem;
+    font-weight: 700;
+    text-decoration: none;
+    background: var(--color-surface);
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgb(13 43 49 / 0.15);
+}
+
+@media (min-width: 640px) {
+    .feature-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* One row with as many equal columns as there are cards (up to six). */
+@media (min-width: 1100px) {
+    .feature-grid {
+        grid-template-columns: none;
+        grid-auto-columns: minmax(0, 1fr);
+        grid-auto-flow: column;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   11. Home: client logos
+   -------------------------------------------------------------------------- */
+.clients {
+    padding-block: 2.5rem 4rem;
+}
+
+.client-logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 3rem;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.client-logos__item img {
+    width: auto;
+    max-width: 9.5rem;
+    max-height: 3rem;
+    object-fit: contain;
+    transition: opacity var(--transition);
+}
+
+.client-logos__item a:hover img {
+    opacity: 0.75;
+}
+
+/* --------------------------------------------------------------------------
+   12. Temporary pages, back-to-top button
    -------------------------------------------------------------------------- */
 .placeholder-page {
     text-align: center;
@@ -997,7 +1295,7 @@ main:focus {
 }
 
 /* --------------------------------------------------------------------------
-   8. Motion preferences
+   13. Motion preferences
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
     *,

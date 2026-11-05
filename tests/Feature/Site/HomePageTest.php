@@ -6,6 +6,8 @@ namespace Tests\Feature\Site;
 
 use App\Enums\HomeSection;
 use App\Enums\SiteSettingKey;
+use App\Models\Client;
+use App\Models\Industry;
 use App\Services\HomePageService;
 use App\Services\SiteSettingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -56,6 +58,26 @@ final class HomePageTest extends TestCase
     public function test_site_name_is_shown_until_a_logo_is_uploaded(): void
     {
         $this->get(route('home'))->assertSee('<span class="site-logo__name">Lucky Instru Hydro</span>', false);
+    }
+
+    public function test_industries_and_clients_sections_show_only_active_items(): void
+    {
+        Industry::factory()->create(['name' => 'Oil And Gas', 'icon' => 'oil-gas']);
+        Industry::factory()->create(['name' => 'Hidden Industry', 'is_active' => false]);
+        Client::factory()->create(['name' => 'Acme Pipelines']);
+
+        $this->get(route('home'))
+            ->assertSee('Oil And Gas')
+            ->assertDontSee('Hidden Industry')
+            ->assertSee('alt="Acme Pipelines"', false)
+            ->assertSee('<span class="stat-pill__value" data-count-up>500+</span>', false);
+    }
+
+    public function test_empty_industries_and_clients_sections_are_hidden(): void
+    {
+        $this->get(route('home'))
+            ->assertDontSee('class="industries section"', false)
+            ->assertDontSee('class="clients"', false);
     }
 
     public function test_saved_section_content_is_escaped(): void

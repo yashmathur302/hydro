@@ -3,6 +3,8 @@
  */
 import { initNavigation } from './site/navigation';
 import { initBackToTop } from './site/back-to-top';
+import { initCounters } from './site/counters';
 
 initNavigation();
 initBackToTop();
+initCounters();
