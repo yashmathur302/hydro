@@ -30,8 +30,6 @@
                 <div class="auth__art">
                     @include('admin.partials.pigging-illustration')
                 </div>
-                <p class="auth__aside-title">Your website, managed in one calm place.</p>
-                <p class="auth__aside-text">{{ $siteName }} admin panel</p>
             </aside>
         </div>
     </main>
