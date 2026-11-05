@@ -355,8 +355,8 @@ main:focus {
 
 .site-logo__image {
     width: auto;
-    max-width: 5.5rem;
-    max-height: 2.75rem;
+    max-width: 9rem;
+    max-height: 3rem;
     object-fit: contain;
 }
 
@@ -638,8 +638,8 @@ main:focus {
     }
 
     .site-logo__image {
-        max-width: 6.5rem;
-        max-height: 3.5rem;
+        max-width: 12rem;
+        max-height: 3.75rem;
     }
 }
 

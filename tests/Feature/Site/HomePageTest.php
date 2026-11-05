@@ -40,7 +40,7 @@ final class HomePageTest extends TestCase
             ->assertSee('href="https://www.linkedin.com/company/example"', false);
     }
 
-    public function test_site_name_is_shown_next_to_the_uploaded_logo(): void
+    public function test_uploaded_logo_replaces_the_site_name_in_the_header(): void
     {
         Storage::fake('public');
         app(SiteSettingService::class)->replaceFile(
@@ -49,8 +49,13 @@ final class HomePageTest extends TestCase
         );
 
         $this->get(route('home'))
-            ->assertSee('class="site-logo__image"', false)
-            ->assertSee('<span class="site-logo__name">Lucky Instru Hydro</span>', false);
+            ->assertSee('alt="Lucky Instru Hydro"', false)
+            ->assertDontSee('<span class="site-logo__name">', false);
+    }
+
+    public function test_site_name_is_shown_until_a_logo_is_uploaded(): void
+    {
+        $this->get(route('home'))->assertSee('<span class="site-logo__name">Lucky Instru Hydro</span>', false);
     }
 
     public function test_saved_section_content_is_escaped(): void
