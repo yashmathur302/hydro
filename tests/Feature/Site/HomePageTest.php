@@ -9,6 +9,8 @@ use App\Enums\SiteSettingKey;
 use App\Services\HomePageService;
 use App\Services\SiteSettingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 final class HomePageTest extends TestCase
@@ -36,6 +38,19 @@ final class HomePageTest extends TestCase
             ->assertSee('href="mailto:sales@example.com"', false)
             ->assertSee('href="tel:+919876543210"', false)
             ->assertSee('href="https://www.linkedin.com/company/example"', false);
+    }
+
+    public function test_site_name_is_shown_next_to_the_uploaded_logo(): void
+    {
+        Storage::fake('public');
+        app(SiteSettingService::class)->replaceFile(
+            SiteSettingKey::LogoPath,
+            UploadedFile::fake()->image('logo.png', 1238, 848),
+        );
+
+        $this->get(route('home'))
+            ->assertSee('class="site-logo__image"', false)
+            ->assertSee('<span class="site-logo__name">Lucky Instru Hydro</span>', false);
     }
 
     public function test_saved_section_content_is_escaped(): void

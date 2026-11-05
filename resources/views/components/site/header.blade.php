@@ -64,11 +64,11 @@
         <div class="container mainbar__inner">
             <a class="site-logo" href="{{ route('home') }}" aria-label="{{ $siteName }} home">
                 @if ($logoUrl)
-                    <img class="site-logo__image" src="{{ $logoUrl }}" alt="{{ $siteName }}">
+                    <img class="site-logo__image" src="{{ $logoUrl }}" alt="" aria-hidden="true">
                 @else
                     <span class="site-logo__mark" aria-hidden="true"></span>
-                    <span class="site-logo__name">{{ $siteName }}</span>
                 @endif
+                <span class="site-logo__name">{{ $siteName }}</span>
             </a>
 
             <nav class="site-nav" id="site-nav" aria-label="Main" data-site-nav>

@@ -42,6 +42,7 @@
     --section-space: clamp(4.5rem, 8vw, 7rem);
     --header-tab: 20px;
     --cta-width: 204px;
+    --header-edge: clamp(1rem, 4vw, 3.75rem);
 
     /* Effects */
     --shadow-photo: 0 12px 30px rgb(13 43 49 / 0.14);
@@ -354,8 +355,8 @@ main:focus {
 
 .site-logo__image {
     width: auto;
-    max-width: 11rem;
-    max-height: 3.25rem;
+    max-width: 5.5rem;
+    max-height: 2.75rem;
     object-fit: contain;
 }
 
@@ -370,7 +371,8 @@ main:focus {
 
 .site-logo__name {
     font-family: var(--font-heading);
-    font-size: 1.5rem;
+    font-size: clamp(1.125rem, 4.4vw, 1.5rem);
+    white-space: nowrap;
     font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--color-heading);
@@ -624,9 +626,20 @@ main:focus {
 }
 
 @media (min-width: 1200px) {
+    /* Full-width header: logo and top-bar contacts sit near the left edge, not on the page grid. */
     .mainbar__inner {
         max-width: none;
-        padding-left: max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter)));
+        padding-left: var(--header-edge);
+    }
+
+    .topbar__inner {
+        max-width: none;
+        padding-inline: var(--header-edge);
+    }
+
+    .site-logo__image {
+        max-width: 6.5rem;
+        max-height: 3.5rem;
     }
 }
 
