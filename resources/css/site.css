@@ -384,50 +384,6 @@ main:focus {
     align-items: center;
 }
 
-.header-phone {
-    display: none;
-    gap: 0.625rem;
-    align-items: center;
-}
-
-.header-phone__icon {
-    position: relative;
-    font-size: 1.75rem;
-    color: var(--color-green);
-}
-
-/* Small speech bubble on the phone icon, as in the design. */
-.header-phone__icon::after {
-    position: absolute;
-    top: -0.25rem;
-    right: -0.5rem;
-    width: 0.875rem;
-    height: 0.625rem;
-    content: '';
-    background: #f7b500;
-    border-radius: 0.3rem 0.3rem 0.3rem 0;
-}
-
-.header-phone__text {
-    display: grid;
-    line-height: 1.25;
-}
-
-.header-phone__label {
-    font-size: 0.8125rem;
-    font-weight: 500;
-    color: var(--color-muted);
-    text-transform: uppercase;
-}
-
-.header-phone__number {
-    font-family: var(--font-heading);
-    white-space: nowrap;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--color-green);
-}
-
 .header-search {
     display: grid;
     place-items: center;
@@ -640,12 +596,6 @@ main:focus {
     .site-logo__image {
         max-width: 12rem;
         max-height: 3.75rem;
-    }
-}
-
-@media (min-width: 1300px) {
-    .header-phone {
-        display: inline-flex;
     }
 }
 

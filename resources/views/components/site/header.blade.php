@@ -93,15 +93,6 @@
             </nav>
 
             <div class="mainbar__tools">
-                @if ($phone)
-                    <a class="header-phone" href="{{ $phoneHref }}">
-                        <span class="header-phone__icon" aria-hidden="true"><x-site.icon name="phone-solid" /></span>
-                        <span class="header-phone__text">
-                            <span class="header-phone__label">Phone:</span>
-                            <span class="header-phone__number">{{ $phone }}</span>
-                        </span>
-                    </a>
-                @endif
                 <a class="header-search" href="{{ route('products.index') }}" aria-label="Search products">
                     <x-site.icon name="search" />
                 </a>
