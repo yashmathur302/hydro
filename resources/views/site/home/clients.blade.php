@@ -1,6 +1,6 @@
 {{-- Client logos. Hidden when there are none. --}}
 @if ($clients->isNotEmpty())
-    <section class="clients" aria-label="Our clients">
+    <section class="clients home-band" aria-label="Our clients">
         <div class="container">
             <ul class="client-logos">
                 @foreach ($clients as $client)

@@ -1,6 +1,6 @@
 {{-- "Industries we serve": one card per active industry. Hidden when there are none. --}}
 @if ($industries->isNotEmpty())
-    <section class="industries section" aria-labelledby="industries-heading">
+    <section class="industries section home-band" aria-labelledby="industries-heading">
         <div class="container">
             <header class="section-head">
                 @if ($industriesSection['eyebrow'])

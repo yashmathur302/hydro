@@ -7,7 +7,7 @@
     ];
 @endphp
 
-<section class="about section" aria-labelledby="about-heading">
+<section class="about section home-band" aria-labelledby="about-heading">
     <div class="container about__inner">
         <div class="about__media">
             <div class="collage">

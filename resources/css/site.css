@@ -29,6 +29,7 @@
     --color-border: #e6e9ea;
     --color-surface: #ffffff;
     --color-surface-alt: #f4f6f6;
+    --color-band: #fdf3ef;
     --color-topbar: #ececec;
     --color-white: #ffffff;
 
@@ -960,7 +961,24 @@ main:focus {
 }
 
 /* --------------------------------------------------------------------------
-   7. Home: shared section heading
+   7. Home: alternating section backgrounds and shared section heading
+   -------------------------------------------------------------------------- */
+
+/*
+ * Home sections alternate white / light tint, counted from their position on
+ * the page (the banner is the first <section>). Hidden sections are simply not
+ * rendered, so the alternation never breaks.
+ */
+.home-band:nth-of-type(odd) {
+    background: var(--color-band);
+}
+
+.home-band:nth-of-type(even) {
+    background: var(--color-surface);
+}
+
+/* --------------------------------------------------------------------------
+   7b. Home: shared section heading
    -------------------------------------------------------------------------- */
 .section-head {
     margin-bottom: clamp(2rem, 4vw, 3.25rem);
@@ -978,10 +996,6 @@ main:focus {
 /* --------------------------------------------------------------------------
    8. Home: industries we serve
    -------------------------------------------------------------------------- */
-.industries {
-    background: #fdf3ef;
-}
-
 .industries .section-title {
     max-width: 36rem;
 }
@@ -996,6 +1010,7 @@ main:focus {
     grid-template-columns: minmax(0, 1fr) 31.5%;
     min-height: 21rem;
     background: var(--color-surface);
+    box-shadow: 0 10px 30px rgb(13 43 49 / 0.06);
 }
 
 .industry-card__body {

@@ -8,7 +8,7 @@
 @endphp
 
 @if ($stats['word'] || $items !== [])
-    <section class="stats section" aria-label="Key figures">
+    <section class="stats section home-band" aria-label="Key figures">
         <div class="container stats__inner">
             @if ($stats['word'])
                 @if ($stats['word_image_url'])

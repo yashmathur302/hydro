@@ -1,6 +1,6 @@
 {{-- "Why choose us": centred heading and icon cards. --}}
 @if (($whyUs['items'] ?? []) !== [])
-    <section class="why-us section" aria-labelledby="why-us-heading">
+    <section class="why-us section home-band" aria-labelledby="why-us-heading">
         <div class="container">
             <header class="section-head section-head--center">
                 @if ($whyUs['eyebrow'])
