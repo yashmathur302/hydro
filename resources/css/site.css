@@ -515,8 +515,7 @@ main:focus {
             100% calc(100% - var(--header-tab)),
             calc(100% - var(--cta-width) - 2.5rem) calc(100% - var(--header-tab)),
             calc(100% - var(--cta-width) - 3.75rem) 100%,
-            4rem 100%,
-            2.75rem calc(100% - var(--header-tab)),
+            1.25rem 100%,
             0 calc(100% - var(--header-tab))
         );
     }
