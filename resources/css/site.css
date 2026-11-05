@@ -41,7 +41,7 @@
     --gutter: 15px;
     --section-space: clamp(4.5rem, 8vw, 7rem);
     --header-tab: 20px;
-    --cta-width: 204px;
+    --cta-width: 164px;
     --header-edge: clamp(1rem, 4vw, 3.75rem);
 
     /* Effects */
@@ -602,14 +602,14 @@ main:focus {
         position: absolute;
         top: 0;
         right: 0;
-        bottom: calc(var(--header-tab) * -0.5);
+        bottom: var(--header-tab);
         display: flex;
-        gap: 0.75rem;
+        gap: 0.5rem;
         align-items: center;
         justify-content: center;
         width: var(--cta-width);
         font-family: var(--font-heading);
-        font-size: 1.125rem;
+        font-size: 0.9375rem;
         font-weight: 700;
         color: var(--color-white);
         background: var(--color-green);
@@ -621,7 +621,7 @@ main:focus {
     }
 
     .header-cta .site-icon {
-        font-size: 1.625rem;
+        font-size: 1.25rem;
     }
 }
 
