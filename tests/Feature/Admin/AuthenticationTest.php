@@ -121,6 +121,17 @@ final class AuthenticationTest extends TestCase
         Notification::assertSentTo($admin, ResetPassword::class);
     }
 
+    public function test_mail_server_failure_does_not_break_the_reset_form(): void
+    {
+        $admin = Admin::factory()->create();
+        Notification::shouldReceive('send')->andThrow(new \RuntimeException('Connection could not be established'));
+
+        $this->from(route('admin.password.request'))
+            ->post(route('admin.password.email'), ['email' => $admin->email])
+            ->assertRedirect(route('admin.password.request'))
+            ->assertSessionHas('status');
+    }
+
     public function test_password_can_be_reset_with_a_valid_token(): void
     {
         $admin = Admin::factory()->create();
