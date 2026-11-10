@@ -10,9 +10,11 @@
 @endphp
 
 <x-admin.layout title="Home page">
-    <x-admin.page-header title="Home page" description="Text and images of the home page sections. Contact details in the header come from Site settings.">
-        <x-admin.button :href="route('home')" variant="secondary" icon="globe" target="_blank" rel="noopener">View home page</x-admin.button>
-    </x-admin.page-header>
+    <x-slot:header>
+        <x-admin.page-header title="Home page" description="Text and images of the home page sections. Contact details in the header come from Site settings.">
+            <x-admin.button :href="route('home')" variant="secondary" icon="globe" target="_blank" rel="noopener">View home page</x-admin.button>
+        </x-admin.page-header>
+    </x-slot:header>
 
     <div class="settings">
         <nav class="segmented" aria-label="Home page sections">
@@ -44,7 +46,7 @@
                         <x-admin.form.input name="hero[button_url]" label="Button link" :value="$hero['button_url']" maxlength="255" hint="A page path such as /products, or a full https:// link." />
                     </div>
                     <x-admin.form.image-upload name="hero_background_image" label="Background photo" :current-url="$hero['background_image_url']" accept="image/jpeg,image/png,image/webp" remove-name="remove_hero_background_image" hint="Wide landscape photo, at least 1920 × 900 px. JPG, PNG or WebP up to {{ $maxMb }} MB." />
-                    <p class="panel__note">The phone number next to the button comes from Site settings › Contact.</p>
+                    <p class="text-secondary mb-0">The phone number next to the button comes from Site settings › Contact.</p>
                 </div>
             </x-admin.card>
 
@@ -58,13 +60,13 @@
                     <x-admin.form.input name="about[subheading]" label="Bold line" :value="$about['subheading']" maxlength="160" />
 
                     <fieldset class="fieldset">
-                        <legend class="field__label">Check-list points</legend>
+                        <legend class="form-label">Check-list points</legend>
                         <div class="form-stack form-stack--tight">
                             @foreach ($points as $index => $point)
                                 <x-admin.form.input name="about[points][{{ $index }}]" label="Point {{ $index + 1 }}" :value="$point" maxlength="120" />
                             @endforeach
                         </div>
-                        <p class="field__hint">Empty points are not shown.</p>
+                        <p class="form-text mb-0">Empty points are not shown.</p>
                     </fieldset>
 
                     <div class="form-grid">
@@ -104,14 +106,14 @@
                     <x-admin.form.image-upload name="stats_word_image" label="Photo inside the big word" :current-url="$stats['word_image_url']" accept="image/jpeg,image/png,image/webp" remove-name="remove_stats_word_image" hint="Wide colourful photo, about 1600 × 500 px. Without it the word is shown in the brand colours." />
 
                     <fieldset class="fieldset">
-                        <legend class="field__label">Counters</legend>
+                        <legend class="form-label">Counters</legend>
                         <div class="form-grid">
                             @foreach ($statRows as $index => $row)
                                 <x-admin.form.input name="stats[items][{{ $index }}][value]" label="Counter {{ $index + 1 }}: number" :value="$row['value'] ?? ''" maxlength="12" placeholder="e.g. 500+" />
                                 <x-admin.form.input name="stats[items][{{ $index }}][label]" label="Counter {{ $index + 1 }}: label" :value="$row['label'] ?? ''" maxlength="60" placeholder="e.g. Projects delivered" />
                             @endforeach
                         </div>
-                        <p class="field__hint">Numbers can have text before or after them (500+, 98%, 1.2m). Empty counters are hidden.</p>
+                        <p class="form-text mb-0">Numbers can have text before or after them (500+, 98%, 1.2m). Empty counters are hidden.</p>
                     </fieldset>
                 </div>
             </x-admin.card>
@@ -124,14 +126,14 @@
                     </div>
 
                     <fieldset class="fieldset">
-                        <legend class="field__label">Cards</legend>
+                        <legend class="form-label">Cards</legend>
                         <div class="form-grid">
                             @foreach ($whyRows as $index => $row)
                                 <x-admin.form.select name="why_us[items][{{ $index }}][icon]" label="Card {{ $index + 1 }}: icon" :options="$iconOptions" :value="$row['icon'] ?? ''" placeholder="Choose an icon" />
                                 <x-admin.form.input name="why_us[items][{{ $index }}][title]" label="Card {{ $index + 1 }}: title" :value="$row['title'] ?? ''" maxlength="60" />
                             @endforeach
                         </div>
-                        <p class="field__hint">Cards without a title are hidden.</p>
+                        <p class="form-text mb-0">Cards without a title are hidden.</p>
                     </fieldset>
 
                     <x-admin.form.input name="why_us[footer_text]" label="Line below the cards" :value="$whyUs['footer_text']" maxlength="200" hint="Leave empty to hide." />

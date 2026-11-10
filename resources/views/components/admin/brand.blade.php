@@ -1,8 +1,6 @@
-{{--
-    Sidebar / mobile-bar brand: the logo from Site settings, or the site name
-    until a logo is uploaded. In the collapsed sidebar it shrinks to the
-    favicon, or the first letter of the name.
---}}
+{{-- Brand link used in the sidebar, the top bar and the sign-in page: logo from Site settings, or the site name. --}}
+@props(['href' => null])
+
 @inject('siteSettings', 'App\Services\SiteSettingService')
 
 @php
@@ -11,17 +9,24 @@
     $faviconUrl = $siteSettings->fileUrl(\App\Enums\SiteSettingKey::FaviconPath);
 @endphp
 
-<a href="{{ route('admin.dashboard') }}" {{ $attributes->merge(['class' => 'brand']) }} aria-label="{{ $siteName }} admin dashboard">
-    <span @class(['brand__initial', 'brand__initial--image' => $faviconUrl]) aria-hidden="true">
-        @if ($faviconUrl)
-            <img src="{{ $faviconUrl }}" alt="" width="36" height="36">
-        @else
-            {{ mb_strtoupper(mb_substr($siteName, 0, 1)) }}
-        @endif
-    </span>
-    @if ($logoUrl)
-        <img class="brand__logo" src="{{ $logoUrl }}" alt="{{ $siteName }}">
-    @else
-        <span class="brand__name">{{ $siteName }}</span>
-    @endif
+<a href="{{ $href ?? route('admin.dashboard') }}" {{ $attributes->merge(['class' => 'navbar-brand']) }} aria-label="{{ $siteName }}">
+    <div class="logo-main">
+        <div class="logo-normal">
+            @if ($logoUrl)
+                <img class="brand-logo" src="{{ $logoUrl }}" alt="{{ $siteName }}">
+            @else
+                <span class="brand-initial" aria-hidden="true">{{ mb_strtoupper(mb_substr($siteName, 0, 1)) }}</span>
+            @endif
+        </div>
+        <div class="logo-mini">
+            @if ($faviconUrl)
+                <img class="brand-logo brand-logo--mini" src="{{ $faviconUrl }}" alt="">
+            @else
+                <span class="brand-initial" aria-hidden="true">{{ mb_strtoupper(mb_substr($siteName, 0, 1)) }}</span>
+            @endif
+        </div>
+    </div>
+    @unless ($logoUrl)
+        <h4 class="logo-title">{{ $siteName }}</h4>
+    @endunless
 </a>

@@ -7,9 +7,11 @@
 @endphp
 
 <x-admin.layout :title="$enquiry->type->label()">
-    <x-admin.page-header :title="$enquiry->name" :description="$enquiry->type->label().' · received '.$enquiry->created_at->format('d M Y, h:i A')">
-        <x-admin.button :href="route(EnquiryController::indexRouteFor($enquiry->type))" variant="secondary">Back to {{ mb_strtolower($enquiry->type->pluralLabel()) }}</x-admin.button>
-    </x-admin.page-header>
+    <x-slot:header>
+        <x-admin.page-header :title="$enquiry->name" :description="$enquiry->type->label().' · received '.$enquiry->created_at->format('d M Y, h:i A')">
+            <x-admin.button :href="route(EnquiryController::indexRouteFor($enquiry->type))" variant="secondary">Back to {{ mb_strtolower($enquiry->type->pluralLabel()) }}</x-admin.button>
+        </x-admin.page-header>
+    </x-slot:header>
 
     <div class="editor-layout">
         <div class="editor-layout__main">
@@ -20,9 +22,9 @@
                             <dt>Product</dt>
                             <dd>
                                 @if ($enquiry->product)
-                                    <a class="link" href="{{ route('admin.products.edit', $enquiry->product) }}">{{ $enquiry->product_name }}</a>
+                                    <a href="{{ route('admin.products.edit', $enquiry->product) }}">{{ $enquiry->product_name }}</a>
                                 @else
-                                    {{ $enquiry->product_name }} <span class="text-muted">(deleted)</span>
+                                    {{ $enquiry->product_name }} <span class="text-secondary">(deleted)</span>
                                 @endif
                             </dd>
                         </div>
@@ -40,7 +42,7 @@
                 @if ($enquiry->message)
                     <div class="message-body">{{ $enquiry->message }}</div>
                 @else
-                    <p class="panel__note">No message was written.</p>
+                    <p class="text-secondary mb-0">No message was written.</p>
                 @endif
             </x-admin.card>
 
@@ -86,7 +88,7 @@
             </x-admin.card>
 
             <x-admin.card title="Delete">
-                <p class="panel__note">Permanently removes this {{ mb_strtolower($enquiry->type->label()) }}.</p>
+                <p class="text-secondary mb-0">Permanently removes this {{ mb_strtolower($enquiry->type->label()) }}.</p>
                 <x-slot:footer>
                     <x-admin.delete-button :action="route('admin.enquiries.destroy', $enquiry)" confirm="Delete this message from {{ $enquiry->name }}? This cannot be undone." />
                 </x-slot:footer>

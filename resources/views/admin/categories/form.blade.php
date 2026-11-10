@@ -1,9 +1,11 @@
 @php($isEdit = $category->exists)
 
 <x-admin.layout :title="$isEdit ? 'Edit category' : 'Add category'">
-    <x-admin.page-header :title="$isEdit ? $category->name : 'Add category'">
-        <x-admin.button :href="route('admin.categories.index')" variant="secondary">Back to categories</x-admin.button>
-    </x-admin.page-header>
+    <x-slot:header>
+        <x-admin.page-header :title="$isEdit ? $category->name : 'Add category'">
+            <x-admin.button :href="route('admin.categories.index')" variant="secondary">Back to categories</x-admin.button>
+        </x-admin.page-header>
+    </x-slot:header>
 
     <form method="POST" action="{{ $isEdit ? route('admin.categories.update', $category) : route('admin.categories.store') }}" enctype="multipart/form-data" class="editor-layout" novalidate>
         @csrf

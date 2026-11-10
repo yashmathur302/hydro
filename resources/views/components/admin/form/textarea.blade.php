@@ -19,7 +19,7 @@
 
 <x-admin.form.field :name="$key" :$label :$id :$hint :$required :$bag :$maxlength :$counter>
     <textarea
-        {{ $attributes->except('id')->class(['input', 'input--textarea']) }}
+        {{ $attributes->except('id')->class(['form-control', 'is-invalid' => $hasError]) }}
         id="{{ $id }}"
         name="{{ $name }}"
         rows="{{ $rows }}"

@@ -1,6 +1,6 @@
 {{--
-    Wrapper for a labelled form control: label, hint, character counter and error message.
-    Used by the input and textarea components so the markup stays identical.
+    Wrapper for a labelled form control (Hope UI "form-group"): label, optional
+    character counter, the control, a hint and the validation message.
 --}}
 @props(['name', 'label', 'id', 'hint' => null, 'required' => false, 'bag' => 'default', 'maxlength' => null, 'counter' => false])
 
@@ -8,23 +8,23 @@
     $error = $errors->getBag($bag)->first($name);
 @endphp
 
-<div @class(['field', 'has-error' => $error])>
-    <div class="field__label-row">
-        <label class="field__label" for="{{ $id }}">
+<div class="form-group mb-0">
+    <div class="d-flex justify-content-between align-items-baseline gap-2">
+        <label class="form-label" for="{{ $id }}">
             {{ $label }}
-            @if ($required)<span class="field__required" aria-hidden="true">*</span>@endif
+            @if ($required)<span class="text-danger" aria-hidden="true">*</span>@endif
         </label>
         @if ($counter && $maxlength)
-            <span class="field__counter" data-counter-for="{{ $id }}" aria-live="polite"></span>
+            <span class="form-text mt-0 field-counter" data-counter-for="{{ $id }}" aria-live="polite"></span>
         @endif
     </div>
 
     {{ $slot }}
 
     @if ($hint)
-        <p class="field__hint" id="{{ $id }}-hint">{{ $hint }}</p>
+        <div class="form-text" id="{{ $id }}-hint">{{ $hint }}</div>
     @endif
     @if ($error)
-        <p class="field__error" id="{{ $id }}-error">{{ $error }}</p>
+        <div class="invalid-feedback d-block" id="{{ $id }}-error">{{ $error }}</div>
     @endif
 </div>

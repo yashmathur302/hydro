@@ -1,15 +1,15 @@
 {{-- GET filter bar for list pages: search box plus any selects passed in the slot. --}}
 @props(['action', 'search' => null, 'placeholder' => 'Search…', 'active' => false])
 
-<form method="GET" action="{{ $action }}" class="filters" role="search">
-    <div class="filters__search">
-        <x-admin.icon name="search" class="filters__search-icon" />
+<form method="GET" action="{{ $action }}" class="filters card-body border-bottom d-flex flex-wrap gap-2" role="search">
+    <div class="input-group filters__search">
+        <span class="input-group-text"><x-admin.icon name="search" class="icon-18" /></span>
         <label class="visually-hidden" for="filter-q">Search</label>
-        <input class="input filters__input" type="search" id="filter-q" name="q" value="{{ $search }}" placeholder="{{ $placeholder }}" maxlength="100">
+        <input class="form-control" type="search" id="filter-q" name="q" value="{{ $search }}" placeholder="{{ $placeholder }}" maxlength="100">
     </div>
     {{ $slot }}
-    <button type="submit" class="button button--secondary">Filter</button>
+    <button type="submit" class="btn btn-primary">Filter</button>
     @if ($active)
-        <a class="button button--ghost" href="{{ $action }}">Clear</a>
+        <a class="btn btn-outline-secondary" href="{{ $action }}">Clear</a>
     @endif
 </form>

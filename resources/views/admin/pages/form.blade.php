@@ -1,9 +1,11 @@
 @php($isEdit = $page->exists)
 
 <x-admin.layout :title="$isEdit ? 'Edit page' : 'Add page'">
-    <x-admin.page-header :title="$isEdit ? $page->title : 'Add page'">
-        <x-admin.button :href="route('admin.pages.index')" variant="secondary">Back to pages</x-admin.button>
-    </x-admin.page-header>
+    <x-slot:header>
+        <x-admin.page-header :title="$isEdit ? $page->title : 'Add page'">
+            <x-admin.button :href="route('admin.pages.index')" variant="secondary">Back to pages</x-admin.button>
+        </x-admin.page-header>
+    </x-slot:header>
 
     <form method="POST" action="{{ $isEdit ? route('admin.pages.update', $page) : route('admin.pages.store') }}" class="editor-layout" novalidate>
         @csrf

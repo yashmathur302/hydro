@@ -1,0 +1,1222 @@
+// ==========================================================================
+// Admin: project-specific pieces on top of Hope UI.
+// Uses the template's Bootstrap variables and CSS custom properties so every
+// part matches the design. No !important anywhere.
+// ==========================================================================
+
+// Values Bootstrap 5.2 leaves undefined or empty.
+$app-font-weight-medium: 500;
+$app-heading-color: if($headings-color, $headings-color, $dark);
+
+// --------------------------------------------------------------------------
+// Base helpers
+// --------------------------------------------------------------------------
+.skip-link {
+    position: absolute;
+    top: $spacer * 0.75;
+    left: $spacer * 0.75;
+    z-index: 1100;
+    padding: $spacer * 0.5 $spacer;
+    color: $white;
+    background: $primary;
+    border-radius: $border-radius;
+    transform: translateY(-200%);
+    transition: transform 0.2s ease;
+
+    &:focus {
+        transform: translateY(0);
+    }
+}
+
+.min-w-0 {
+    min-width: 0;
+}
+
+main:focus {
+    outline: none;
+}
+
+// Default size for the admin's inline SVG icons; .icon-18/.icon-20/.icon-24 win (zero specificity here).
+:where(svg.icon) {
+    flex-shrink: 0;
+    width: 1.25em;
+    height: 1.25em;
+}
+
+// --------------------------------------------------------------------------
+// Brand (logo or site name) in sidebar, top bar and sign-in page
+// --------------------------------------------------------------------------
+.navbar-brand {
+    min-width: 0;
+
+    .logo-title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.brand-logo {
+    display: block;
+    width: auto;
+    max-width: 9.5rem;
+    max-height: 2.5rem;
+    object-fit: contain;
+
+    &--mini {
+        max-width: 2rem;
+        max-height: 2rem;
+    }
+}
+
+.brand-initial {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    font-weight: $font-weight-bold;
+    color: $white;
+    background: $primary;
+    border-radius: $border-radius;
+}
+
+.auth-brand {
+    justify-content: center;
+}
+
+// The small logo is only for the collapsed sidebar.
+.navbar-brand .logo-mini {
+    display: none;
+}
+
+.sidebar.sidebar-mini .navbar-brand {
+    .logo-normal {
+        display: none;
+    }
+
+    .logo-mini {
+        display: block;
+    }
+}
+
+// The template uses <div>s for the toggles; ours are real buttons.
+button.sidebar-toggle {
+    padding: 0;
+    color: inherit;
+    border: 0;
+}
+
+.iq-navbar .navbar-inner .sidebar-toggle {
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: $spacer * 0.5;
+
+    @include media-breakpoint-up(xl) {
+        display: none;
+    }
+}
+
+// --------------------------------------------------------------------------
+// Sidebar extras: unread counts, small-screen backdrop
+// --------------------------------------------------------------------------
+.sidebar .nav-count {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 0.6875rem;
+}
+
+.sidebar.sidebar-mini .nav-count {
+    display: none;
+}
+
+.sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 909;
+    background: rgba($dark, 0.45);
+}
+
+@include media-breakpoint-up(xl) {
+    .sidebar-backdrop {
+        display: none;
+    }
+}
+
+// --------------------------------------------------------------------------
+// Top bar avatar and header banner
+// --------------------------------------------------------------------------
+.avatar-initial {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    font-weight: $font-weight-bold;
+    color: $white;
+    background: $primary;
+
+    &--soft {
+        color: $primary;
+        background: rgba($primary, 0.1);
+    }
+}
+
+// Tablets and phones: the template pushes the content 4em below the banner,
+// which leaves a large empty band. Overlap the banner as on desktop instead.
+@include media-breakpoint-down(lg) {
+    .iq-banner:not(.hide) + .content-inner {
+        margin-top: -$spacer * 2;
+    }
+}
+
+.iq-navbar-header {
+    min-height: 13.4375rem;
+    padding-bottom: $spacer * 3;
+}
+
+// The banner image covers exactly the header area and grows with its content
+// (titles and buttons wrap on phones); the template fixes it at 264px.
+.iq-banner .iq-navbar-header {
+    position: relative;
+    isolation: isolate;
+}
+
+.sidebar + .main-content .iq-banner .iq-navbar-header .iq-header-img {
+    height: 100%;
+}
+
+.iq-navbar-header {
+
+    h1 {
+        font-size: clamp(1.5rem, 3vw, 2.25rem);
+    }
+}
+
+// Buttons in the blue header banner stay readable on the gradient.
+// Bootstrap 5.2 colours buttons through --bs-btn-* custom properties; the
+// template makes every banner link inherit white, so restore the button colour.
+.sidebar + .main-content .iq-navbar-header .page-actions a.btn,
+.iq-banner .iq-navbar-header .page-actions .btn {
+    color: var(--#{$prefix}btn-color);
+
+    &:hover,
+    &:focus-visible {
+        color: var(--#{$prefix}btn-hover-color);
+    }
+}
+
+.page-actions {
+    .btn-primary {
+        --#{$prefix}btn-color: #{$primary};
+        --#{$prefix}btn-bg: #{$white};
+        --#{$prefix}btn-border-color: #{$white};
+        --#{$prefix}btn-hover-color: #{$white};
+        --#{$prefix}btn-hover-bg: transparent;
+        --#{$prefix}btn-hover-border-color: #{$white};
+        --#{$prefix}btn-active-color: #{$primary};
+        --#{$prefix}btn-active-bg: #{$white};
+    }
+
+    .btn-outline-primary {
+        --#{$prefix}btn-color: #{$white};
+        --#{$prefix}btn-border-color: #{rgba($white, 0.7)};
+        --#{$prefix}btn-hover-color: #{$primary};
+        --#{$prefix}btn-hover-bg: #{$white};
+        --#{$prefix}btn-hover-border-color: #{$white};
+    }
+}
+
+.footer .footer-body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: $spacer * 0.5;
+    padding: $spacer $spacer * 1.5;
+    font-size: $font-size-sm;
+    color: $secondary;
+}
+
+// --------------------------------------------------------------------------
+// Forms
+// --------------------------------------------------------------------------
+.form-stack {
+    display: grid;
+    gap: $spacer * 1.25;
+
+    &--tight {
+        gap: $spacer * 0.75;
+    }
+}
+
+.form-grid {
+    display: grid;
+    gap: $spacer * 1.25;
+
+    @include media-breakpoint-up(md) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: $spacer * 1.5;
+
+        > .form-group:has(.form-grid__full),
+        > .upload {
+            grid-column: 1 / -1;
+        }
+    }
+}
+
+.fieldset {
+    display: grid;
+    gap: $spacer * 0.75;
+    min-width: 0;
+    padding: $spacer;
+    margin: 0;
+    border: $border-width solid $border-color;
+    border-radius: $border-radius;
+
+    legend {
+        float: none;
+        width: auto;
+        padding: 0 $spacer * 0.25;
+        margin: 0;
+    }
+}
+
+.field-counter {
+    font-variant-numeric: tabular-nums;
+
+    &.is-over {
+        color: $danger;
+    }
+}
+
+.password-toggle {
+    .icon--hide {
+        display: none;
+    }
+
+    &[aria-pressed='true'] {
+        .icon--show {
+            display: none;
+        }
+
+        .icon--hide {
+            display: inline-block;
+        }
+    }
+}
+
+.justify-items-start {
+    justify-items: start;
+}
+
+// Image upload preview
+.upload__preview {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 8rem;
+    height: 5rem;
+    padding: $spacer * 0.5;
+    overflow: hidden;
+    background: repeating-conic-gradient($gray-100 0% 25%, $white 0% 50%) 50% / 14px 14px;
+    border: $border-width solid $border-color;
+    border-radius: $border-radius;
+
+    &[data-empty] {
+        background: $gray-100;
+        border-style: dashed;
+    }
+
+    img {
+        max-height: 100%;
+        object-fit: contain;
+    }
+}
+
+.upload__placeholder {
+    font-size: $font-size-sm;
+    color: $secondary;
+}
+
+.upload__button {
+    cursor: pointer;
+}
+
+.upload__filename:empty {
+    display: none;
+}
+
+// Markdown editor toolbar
+.editor {
+    display: grid;
+}
+
+.editor__toolbar {
+    display: flex;
+    gap: 2px;
+    padding: $spacer * 0.25;
+    background: $gray-100;
+    border: $input-border-width solid $input-border-color;
+    border-bottom: 0;
+    border-radius: $input-border-radius $input-border-radius 0 0;
+}
+
+.editor__tool {
+    color: $body-color;
+
+    &:hover {
+        color: $primary;
+        background: $white;
+    }
+}
+
+.editor__input {
+    font-family: $font-family-monospace;
+    font-size: $font-size-sm;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+// Settings-style pages: section switcher and floating save bar
+.settings {
+    display: grid;
+    gap: $spacer * 1.5;
+}
+
+.settings__form {
+    display: grid;
+    gap: $spacer * 1.5;
+    min-width: 0;
+
+    .card {
+        margin-bottom: 0;
+        scroll-margin-top: $spacer * 6;
+    }
+}
+
+.segmented {
+    position: sticky;
+    top: $spacer;
+    z-index: 15;
+    min-width: 0;
+}
+
+.segmented__list {
+    display: flex;
+    gap: 2px;
+    max-width: 100%;
+    padding: 4px;
+    margin: 0;
+    overflow-x: auto;
+    list-style: none;
+    background: $white;
+    border-radius: $border-radius-lg;
+    box-shadow: $box-shadow-sm;
+    scrollbar-width: none;
+}
+
+.segmented__item {
+    display: block;
+    padding: $spacer * 0.375 $spacer;
+    font-size: $font-size-sm;
+    font-weight: $app-font-weight-medium;
+    color: $body-color;
+    white-space: nowrap;
+    border-radius: $border-radius-pill;
+
+    &:hover {
+        color: $primary;
+    }
+
+    &.is-active {
+        color: $white;
+        background: $primary;
+    }
+}
+
+.savebar {
+    position: sticky;
+    bottom: $spacer;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacer * 0.75;
+    align-items: center;
+    padding: $spacer * 0.75 $spacer * 0.75 $spacer * 0.75 $spacer * 1.25;
+    background: $white;
+    border-radius: $border-radius-lg;
+    box-shadow: $box-shadow;
+}
+
+.savebar__icon {
+    color: $primary;
+}
+
+.savebar__text {
+    flex: 1;
+    margin: 0;
+    font-size: $font-size-sm;
+}
+
+@include media-breakpoint-down(sm) {
+    .savebar__icon,
+    .savebar__text {
+        display: none;
+    }
+
+    .savebar .btn {
+        width: 100%;
+    }
+}
+
+// Editor layout: main column + sticky side column
+.editor-layout {
+    display: grid;
+    gap: $spacer * 1.5;
+
+    .card {
+        margin-bottom: 0;
+    }
+
+    @media (min-width: 1100px) {
+        grid-template-columns: minmax(0, 1fr) 20rem;
+        align-items: start;
+    }
+}
+
+.editor-layout__main,
+.editor-layout__side {
+    display: grid;
+    align-content: start;
+    gap: $spacer * 1.5;
+    min-width: 0;
+}
+
+@media (min-width: 1100px) {
+    .editor-layout__side {
+        position: sticky;
+        top: $spacer;
+    }
+}
+
+.stack {
+    display: grid;
+    gap: $spacer * 1.5;
+
+    .card {
+        margin-bottom: 0;
+    }
+
+    &--narrow {
+        max-width: 48rem;
+    }
+}
+
+// --------------------------------------------------------------------------
+// Lists: filter bar, tables that stack on phones, empty state, pagination
+// --------------------------------------------------------------------------
+.filters__search {
+    flex: 1 1 16rem;
+    width: auto;
+}
+
+.filters__select {
+    flex: 0 1 12rem;
+}
+
+.empty-state {
+    padding: $spacer * 3 $spacer * 1.5;
+}
+
+.empty-state__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    color: $primary;
+    background: rgba($primary, 0.1);
+    border-radius: 50%;
+}
+
+.table-responsive-stack {
+    overflow-x: auto;
+}
+
+.data-table {
+    th {
+        white-space: nowrap;
+    }
+
+    td {
+        vertical-align: middle;
+    }
+}
+
+.data-table__actions {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+
+    .btn + .btn,
+    .btn + form,
+    form + .btn {
+        margin-left: $spacer * 0.25;
+    }
+}
+
+.data-table--inbox tr.is-unread .item-cell__title {
+    font-weight: $font-weight-bold;
+}
+
+.item-cell {
+    display: flex;
+    gap: $spacer * 0.75;
+    align-items: center;
+    min-width: 0;
+    color: inherit;
+
+    &:hover .item-cell__title {
+        color: $primary;
+    }
+}
+
+.item-cell__thumb {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    overflow: hidden;
+    color: $secondary;
+    background: $gray-100;
+    border-radius: $border-radius;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &--icon {
+        color: $primary;
+        background: rgba($primary, 0.08);
+
+        .feature-icon {
+            width: 1.75rem;
+            height: 1.75rem;
+        }
+    }
+
+    &--logo {
+        width: 5rem;
+        background: $white;
+        border: $border-width solid $border-color;
+
+        img {
+            padding: $spacer * 0.375;
+            object-fit: contain;
+        }
+    }
+}
+
+.item-cell__text {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+    line-height: 1.3;
+}
+
+.item-cell__title {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: $spacer * 0.5;
+    align-items: center;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-weight: $font-weight-semibold;
+    color: $app-heading-color;
+}
+
+.item-cell__meta {
+    margin-top: 2px;
+    overflow: hidden;
+    font-size: $font-size-sm;
+    color: $secondary;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.unread-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: $primary;
+    border-radius: 50%;
+}
+
+.badge-group {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: $spacer * 0.25;
+}
+
+// Phones: each table row becomes a small card with labelled values.
+@include media-breakpoint-down(md) {
+    .data-table {
+        display: block;
+
+        thead {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+        }
+
+        tbody,
+        tr,
+        td {
+            display: block;
+        }
+
+        tr {
+            position: relative;
+            padding: $spacer $spacer * 0.75;
+            border-bottom: $border-width solid $border-color;
+        }
+
+        > :not(caption) > * > * {
+            padding: $spacer * 0.25 0;
+            border: 0;
+        }
+
+        td {
+            display: flex;
+            gap: $spacer;
+            justify-content: space-between;
+            font-size: $font-size-sm;
+            // The template keeps table cells on one line; cards may wrap.
+            white-space: normal;
+
+            &[data-label]::before {
+                color: $secondary;
+                content: attr(data-label);
+            }
+
+            &:first-child {
+                padding-right: 6rem;
+
+                &::before {
+                    display: none;
+                }
+            }
+        }
+
+        .data-table__actions {
+            position: absolute;
+            top: $spacer;
+            right: $spacer * 0.75;
+            width: auto;
+        }
+    }
+}
+
+.pagination-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacer * 0.75;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: $spacer;
+}
+
+// --------------------------------------------------------------------------
+// Product form: gallery, drop zone, specification rows, brochure chip
+// --------------------------------------------------------------------------
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: $spacer;
+    padding: 0;
+    margin: 0 0 $spacer * 1.25;
+    list-style: none;
+}
+
+.gallery__item {
+    overflow: hidden;
+    border: $border-width solid $border-color;
+    border-radius: $border-radius;
+
+    &:has(input[type='checkbox']:checked) {
+        border-color: $danger;
+        opacity: 0.55;
+    }
+}
+
+.gallery__image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: $gray-100;
+}
+
+.gallery__fields {
+    display: grid;
+    gap: $spacer * 0.5;
+    padding: $spacer * 0.75;
+}
+
+.gallery__row {
+    display: flex;
+    gap: $spacer * 0.75;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.gallery__order {
+    display: flex;
+    gap: $spacer * 0.5;
+    align-items: center;
+    font-size: $font-size-sm;
+    color: $secondary;
+
+    .form-control {
+        width: 4.5rem;
+    }
+}
+
+.dropzone {
+    border: 2px dashed $border-color;
+    border-radius: $border-radius;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+
+    &.is-dragging,
+    &:focus-within {
+        background: rgba($primary, 0.04);
+        border-color: $primary;
+    }
+}
+
+.dropzone__label {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 0.5;
+    align-items: center;
+    padding: $spacer * 2 $spacer;
+    margin: 0;
+    color: $secondary;
+    text-align: center;
+    cursor: pointer;
+
+    strong {
+        color: $primary;
+    }
+
+    .icon {
+        width: 1.75rem;
+        height: 1.75rem;
+        color: $primary;
+    }
+}
+
+.dropzone__previews {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+    gap: $spacer * 0.5;
+    padding: 0 $spacer * 0.75 $spacer * 0.75;
+    margin: 0;
+    list-style: none;
+
+    &:empty {
+        display: none;
+    }
+}
+
+.dropzone__preview {
+    overflow: hidden;
+    font-size: $font-size-sm;
+    color: $secondary;
+    background: $white;
+    border: $border-width solid $border-color;
+    border-radius: $border-radius-sm;
+
+    img {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+    }
+
+    span {
+        display: block;
+        padding: 2px $spacer * 0.5;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.repeater {
+    display: grid;
+    gap: $spacer * 0.75;
+    justify-items: start;
+}
+
+.repeater__head,
+.repeater__row {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) 2.5rem;
+    gap: $spacer * 0.5;
+    width: 100%;
+}
+
+.repeater__head {
+    font-size: $font-size-sm;
+    font-weight: $app-font-weight-medium;
+    color: $secondary;
+}
+
+.repeater__rows {
+    display: grid;
+    gap: $spacer * 0.5;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.repeater__cell {
+    display: grid;
+    gap: $spacer * 0.25;
+
+    .invalid-feedback {
+        display: block;
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .repeater__head {
+        display: none;
+    }
+
+    .repeater__row {
+        grid-template-columns: minmax(0, 1fr) 2.5rem;
+        padding-bottom: $spacer * 0.75;
+        border-bottom: $border-width solid $border-color;
+
+        .repeater__cell:nth-child(2) {
+            grid-row: 2;
+        }
+
+        .btn {
+            grid-row: 1 / span 2;
+            grid-column: 2;
+            align-self: center;
+        }
+    }
+}
+
+.file-chip {
+    display: flex;
+    gap: $spacer * 0.5;
+    align-items: center;
+    padding: $spacer * 0.75;
+    font-weight: $app-font-weight-medium;
+    color: $body-color;
+    background: $gray-100;
+    border-radius: $border-radius;
+
+    span {
+        flex: 1;
+    }
+
+    .icon {
+        width: 1rem;
+        height: 1rem;
+    }
+}
+
+// Icon reference under the icon select (industries)
+.icon-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+    gap: $spacer * 0.5;
+}
+
+.icon-preview__item {
+    display: flex;
+    gap: $spacer * 0.5;
+    align-items: center;
+    padding: $spacer * 0.5;
+    font-size: $font-size-sm;
+    background: $gray-100;
+    border-radius: $border-radius-sm;
+
+    .feature-icon {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 1.5rem;
+        color: $primary;
+    }
+}
+
+// --------------------------------------------------------------------------
+// Enquiry detail
+// --------------------------------------------------------------------------
+.row-list {
+    margin: 0;
+
+    .row-list__item {
+        display: flex;
+        gap: $spacer;
+        align-items: center;
+        justify-content: space-between;
+        padding: $spacer * 0.75 0;
+        border-bottom: $border-width solid $border-color;
+
+        &:last-child {
+            border-bottom: 0;
+        }
+    }
+
+    dt {
+        font-weight: $font-weight-normal;
+        color: $secondary;
+    }
+
+    dd {
+        margin: 0;
+        font-weight: $font-weight-semibold;
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+}
+
+.message-body {
+    padding: $spacer $spacer * 1.25;
+    margin-top: $spacer;
+    line-height: 1.65;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    background: $gray-100;
+    border-radius: $border-radius;
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacer * 0.5;
+}
+
+// --------------------------------------------------------------------------
+// Dashboard: stat cards and charts
+// --------------------------------------------------------------------------
+.stat-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+}
+
+.setup-progress {
+    width: 100%;
+    height: 0.5rem;
+    overflow: hidden;
+    appearance: none;
+    background: $gray-200;
+    border: 0;
+    border-radius: $border-radius-pill;
+
+    &::-webkit-progress-bar {
+        background: $gray-200;
+        border-radius: $border-radius-pill;
+    }
+
+    &::-webkit-progress-value {
+        background: $primary;
+        border-radius: $border-radius-pill;
+    }
+
+    &::-moz-progress-bar {
+        background: $primary;
+        border-radius: $border-radius-pill;
+    }
+}
+
+$chart-product: $primary;
+$chart-contact: $info;
+
+.chart__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.chart--donut .chart__svg {
+    max-width: 12rem;
+    margin-inline: auto;
+}
+
+.chart__grid {
+    stroke: $border-color;
+    stroke-dasharray: 3 4;
+}
+
+.chart__axis {
+    font-size: 11px;
+    fill: $secondary;
+}
+
+.chart__label {
+    font-size: 13px;
+    fill: $body-color;
+
+    &--strong {
+        font-weight: $font-weight-bold;
+        fill: $app-heading-color;
+    }
+}
+
+.chart__line {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+
+    &--product {
+        stroke: $chart-product;
+    }
+
+    &--contact {
+        stroke: $chart-contact;
+    }
+}
+
+.chart__area {
+    stroke: none;
+
+    &--product {
+        fill: rgba($chart-product, 0.12);
+    }
+
+    &--contact {
+        fill: rgba($chart-contact, 0.08);
+    }
+}
+
+.chart__dot {
+    stroke: $white;
+    stroke-width: 1.5;
+
+    &--product {
+        fill: $chart-product;
+    }
+
+    &--contact {
+        fill: $chart-contact;
+    }
+}
+
+.chart__track {
+    fill: none;
+    stroke: $gray-200;
+    stroke-width: 22;
+}
+
+.chart__slice {
+    fill: none;
+    stroke-width: 22;
+
+    &--new {
+        stroke: $primary;
+    }
+
+    &--in_progress {
+        stroke: $warning;
+    }
+
+    &--closed {
+        stroke: $success;
+    }
+}
+
+.chart__total {
+    font-size: 28px;
+    font-weight: $font-weight-bold;
+    fill: $app-heading-color;
+}
+
+.chart__track-bar {
+    fill: $gray-200;
+}
+
+.chart__bar {
+    fill: $primary;
+}
+
+.chart-legend__dot {
+    display: inline-block;
+    width: 0.625rem;
+    height: 0.625rem;
+    margin-right: $spacer * 0.375;
+    border-radius: 50%;
+
+    &--product,
+    &--new {
+        background: $primary;
+    }
+
+    &--contact {
+        background: $chart-contact;
+    }
+
+    &--in_progress {
+        background: $warning;
+    }
+
+    &--closed {
+        background: $success;
+    }
+}
+
+// --------------------------------------------------------------------------
+// Confirmation dialog (native <dialog> with modal styling)
+// --------------------------------------------------------------------------
+.confirm-dialog {
+    width: min(28rem, calc(100vw - 2rem));
+    padding: 0;
+    background: transparent;
+    border: 0;
+
+    &::backdrop {
+        background: rgba($dark, 0.45);
+    }
+
+    .modal-content {
+        box-shadow: $box-shadow-lg;
+    }
+}
+
+// --------------------------------------------------------------------------
+// Sign-in pages
+// --------------------------------------------------------------------------
+.login-content {
+    .auth-card .form-group {
+        margin-bottom: 0;
+    }
+}
+
+.auth-side {
+    height: 100%;
+}
+
+// --------------------------------------------------------------------------
+// Reduced motion
+// --------------------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms;
+        animation-duration: 0.01ms;
+    }
+}

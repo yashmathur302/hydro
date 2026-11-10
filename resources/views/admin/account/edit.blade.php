@@ -1,5 +1,7 @@
 <x-admin.layout title="My account">
-    <x-admin.page-header title="My account" description="Your login details for the admin panel." />
+    <x-slot:header>
+        <x-admin.page-header title="My account" description="Your login details for the admin panel." />
+    </x-slot:header>
 
     <div class="stack stack--narrow">
         <form method="POST" action="{{ route('admin.account.profile.update') }}" novalidate>

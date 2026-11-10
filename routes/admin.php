@@ -41,7 +41,8 @@ Route::middleware('guest')->group(function (): void {
 
 Route::middleware(['auth', 'auth.session'])->group(function (): void {
     Route::redirect('/', '/admin/dashboard')->name('home');
-    Route::get('dashboard', DashboardController::class)->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard/statistics', [DashboardController::class, 'statistics'])->name('dashboard.statistics');
 
     Route::resource('products', ProductController::class)->except('show');
     Route::resource('categories', ProductCategoryController::class)

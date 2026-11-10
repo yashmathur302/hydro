@@ -12,7 +12,9 @@
 @endphp
 
 <x-admin.layout title="Site settings">
-    <x-admin.page-header title="Site settings" description="Branding, contact details, default SEO and tracking used across the whole website." />
+    <x-slot:header>
+        <x-admin.page-header title="Site settings" description="Branding, contact details, default SEO and tracking used across the whole website." />
+    </x-slot:header>
 
     <div class="settings">
         <nav class="segmented" aria-label="Settings sections">

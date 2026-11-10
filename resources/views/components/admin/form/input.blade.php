@@ -19,9 +19,9 @@
 @endphp
 
 <x-admin.form.field :name="$key" :$label :$id :$hint :$required :$bag :$maxlength :$counter>
-    <div @class(['input-wrap', 'input-wrap--password' => $type === 'password'])>
+    <div @class(['input-group' => $type === 'password'])>
         <input
-            {{ $attributes->except('id')->class(['input']) }}
+            {{ $attributes->except('id')->class(['form-control', 'is-invalid' => $hasError]) }}
             id="{{ $id }}"
             name="{{ $name }}"
             type="{{ $type }}"
@@ -32,9 +32,9 @@
             @if ($describedBy) aria-describedby="{{ $describedBy }}" @endif
         >
         @if ($type === 'password')
-            <button type="button" class="input-wrap__toggle" data-password-toggle="{{ $id }}" aria-label="Show password" aria-pressed="false">
-                <x-admin.icon name="eye" class="icon--show" />
-                <x-admin.icon name="eye-off" class="icon--hide" />
+            <button type="button" class="btn btn-outline-secondary password-toggle" data-password-toggle="{{ $id }}" aria-label="Show password" aria-pressed="false">
+                <x-admin.icon name="eye" class="icon-18 icon--show" />
+                <x-admin.icon name="eye-off" class="icon-18 icon--hide" />
             </button>
         @endif
     </div>

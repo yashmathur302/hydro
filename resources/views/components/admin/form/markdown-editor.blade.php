@@ -28,13 +28,13 @@
     <div class="editor" data-markdown-editor>
         <div class="editor__toolbar" role="toolbar" aria-label="Formatting" aria-controls="{{ $id }}">
             @foreach ($tools as $action => $toolLabel)
-                <button type="button" class="editor__tool" data-md-action="{{ $action }}" title="{{ $toolLabel }}" aria-label="{{ $toolLabel }}">
-                    <x-admin.icon :name="$action" />
+                <button type="button" class="btn btn-sm editor__tool" data-md-action="{{ $action }}" title="{{ $toolLabel }}" aria-label="{{ $toolLabel }}">
+                    <x-admin.icon :name="$action" class="icon-18" />
                 </button>
             @endforeach
         </div>
         <textarea
-            class="input input--textarea editor__input"
+            class="form-control editor__input @if ($hasError) is-invalid @endif"
             id="{{ $id }}"
             name="{{ $name }}"
             rows="{{ $rows }}"

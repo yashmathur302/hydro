@@ -1,31 +1,31 @@
 {{--
-    Content panel: heading (and optional actions) above a bordered box.
-    Slots: default (box content), "actions" (beside the heading), "footer" (inside the box, bottom).
+    Hope UI card: optional header (title, description, actions slot), body and footer slot.
+    "flush" removes the body padding for tables and lists that run edge to edge.
 --}}
 @props(['title' => null, 'description' => null, 'flush' => false])
 
-@php($headingId = $title ? 'panel-'.Str::slug($title) : null)
+@php($headingId = $title ? 'card-'.Str::slug($title) : null)
 
-<section {{ $attributes->merge(['class' => 'panel']) }} @if ($headingId) aria-labelledby="{{ $headingId }}" @endif>
+<section {{ $attributes->merge(['class' => 'card']) }} @if ($headingId) aria-labelledby="{{ $headingId }}" @endif>
     @if ($title)
-        <header class="panel__header">
-            <div>
-                <h2 class="panel__title" id="{{ $headingId }}">{{ $title }}</h2>
+        <div class="card-header d-flex flex-wrap justify-content-between align-items-start gap-3">
+            <div class="header-title">
+                <h2 class="card-title h4" id="{{ $headingId }}">{{ $title }}</h2>
                 @if ($description)
-                    <p class="panel__description">{{ $description }}</p>
+                    <p class="mb-0 mt-1 text-secondary small">{{ $description }}</p>
                 @endif
             </div>
             @isset($actions)
-                <div class="panel__actions">{{ $actions }}</div>
+                <div class="flex-shrink-0">{{ $actions }}</div>
             @endisset
-        </header>
+        </div>
     @endif
 
-    <div @class(['panel__box', 'panel__box--flush' => $flush])>
+    <div @class(['card-body', 'p-0' => $flush])>
         {{ $slot }}
-
-        @isset($footer)
-            <footer class="panel__footer">{{ $footer }}</footer>
-        @endisset
     </div>
+
+    @isset($footer)
+        <div class="card-footer d-flex flex-wrap gap-2 justify-content-end">{{ $footer }}</div>
+    @endisset
 </section>

@@ -1,12 +1,12 @@
 @props(['icon', 'title', 'text' => null])
 
-<div class="empty-state">
-    <span class="empty-state__icon"><x-admin.icon :name="$icon" /></span>
-    <p class="empty-state__title">{{ $title }}</p>
+<div class="empty-state text-center">
+    <span class="empty-state__icon"><x-admin.icon :name="$icon" class="icon-24" /></span>
+    <h3 class="h5 mt-3 mb-1">{{ $title }}</h3>
     @if ($text)
-        <p class="empty-state__text">{{ $text }}</p>
+        <p class="text-secondary mb-0">{{ $text }}</p>
     @endif
     @if ($slot->isNotEmpty())
-        <div class="empty-state__actions">{{ $slot }}</div>
+        <div class="mt-3">{{ $slot }}</div>
     @endif
 </div>

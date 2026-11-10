@@ -1,14 +1,15 @@
-<x-admin.auth-layout title="Log in" heading="Welcome back" intro="Log in to manage your website.">
-    <form method="POST" action="{{ route('admin.login.store') }}" class="form-stack" novalidate>
+<x-admin.auth-layout title="Log in" heading="Sign In" intro="Log in to manage your website.">
+    <form method="POST" action="{{ route('admin.login.store') }}" novalidate>
         @csrf
-
-        <x-admin.form.input name="email" type="email" label="Email address" required autocomplete="username" autofocus maxlength="191" />
-        <x-admin.form.input name="password" type="password" label="Password" required autocomplete="current-password" />
-
-        <div class="form-row form-row--end">
-            <a class="link" href="{{ route('admin.password.request') }}">Forgot password?</a>
+        <div class="d-grid gap-3">
+            <x-admin.form.input name="email" type="email" label="Email" required autocomplete="username" autofocus maxlength="191" />
+            <x-admin.form.input name="password" type="password" label="Password" required autocomplete="current-password" />
+            <div class="d-flex justify-content-end">
+                <a href="{{ route('admin.password.request') }}">Forgot Password?</a>
+            </div>
         </div>
-
-        <x-admin.button type="submit" icon="arrow-right" block>Log in</x-admin.button>
+        <div class="d-flex justify-content-center mt-3">
+            <button type="submit" class="btn btn-primary px-5">Sign In</button>
+        </div>
     </form>
 </x-admin.auth-layout>

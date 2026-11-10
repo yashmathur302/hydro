@@ -2,8 +2,8 @@
 @props(['bag' => 'default'])
 
 @if ($errors->getBag($bag)->any())
-    <div class="banner banner--danger" role="alert">
-        <x-admin.icon name="alert" class="banner__icon" />
-        <p class="banner__text">Please fix the highlighted {{ Str::plural('field', $errors->getBag($bag)->count()) }}.</p>
+    <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+        <x-admin.icon name="alert" class="icon-20 flex-shrink-0" />
+        <div>Please fix the highlighted {{ Str::plural('field', $errors->getBag($bag)->count()) }}.</div>
     </div>
 @endif

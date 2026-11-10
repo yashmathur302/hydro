@@ -7,9 +7,11 @@
 @endphp
 
 <x-admin.layout :title="$isEdit ? 'Edit product' : 'Add product'">
-    <x-admin.page-header :title="$isEdit ? $product->name : 'Add product'" :description="$isEdit ? 'Last updated '.$product->updated_at->diffForHumans().'.' : 'Fill in the details shown on the product page.'">
-        <x-admin.button :href="route('admin.products.index')" variant="secondary">Back to products</x-admin.button>
-    </x-admin.page-header>
+    <x-slot:header>
+        <x-admin.page-header :title="$isEdit ? $product->name : 'Add product'" :description="$isEdit ? 'Last updated '.$product->updated_at->diffForHumans().'.' : 'Fill in the details shown on the product page.'">
+            <x-admin.button :href="route('admin.products.index')" variant="secondary">Back to products</x-admin.button>
+        </x-admin.page-header>
+    </x-slot:header>
 
     <form method="POST" action="{{ $isEdit ? route('admin.products.update', $product) : route('admin.products.store') }}" enctype="multipart/form-data" class="editor-layout" novalidate>
         @csrf
@@ -29,9 +31,9 @@
             </x-admin.card>
 
             <x-admin.card title="Images" description="JPG, PNG or WebP, up to {{ Rules::IMAGE_MAX_KILOBYTES / 1024 }} MB each, {{ Rules::MAX_IMAGES }} images at most. They are converted to WebP automatically. The first image is the main one.">
-                @error('images')<p class="field__error field__error--block">{{ $message }}</p>@enderror
+                @error('images')<p class="invalid-feedback d-block">{{ $message }}</p>@enderror
                 @foreach ($errors->get('images.*') as $messages)
-                    <p class="field__error field__error--block">{{ $messages[0] }}</p>
+                    <p class="invalid-feedback d-block">{{ $messages[0] }}</p>
                 @endforeach
 
                 @if ($isEdit && $product->images->isNotEmpty())
@@ -41,15 +43,15 @@
                                 <img class="gallery__image" src="{{ $image->thumbnailUrl() }}" alt="" width="240" height="180" loading="lazy">
                                 <div class="gallery__fields">
                                     <label class="visually-hidden" for="image-{{ $image->id }}-alt">Alt text for image {{ $loop->iteration }}</label>
-                                    <input class="input input--compact" id="image-{{ $image->id }}-alt" name="existing_images[{{ $image->id }}][alt_text]" value="{{ old("existing_images.{$image->id}.alt_text", $image->alt_text) }}" maxlength="150" placeholder="Alt text">
+                                    <input class="form-control form-control-sm" id="image-{{ $image->id }}-alt" name="existing_images[{{ $image->id }}][alt_text]" value="{{ old("existing_images.{$image->id}.alt_text", $image->alt_text) }}" maxlength="150" placeholder="Alt text">
                                     <div class="gallery__row">
                                         <label class="gallery__order">
                                             <span>Order</span>
-                                            <input class="input input--compact" type="number" min="0" max="1000" name="existing_images[{{ $image->id }}][sort_order]" value="{{ old("existing_images.{$image->id}.sort_order", $image->sort_order) }}">
+                                            <input class="form-control form-control-sm" type="number" min="0" max="1000" name="existing_images[{{ $image->id }}][sort_order]" value="{{ old("existing_images.{$image->id}.sort_order", $image->sort_order) }}">
                                         </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="existing_images[{{ $image->id }}][remove]" value="1" @checked(old("existing_images.{$image->id}.remove"))>
-                                            <span>Remove</span>
+                                        <label class="form-check mb-0">
+                                            <input class="form-check-input" type="checkbox" name="existing_images[{{ $image->id }}][remove]" value="1" @checked(old("existing_images.{$image->id}.remove"))>
+                                            <span class="form-check-label">Remove</span>
                                         </label>
                                     </div>
                                 </div>
@@ -78,15 +80,15 @@
                             <li class="repeater__row" data-repeater-row>
                                 <div class="repeater__cell">
                                     <label class="visually-hidden" for="spec-{{ $index }}-label">Specification label</label>
-                                    <input class="input input--compact @error("specifications.$index.label") is-invalid @enderror" id="spec-{{ $index }}-label" name="specifications[{{ $index }}][label]" value="{{ $row['label'] ?? '' }}" maxlength="100" placeholder="e.g. Material" data-repeater-field="label">
-                                    @error("specifications.$index.label")<p class="field__error">{{ $message }}</p>@enderror
+                                    <input class="form-control form-control-sm @error("specifications.$index.label") is-invalid @enderror" id="spec-{{ $index }}-label" name="specifications[{{ $index }}][label]" value="{{ $row['label'] ?? '' }}" maxlength="100" placeholder="e.g. Material" data-repeater-field="label">
+                                    @error("specifications.$index.label")<p class="invalid-feedback mb-0">{{ $message }}</p>@enderror
                                 </div>
                                 <div class="repeater__cell">
                                     <label class="visually-hidden" for="spec-{{ $index }}-value">Specification value</label>
-                                    <input class="input input--compact @error("specifications.$index.value") is-invalid @enderror" id="spec-{{ $index }}-value" name="specifications[{{ $index }}][value]" value="{{ $row['value'] ?? '' }}" maxlength="255" placeholder="e.g. Stainless steel 316" data-repeater-field="value">
-                                    @error("specifications.$index.value")<p class="field__error">{{ $message }}</p>@enderror
+                                    <input class="form-control form-control-sm @error("specifications.$index.value") is-invalid @enderror" id="spec-{{ $index }}-value" name="specifications[{{ $index }}][value]" value="{{ $row['value'] ?? '' }}" maxlength="255" placeholder="e.g. Stainless steel 316" data-repeater-field="value">
+                                    @error("specifications.$index.value")<p class="invalid-feedback mb-0">{{ $message }}</p>@enderror
                                 </div>
-                                <button type="button" class="icon-action icon-action--danger" data-repeater-remove aria-label="Remove this row" title="Remove row">
+                                <button type="button" class="btn btn-sm btn-icon btn-soft-danger" data-repeater-remove aria-label="Remove this row" title="Remove row">
                                     <x-admin.icon name="trash" />
                                 </button>
                             </li>
@@ -121,22 +123,22 @@
                             <span>Current brochure (PDF)</span>
                             <x-admin.icon name="arrow-up-right" />
                         </a>
-                        <label class="checkbox">
-                            <input type="checkbox" name="remove_brochure" value="1">
-                            <span>Remove brochure</span>
-                        </label>
+                        <div class="form-check mb-0">
+    <input class="form-check-input" type="checkbox" name="remove_brochure" value="1">
+    <span class="form-check-label">Remove brochure</span>
+</div>
                     @endif
-                    <div @class(['field', 'has-error' => $errors->has('brochure')])>
-                        <label class="field__label" for="field-brochure">{{ $product->brochure_path ? 'Replace PDF' : 'Upload PDF' }}</label>
-                        <input class="file-input" type="file" id="field-brochure" name="brochure" accept="application/pdf" @error('brochure') aria-invalid="true" aria-describedby="field-brochure-error" @enderror>
-                        @error('brochure')<p class="field__error" id="field-brochure-error">{{ $message }}</p>@enderror
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="field-brochure">{{ $product->brochure_path ? 'Replace PDF' : 'Upload PDF' }}</label>
+                        <input class="form-control @error('brochure') is-invalid @enderror" type="file" id="field-brochure" name="brochure" accept="application/pdf" @error('brochure') aria-invalid="true" aria-describedby="field-brochure-error" @enderror>
+                        @error('brochure')<p class="invalid-feedback d-block" id="field-brochure-error">{{ $message }}</p>@enderror
                     </div>
                 </div>
             </x-admin.card>
 
             @if ($isEdit)
                 <x-admin.card title="Danger zone">
-                    <p class="panel__note">Deleting removes the product, its images and its brochure. Past enquiries are kept.</p>
+                    <p class="text-secondary mb-0">Deleting removes the product, its images and its brochure. Past enquiries are kept.</p>
                     <x-slot:footer>
                         <x-admin.button type="submit" variant="danger" icon="trash" form="delete-product-form">Delete product</x-admin.button>
                     </x-slot:footer>

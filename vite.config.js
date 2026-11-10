@@ -7,7 +7,7 @@ export default defineConfig({
             input: [
                 'resources/css/site.css',
                 'resources/js/site.js',
-                'resources/css/admin.css',
+                'resources/scss/admin.scss',
                 'resources/js/admin.js',
                 'resources/css/error.css',
             ],
@@ -19,6 +19,16 @@ export default defineConfig({
         // so the site also works when installed in a sub-folder (e.g. /hydro).
         renderBuiltUrl(filename, { hostType }) {
             return hostType === 'css' ? { relative: true } : undefined;
+        },
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                // The vendored Hope UI / Bootstrap 5.2 source uses Sass features that newer
+                // Sass versions flag as deprecated; they still compile correctly.
+                quietDeps: true,
+                silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'mixed-decls', 'slash-div'],
+            },
         },
     },
     build: {

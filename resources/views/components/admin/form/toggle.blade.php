@@ -1,4 +1,4 @@
-{{-- On/off switch. A hidden "0" is sent when unchecked, so the value is always submitted. --}}
+{{-- On/off switch (Bootstrap form-switch). A hidden "0" is sent when unchecked, so the value is always submitted. --}}
 @props(['name', 'label', 'checked' => false, 'hint' => null])
 
 @php
@@ -6,13 +6,11 @@
     $isOn = (bool) old($name, $checked);
 @endphp
 
-<div class="toggle-field">
+<div class="form-check form-switch mb-0">
     <input type="hidden" name="{{ $name }}" value="0">
-    <input class="toggle" type="checkbox" role="switch" id="{{ $id }}" name="{{ $name }}" value="1" @checked($isOn) @if ($hint) aria-describedby="{{ $id }}-hint" @endif>
-    <label class="toggle-field__text" for="{{ $id }}">
-        <span class="toggle-field__label">{{ $label }}</span>
-        @if ($hint)
-            <span class="toggle-field__hint" id="{{ $id }}-hint">{{ $hint }}</span>
-        @endif
-    </label>
+    <input class="form-check-input" type="checkbox" role="switch" id="{{ $id }}" name="{{ $name }}" value="1" @checked($isOn) @if ($hint) aria-describedby="{{ $id }}-hint" @endif>
+    <label class="form-check-label" for="{{ $id }}">{{ $label }}</label>
+    @if ($hint)
+        <div class="form-text" id="{{ $id }}-hint">{{ $hint }}</div>
+    @endif
 </div>

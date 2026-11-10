@@ -1,9 +1,11 @@
 @php($isEdit = $industry->exists)
 
 <x-admin.layout :title="$isEdit ? 'Edit industry' : 'Add industry'">
-    <x-admin.page-header :title="$isEdit ? $industry->name : 'Add industry'">
-        <x-admin.button :href="route('admin.industries.index')" variant="secondary">Back to industries</x-admin.button>
-    </x-admin.page-header>
+    <x-slot:header>
+        <x-admin.page-header :title="$isEdit ? $industry->name : 'Add industry'">
+            <x-admin.button :href="route('admin.industries.index')" variant="secondary">Back to industries</x-admin.button>
+        </x-admin.page-header>
+    </x-slot:header>
 
     <form method="POST" action="{{ $isEdit ? route('admin.industries.update', $industry) : route('admin.industries.store') }}" enctype="multipart/form-data" class="editor-layout" novalidate>
         @csrf

@@ -1,9 +1,11 @@
 @php($isEdit = $client->exists)
 
 <x-admin.layout :title="$isEdit ? 'Edit client' : 'Add client'">
-    <x-admin.page-header :title="$isEdit ? $client->name : 'Add client'">
-        <x-admin.button :href="route('admin.clients.index')" variant="secondary">Back to clients</x-admin.button>
-    </x-admin.page-header>
+    <x-slot:header>
+        <x-admin.page-header :title="$isEdit ? $client->name : 'Add client'">
+            <x-admin.button :href="route('admin.clients.index')" variant="secondary">Back to clients</x-admin.button>
+        </x-admin.page-header>
+    </x-slot:header>
 
     <form method="POST" action="{{ $isEdit ? route('admin.clients.update', $client) : route('admin.clients.store') }}" enctype="multipart/form-data" class="editor-layout" novalidate>
         @csrf
