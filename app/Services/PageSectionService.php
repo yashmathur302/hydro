@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Enums\HomeSection;
+use App\Contracts\EditablePageSection;
 use App\Models\PageSection;
 use App\Services\Images\WebpImageProcessor;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
@@ -12,19 +12,17 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
 
 /**
- * Reads and saves the editable home page sections. Content is cached until
- * the next save; images are re-encoded to WebP and old files are removed.
+ * Reads and saves the editable sections of the website pages (home, about,
+ * ...). Content is cached per page until the next save; images are
+ * re-encoded to WebP into a folder named after the page, and replaced or
+ * removed files are deleted.
  */
-final class HomePageService
+final class PageSectionService
 {
-    private const PAGE = 'home';
+    private const CACHE_PREFIX = 'page_sections.';
 
-    private const CACHE_KEY = 'page_sections.home';
-
-    private const IMAGE_DIRECTORY = 'home';
-
-    /** @var array<string, array<string, mixed>>|null */
-    private ?array $stored = null;
+    /** @var array<string, array<string, array<string, mixed>>> stored content per page */
+    private array $stored = [];
 
     public function __construct(
         private readonly CacheRepository $cache,
@@ -37,9 +35,9 @@ final class HomePageService
      *
      * @return array<string, mixed>
      */
-    public function section(HomeSection $section): array
+    public function section(EditablePageSection $section): array
     {
-        $content = array_replace($section->defaults(), $this->stored()[$section->value] ?? []);
+        $content = array_replace($section->defaults(), $this->stored($section->page())[$section->value] ?? []);
 
         foreach (array_keys($section->imageSlots()) as $slot) {
             $path = $content[$slot] ?? null;
@@ -54,9 +52,9 @@ final class HomePageService
      * @param  array<string, UploadedFile>  $uploads  new images keyed by slot
      * @param  list<string>  $removals  image slots to clear
      */
-    public function save(HomeSection $section, array $text, array $uploads, array $removals): void
+    public function save(EditablePageSection $section, array $text, array $uploads, array $removals): void
     {
-        $current = $this->stored()[$section->value] ?? [];
+        $current = $this->stored($section->page())[$section->value] ?? [];
         $content = array_replace($current, $text);
         $filesToDelete = [];
 
@@ -64,7 +62,7 @@ final class HomePageService
             $previous = $current[$slot] ?? null;
 
             if (isset($uploads[$slot])) {
-                $content[$slot] = $this->images->storeSingle($uploads[$slot], self::IMAGE_DIRECTORY, $maxWidth);
+                $content[$slot] = $this->images->storeSingle($uploads[$slot], $section->page(), $maxWidth);
             } elseif (in_array($slot, $removals, true)) {
                 $content[$slot] = null;
             }
@@ -75,29 +73,29 @@ final class HomePageService
         }
 
         PageSection::query()->updateOrCreate(
-            ['page' => self::PAGE, 'section' => $section->value],
+            ['page' => $section->page(), 'section' => $section->value],
             ['content' => $content],
         );
 
         $this->publicDisk->delete($filesToDelete);
-        $this->flush();
+        $this->flush($section->page());
     }
 
-    public function flush(): void
+    public function flush(string $page): void
     {
-        $this->stored = null;
-        $this->cache->forget(self::CACHE_KEY);
+        unset($this->stored[$page]);
+        $this->cache->forget(self::CACHE_PREFIX.$page);
     }
 
     /**
      * @return array<string, array<string, mixed>>
      */
-    private function stored(): array
+    private function stored(string $page): array
     {
-        return $this->stored ??= $this->cache->rememberForever(
-            self::CACHE_KEY,
+        return $this->stored[$page] ??= $this->cache->rememberForever(
+            self::CACHE_PREFIX.$page,
             static fn (): array => PageSection::query()
-                ->where('page', self::PAGE)
+                ->where('page', $page)
                 ->pluck('content', 'section')
                 ->map(static fn ($content): array => is_array($content) ? $content : (array) json_decode((string) $content, true))
                 ->all(),

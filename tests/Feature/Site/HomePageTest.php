@@ -8,7 +8,7 @@ use App\Enums\HomeSection;
 use App\Enums\SiteSettingKey;
 use App\Models\Client;
 use App\Models\Industry;
-use App\Services\HomePageService;
+use App\Services\PageSectionService;
 use App\Services\SiteSettingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -82,7 +82,7 @@ final class HomePageTest extends TestCase
 
     public function test_saved_section_content_is_escaped(): void
     {
-        app(HomePageService::class)->save(HomeSection::Hero, ['heading' => '<script>alert(1)</script>'], [], []);
+        app(PageSectionService::class)->save(HomeSection::Hero, ['heading' => '<script>alert(1)</script>'], [], []);
 
         $this->get(route('home'))
             ->assertDontSee('<script>alert(1)</script>', false)

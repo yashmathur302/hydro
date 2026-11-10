@@ -129,5 +129,8 @@
         @case('home')
             <path d="M4 10.5L12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/>
             @break
+        @case('info')
+            <circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5v.01"/>
+            @break
     @endswitch
 </svg>

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Stored content of one fixed page section. Read and write it through
- * App\Services\HomePageService, which applies defaults and caching.
+ * App\Services\PageSectionService, which applies defaults and caching.
  *
  * @property int $id
  * @property string $page

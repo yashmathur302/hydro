@@ -6,8 +6,8 @@ namespace App\Http\Requests\Admin;
 
 use App\Enums\FeatureIcon;
 use App\Enums\HomeSection;
+use App\Http\Requests\Admin\Concerns\HandlesPageSectionImages;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 
 /**
@@ -16,7 +16,7 @@ use Illuminate\Validation\Rule;
  */
 final class UpdateHomePageRequest extends FormRequest
 {
-    public const IMAGE_MAX_KILOBYTES = 5120;
+    use HandlesPageSectionImages;
 
     /**
      * Relative path ("/products") or an http(s) URL. Blocks javascript: and similar schemes.
@@ -75,13 +75,7 @@ final class UpdateHomePageRequest extends FormRequest
             'why_us.link_url' => $link,
         ];
 
-        foreach (HomeSection::cases() as $section) {
-            foreach (array_keys($section->imageSlots()) as $slot) {
-                $field = $section->value.'_'.$slot;
-                $rules[$field] = ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:'.self::IMAGE_MAX_KILOBYTES, 'dimensions:max_width=6000,max_height=6000'];
-                $rules['remove_'.$field] = ['nullable', 'boolean'];
-            }
-        }
+        $rules += $this->imageRules(HomeSection::cases());
 
         return $rules;
     }
@@ -159,34 +153,5 @@ final class UpdateHomePageRequest extends FormRequest
         }
 
         return $clean;
-    }
-
-    /**
-     * @return array<string, UploadedFile>
-     */
-    public function uploadsFor(HomeSection $section): array
-    {
-        $uploads = [];
-
-        foreach (array_keys($section->imageSlots()) as $slot) {
-            $file = $this->file($section->value.'_'.$slot);
-
-            if ($file instanceof UploadedFile) {
-                $uploads[$slot] = $file;
-            }
-        }
-
-        return $uploads;
-    }
-
-    /**
-     * @return list<string>
-     */
-    public function removalsFor(HomeSection $section): array
-    {
-        return array_values(array_filter(
-            array_keys($section->imageSlots()),
-            fn (string $slot): bool => $this->boolean('remove_'.$section->value.'_'.$slot),
-        ));
     }
 }

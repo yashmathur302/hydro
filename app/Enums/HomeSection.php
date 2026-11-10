@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
+use App\Contracts\EditablePageSection;
+
 /**
  * Editable sections of the home page: their text fields, default content and
  * image slots. Defaults are shown until the admin saves the section.
  */
-enum HomeSection: string
+enum HomeSection: string implements EditablePageSection
 {
     case Hero = 'hero';
     case About = 'about';
@@ -21,6 +23,11 @@ enum HomeSection: string
     public const STAT_COUNT = 4;
 
     public const MAX_WHY_ITEMS = 6;
+
+    public function page(): string
+    {
+        return 'home';
+    }
 
     public function label(): string
     {

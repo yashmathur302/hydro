@@ -7,27 +7,27 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\HomeSection;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateHomePageRequest;
-use App\Services\HomePageService;
+use App\Services\PageSectionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 final class HomePageController extends Controller
 {
-    public function edit(HomePageService $homePage): View
+    public function edit(PageSectionService $pageSections): View
     {
         return view('admin.home-page.edit', [
-            'hero' => $homePage->section(HomeSection::Hero),
-            'about' => $homePage->section(HomeSection::About),
-            'industries' => $homePage->section(HomeSection::Industries),
-            'stats' => $homePage->section(HomeSection::Stats),
-            'whyUs' => $homePage->section(HomeSection::WhyUs),
+            'hero' => $pageSections->section(HomeSection::Hero),
+            'about' => $pageSections->section(HomeSection::About),
+            'industries' => $pageSections->section(HomeSection::Industries),
+            'stats' => $pageSections->section(HomeSection::Stats),
+            'whyUs' => $pageSections->section(HomeSection::WhyUs),
         ]);
     }
 
-    public function update(UpdateHomePageRequest $request, HomePageService $homePage): RedirectResponse
+    public function update(UpdateHomePageRequest $request, PageSectionService $pageSections): RedirectResponse
     {
         foreach (HomeSection::cases() as $section) {
-            $homePage->save(
+            $pageSections->save(
                 $section,
                 $request->textFor($section),
                 $request->uploadsFor($section),

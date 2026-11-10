@@ -1,4 +1,4 @@
-{{-- Home banner. $hero comes from HomePageService; the phone number from Site settings. --}}
+{{-- Home banner. $hero comes from PageSectionService; the phone number from Site settings. --}}
 @inject('siteSettings', 'App\Services\SiteSettingService')
 
 @php

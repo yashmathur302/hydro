@@ -6,7 +6,7 @@ namespace Tests\Feature\Admin;
 
 use App\Enums\HomeSection;
 use App\Models\Admin;
-use App\Services\HomePageService;
+use App\Services\PageSectionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -47,7 +47,7 @@ final class HomePageManagementTest extends TestCase
             ->assertRedirect(route('admin.home-page.edit'))
             ->assertSessionHasNoErrors();
 
-        $service = app(HomePageService::class);
+        $service = app(PageSectionService::class);
         $hero = $service->section(HomeSection::Hero);
         $about = $service->section(HomeSection::About);
 
@@ -66,14 +66,14 @@ final class HomePageManagementTest extends TestCase
         $this->actingAs($admin)->put(route('admin.home-page.update'), $this->payload([
             'about_image_top' => UploadedFile::fake()->image('first.jpg'),
         ]));
-        $first = app(HomePageService::class)->section(HomeSection::About)['image_top'];
+        $first = app(PageSectionService::class)->section(HomeSection::About)['image_top'];
 
         $this->actingAs($admin)->put(route('admin.home-page.update'), $this->payload([
             'remove_about_image_top' => '1',
         ]));
 
         Storage::disk('public')->assertMissing($first);
-        $this->assertNull(app(HomePageService::class)->section(HomeSection::About)['image_top_url']);
+        $this->assertNull(app(PageSectionService::class)->section(HomeSection::About)['image_top_url']);
     }
 
     public function test_javascript_links_and_fake_images_are_rejected(): void
@@ -102,7 +102,7 @@ final class HomePageManagementTest extends TestCase
             ]))
             ->assertSessionHasNoErrors();
 
-        $service = app(HomePageService::class);
+        $service = app(PageSectionService::class);
         $this->assertSame(['500+', '98%'], array_column($service->section(HomeSection::Stats)['items'], 'value'));
         $this->assertSame([['icon' => 'quality', 'title' => 'Quality']], $service->section(HomeSection::WhyUs)['items']);
     }

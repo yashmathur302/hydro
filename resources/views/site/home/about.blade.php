@@ -1,4 +1,4 @@
-{{-- Home "About us" block. $about comes from HomePageService. --}}
+{{-- Home "About us" block. $about comes from PageSectionService. --}}
 @php
     $photos = [
         'main' => $about['image_main_url'],

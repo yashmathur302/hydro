@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin\AboutPageController;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\NewPasswordController;
@@ -57,6 +58,8 @@ Route::middleware(['auth', 'auth.session'])->group(function (): void {
 
     Route::get('home-page', [HomePageController::class, 'edit'])->name('home-page.edit');
     Route::put('home-page', [HomePageController::class, 'update'])->name('home-page.update');
+    Route::get('about-page', [AboutPageController::class, 'edit'])->name('about-page.edit');
+    Route::put('about-page', [AboutPageController::class, 'update'])->name('about-page.update');
 
     Route::resource('industries', IndustryController::class)->except('show');
     Route::resource('clients', ClientController::class)->except('show');
