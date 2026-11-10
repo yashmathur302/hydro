@@ -13,6 +13,9 @@ $enable-important-utilities: false;
 // "secondary" for muted text.
 $blue: #4b6fe0;
 $secondary: #64748b;
+// 14px body text (the template uses 16px), the usual size for admin screens.
+// Headings, buttons, inputs and the menu all scale from this.
+$font-size-base: 0.875rem;
 $font-family-sans-serif: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
 @import "vendor/hope-ui/bootstrap/functions";

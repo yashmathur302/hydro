@@ -219,7 +219,7 @@ button.sidebar-toggle {
 .iq-navbar-header {
 
     h1 {
-        font-size: clamp(1.5rem, 3vw, 2.25rem);
+        font-size: clamp(1.375rem, 2.4vw, 1.875rem);
     }
 }
 
@@ -1277,7 +1277,7 @@ $chart-contact: $info;
 
 .auth__heading {
     margin-bottom: $spacer * 0.5;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: $font-weight-semibold;
     color: $app-heading-color;
 }
