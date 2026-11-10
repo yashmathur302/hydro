@@ -70,7 +70,7 @@
     ]
   },
   "resources/js/admin.js": {
-    "file": "assets/admin-BuG8Hfqz.js",
+    "file": "assets/admin-D5vrkHu4.js",
     "name": "admin",
     "src": "resources/js/admin.js",
     "isEntry": true,
@@ -94,7 +94,7 @@
     "isEntry": true
   },
   "resources/scss/admin.scss": {
-    "file": "assets/admin-CJGsqc-u.css",
+    "file": "assets/admin-B-tUmlqW.css",
     "src": "resources/scss/admin.scss",
     "isEntry": true,
     "name": "admin",

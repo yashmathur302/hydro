@@ -424,11 +424,22 @@ button.sidebar-toggle {
     }
 }
 
+// Section tabs stick to the very top of the screen. Once pinned (is-stuck,
+// set by section-nav.js) a strip in the page colour sits behind them, so the
+// scrolling content never shows above or around the bar.
 .segmented {
     position: sticky;
-    top: $spacer;
+    top: -1px;
     z-index: 15;
     min-width: 0;
+    padding-block: $spacer * 0.75;
+    margin-block: -$spacer * 0.75;
+    transition: background-color 0.15s, box-shadow 0.15s;
+
+    &.is-stuck {
+        background: $body-bg;
+        box-shadow: 0 0.5rem 0.75rem -0.75rem rgba($dark, 0.25);
+    }
 }
 
 .segmented__list {
@@ -475,7 +486,9 @@ button.sidebar-toggle {
     padding: $spacer * 0.75 $spacer * 0.75 $spacer * 0.75 $spacer * 1.25;
     background: $white;
     border-radius: $border-radius-lg;
-    box-shadow: $box-shadow;
+    // The second shadow paints the gap under the floating bar in the page
+    // colour, so content scrolling behind never shows below it.
+    box-shadow: $box-shadow, 0 $spacer 0 0 $body-bg;
 }
 
 .savebar__icon {
