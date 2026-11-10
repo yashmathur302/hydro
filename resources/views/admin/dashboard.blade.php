@@ -1,13 +1,12 @@
 {{--
     Admin dashboard: live figures (cards), enquiry charts, recent enquiries and
-    the setup checklist. Figures come from App\Services\DashboardStatistics; the
+    a product summary. Figures come from App\Services\DashboardStatistics; the
     page refreshes them every minute from admin.dashboard.statistics
     (see resources/js/admin/dashboard-charts.js). Every chart also has a
     visually hidden data table for screen readers.
 --}}
 @php
     $totals = $statistics['totals'];
-    $remaining = $checklist->count() - $completedCount;
     $statCards = [
         ['key' => 'newEnquiries', 'label' => 'New enquiries', 'hint' => 'Waiting for a reply', 'icon' => 'inbox', 'tone' => 'primary'],
         ['key' => 'lastSevenDays', 'label' => 'Last 7 days', 'hint' => 'Enquiries and messages', 'icon' => 'mail', 'tone' => 'info'],
@@ -45,17 +44,9 @@
             @endforeach
         </div>
 
-        @if ($remaining > 0)
-            <div class="alert alert-primary d-flex flex-wrap align-items-center gap-2">
-                <x-admin.icon name="sparkle" class="icon-20 flex-shrink-0" />
-                <p class="mb-0 flex-grow-1">{{ $remaining }} {{ Str::plural('setting', $remaining) }} left before your website is ready to go live.</p>
-                <x-admin.button :href="route('admin.settings.edit')" variant="secondary" size="small" icon-end="arrow-right">Complete setup</x-admin.button>
-            </div>
-        @endif
-
         <div class="row g-3">
             <div class="col-lg-8">
-                <x-admin.card title="Enquiries in the last 30 days" description="Product enquiries and contact messages per day.">
+                <x-admin.card class="h-100" title="Enquiries in the last 30 days" description="Product enquiries and contact messages per day.">
                     <x-slot:actions>
                         <span class="d-flex gap-3 small chart-legend">
                             <span><span class="chart-legend__dot chart-legend__dot--product"></span>Product</span>
@@ -77,7 +68,7 @@
             </div>
 
             <div class="col-lg-4">
-                <x-admin.card title="Enquiry status">
+                <x-admin.card class="h-100" title="Enquiry status">
                     <figure class="chart chart--donut mb-0" data-chart="statuses" aria-labelledby="status-caption">
                         <figcaption class="visually-hidden" id="status-caption">Enquiries by status</figcaption>
                     </figure>
@@ -93,7 +84,7 @@
             </div>
 
             <div class="col-lg-8">
-                <x-admin.card title="Recent enquiries" :flush="$recentEnquiries->isNotEmpty()">
+                <x-admin.card class="h-100" title="Recent enquiries" :flush="$recentEnquiries->isNotEmpty()">
                     <x-slot:actions>
                         <a class="btn btn-sm btn-soft-primary" href="{{ route('admin.enquiries.index') }}">See all</a>
                     </x-slot:actions>
@@ -121,41 +112,13 @@
                 </x-admin.card>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-4 d-grid gap-3 align-content-start">
                 <x-admin.card title="Most enquired products" description="Last {{ \App\Services\DashboardStatistics::TOP_PRODUCTS_DAYS }} days.">
                     <figure class="chart chart--bars mb-0" data-chart="topProducts" aria-labelledby="top-caption">
                         <figcaption class="visually-hidden" id="top-caption">Products with the most enquiries</figcaption>
                     </figure>
                     <p class="text-secondary small mb-0" data-top-empty @if ($statistics['topProducts'] !== []) hidden @endif>No product enquiries in this period yet.</p>
                 </x-admin.card>
-            </div>
-        </div>
-
-        <div class="row g-3 mt-0">
-            <div class="col-lg-8">
-                <x-admin.card title="Setup checklist" :description="$completedCount.' of '.$checklist->count().' done'">
-                    <x-slot:actions>
-                        <a class="btn btn-sm btn-soft-primary" href="{{ route('admin.settings.edit') }}">Settings</a>
-                    </x-slot:actions>
-                    <progress class="setup-progress mb-3" max="{{ $checklist->count() }}" value="{{ $completedCount }}" aria-label="Setup progress">{{ $completedCount }} of {{ $checklist->count() }}</progress>
-                    <ul class="row row-cols-1 row-cols-md-2 g-2 list-unstyled mb-0">
-                        @foreach ($checklist as $item)
-                            <li class="col">
-                                <div class="d-flex justify-content-between align-items-center border rounded px-3 py-2">
-                                    <span>{{ $item['label'] }}</span>
-                                    @if ($item['done'])
-                                        <x-admin.badge variant="success">Done</x-admin.badge>
-                                    @else
-                                        <x-admin.badge>Not set</x-admin.badge>
-                                    @endif
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
-                </x-admin.card>
-            </div>
-
-            <div class="col-lg-4">
                 <x-admin.card title="Products" flush>
                     <x-slot:actions>
                         <a class="btn btn-sm btn-soft-primary" href="{{ route('admin.products.index') }}">See all</a>

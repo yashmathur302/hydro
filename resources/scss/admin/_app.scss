@@ -1004,6 +1004,11 @@ button.sidebar-toggle {
 // --------------------------------------------------------------------------
 // Dashboard: stat cards and charts
 // --------------------------------------------------------------------------
+// Dashboard cards sit in grid rows with gutters, so they need no margin of their own.
+[data-dashboard] .card {
+    margin-bottom: 0;
+}
+
 .stat-icon {
     display: grid;
     flex-shrink: 0;
@@ -1011,31 +1016,6 @@ button.sidebar-toggle {
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 50%;
-}
-
-.setup-progress {
-    width: 100%;
-    height: 0.5rem;
-    overflow: hidden;
-    appearance: none;
-    background: $gray-200;
-    border: 0;
-    border-radius: $border-radius-pill;
-
-    &::-webkit-progress-bar {
-        background: $gray-200;
-        border-radius: $border-radius-pill;
-    }
-
-    &::-webkit-progress-value {
-        background: $primary;
-        border-radius: $border-radius-pill;
-    }
-
-    &::-moz-progress-bar {
-        background: $primary;
-        border-radius: $border-radius-pill;
-    }
 }
 
 $chart-product: $primary;
