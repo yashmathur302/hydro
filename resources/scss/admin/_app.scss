@@ -119,8 +119,16 @@ button.sidebar-toggle {
 // --------------------------------------------------------------------------
 .sidebar .nav-count {
     margin-left: auto;
+    padding-inline: 0.5em;
     flex-shrink: 0;
     font-size: 0.6875rem;
+}
+
+.sidebar .nav-link .item-name {
+    min-width: 0;
+    margin-right: $spacer * 0.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .sidebar.sidebar-mini .nav-count {
@@ -179,6 +187,33 @@ button.sidebar-toggle {
 
 .sidebar + .main-content .iq-banner .iq-navbar-header .iq-header-img {
     height: 100%;
+    // Soft brand gradient with two gentle highlights (replaces the template's
+    // dark banner image).
+    background:
+        radial-gradient(60% 120% at 100% 0%, rgba($white, 0.22), transparent 60%),
+        radial-gradient(40% 90% at 15% 110%, rgba($white, 0.12), transparent 70%),
+        linear-gradient(120deg, $primary 0%, mix($primary, $white, 82%) 100%);
+}
+
+// The template scrolls the sidebar with a JavaScript plugin; plain CSS does it
+// here, so every menu item stays reachable on short screens.
+.sidebar.sidebar-base {
+    display: flex;
+    flex-direction: column;
+
+    .sidebar-header {
+        flex-shrink: 0;
+    }
+
+    .sidebar-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-color: $gray-300 transparent;
+        scrollbar-width: thin;
+    }
 }
 
 .iq-navbar-header {

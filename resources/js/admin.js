@@ -3,7 +3,6 @@
  * attributes, so pages only get the behaviour they actually contain.
  */
 import '@fontsource-variable/inter/wght.css';
-import './admin/assets';
 import { initSidebar } from './admin/sidebar';
 import { initDropdowns } from './admin/dropdown';
 import { initSectionNav } from './admin/section-nav';

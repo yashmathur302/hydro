@@ -8,6 +8,11 @@
 
 // Configuration (overrides must come before the vendor defaults)
 $enable-important-utilities: false;
+// A lighter, calmer blue than the template's #3a57e8 (white text still passes
+// WCAG AA on it), and a slate grey instead of the template's near-black navy
+// "secondary" for muted text.
+$blue: #4b6fe0;
+$secondary: #64748b;
 $font-family-sans-serif: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
 @import "vendor/hope-ui/bootstrap/functions";

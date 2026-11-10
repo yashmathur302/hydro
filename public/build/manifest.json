@@ -69,10 +69,6 @@
       "site.css"
     ]
   },
-  "resources/images/admin/header-banner.webp": {
-    "file": "assets/header-banner-Gj75mfsL.webp",
-    "src": "resources/images/admin/header-banner.webp"
-  },
   "resources/js/admin.js": {
     "file": "assets/admin-BuG8Hfqz.js",
     "name": "admin",
@@ -98,7 +94,7 @@
     "isEntry": true
   },
   "resources/scss/admin.scss": {
-    "file": "assets/admin-I7aUwVPt.css",
+    "file": "assets/admin-CJGsqc-u.css",
     "src": "resources/scss/admin.scss",
     "isEntry": true,
     "name": "admin",

@@ -39,7 +39,7 @@
                     <li><hr class="hr-horizontal"></li>
                     <x-admin.nav-heading>Inbox</x-admin.nav-heading>
                     <x-admin.nav-link :href="route('admin.enquiries.index')" icon="inbox" :count="$unreadCounts['product']" :active="request()->routeIs('admin.enquiries.index') || $enquiryType === \App\Enums\EnquiryType::Product">Enquiries</x-admin.nav-link>
-                    <x-admin.nav-link :href="route('admin.contact-messages.index')" icon="mail" :count="$unreadCounts['contact']" :active="request()->routeIs('admin.contact-messages.*') || $enquiryType === \App\Enums\EnquiryType::Contact">Contact messages</x-admin.nav-link>
+                    <x-admin.nav-link :href="route('admin.contact-messages.index')" icon="mail" :count="$unreadCounts['contact']" :active="request()->routeIs('admin.contact-messages.*') || $enquiryType === \App\Enums\EnquiryType::Contact">Messages</x-admin.nav-link>
 
                     <li><hr class="hr-horizontal"></li>
                     <x-admin.nav-heading>Content</x-admin.nav-heading>
@@ -106,9 +106,7 @@
                 <div class="container-fluid iq-container">
                     {{ $header ?? '' }}
                 </div>
-                <div class="iq-header-img">
-                    <img src="{{ Vite::asset('resources/images/admin/header-banner.webp') }}" alt="" class="img-fluid w-100 h-100">
-                </div>
+                <div class="iq-header-img" aria-hidden="true"></div>
             </div>
         </div>
 
