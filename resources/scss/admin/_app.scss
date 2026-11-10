@@ -80,10 +80,6 @@ main:focus {
     border-radius: $border-radius;
 }
 
-.auth-brand {
-    justify-content: center;
-}
-
 // The small logo is only for the collapsed sidebar.
 .navbar-brand .logo-mini {
     display: none;
@@ -1199,14 +1195,121 @@ $chart-contact: $info;
 // --------------------------------------------------------------------------
 // Sign-in pages
 // --------------------------------------------------------------------------
-.login-content {
-    .auth-card .form-group {
-        margin-bottom: 0;
+// One spacing scale for the whole sign-in column: 0.5 / 1.25 / 2 / 3 rem.
+.auth {
+    display: grid;
+    min-height: 100vh;
+    background: $white;
+
+    @include media-breakpoint-up(lg) {
+        grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
     }
 }
 
-.auth-side {
-    height: 100%;
+.auth__panel {
+    display: flex;
+    flex-direction: column;
+    padding: $spacer * 2 $spacer * 1.25;
+
+    @include media-breakpoint-up(sm) {
+        padding: $spacer * 3;
+    }
+}
+
+.auth__form {
+    width: 100%;
+    max-width: 24rem;
+    margin: auto;
+}
+
+.auth__brand {
+    display: inline-flex;
+    margin: 0 0 $spacer * 3;
+
+    .brand-logo {
+        max-width: 11rem;
+        max-height: 3.25rem;
+    }
+
+    .logo-title {
+        margin: 0 0 0 $spacer * 0.5;
+        color: $app-heading-color;
+    }
+}
+
+.auth__heading {
+    margin-bottom: $spacer * 0.5;
+    font-size: 1.75rem;
+    font-weight: $font-weight-semibold;
+    color: $app-heading-color;
+}
+
+.auth__intro {
+    margin-bottom: $spacer * 2;
+    color: $body-color;
+}
+
+.auth__fields {
+    display: grid;
+    gap: $spacer * 1.25;
+}
+
+.auth__aside-link {
+    margin-top: $spacer * 0.5;
+    font-size: $font-size-sm;
+    text-align: right;
+}
+
+.auth__submit {
+    padding-block: $spacer * 0.625;
+    margin-top: $spacer * 0.5;
+}
+
+.auth__back {
+    margin: 0;
+    font-size: $font-size-sm;
+    text-align: center;
+}
+
+.auth__footer {
+    margin: $spacer * 2 0 0;
+    font-size: $font-size-sm;
+    color: $body-color;
+    text-align: center;
+}
+
+// Wide screens: the product illustration on a soft tint of the brand colour.
+.auth__aside {
+    display: none;
+
+    @include media-breakpoint-up(lg) {
+        display: grid;
+        place-items: center;
+        padding: $spacer * 3;
+        margin: $spacer;
+        background:
+            radial-gradient(70% 55% at 50% 45%, rgba($white, 0.95), transparent 75%),
+            tint-color($primary, 90%);
+        border-radius: $border-radius-xl;
+    }
+}
+
+.auth-illustration {
+    width: 100%;
+    max-width: 36rem;
+    height: auto;
+}
+
+// Password eye button matches the input border instead of a dark outline.
+.input-group .password-toggle {
+    --#{$prefix}btn-color: #{$secondary};
+    --#{$prefix}btn-border-color: #{$input-border-color};
+    --#{$prefix}btn-hover-color: #{$primary};
+    --#{$prefix}btn-hover-bg: #{$gray-100};
+    --#{$prefix}btn-hover-border-color: #{$input-border-color};
+    --#{$prefix}btn-active-color: #{$primary};
+    --#{$prefix}btn-active-bg: #{$gray-100};
+    --#{$prefix}btn-active-border-color: #{$input-border-color};
 }
 
 // --------------------------------------------------------------------------

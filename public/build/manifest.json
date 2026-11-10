@@ -69,10 +69,6 @@
       "site.css"
     ]
   },
-  "resources/images/admin/auth-side.webp": {
-    "file": "assets/auth-side-C0tmcrEX.webp",
-    "src": "resources/images/admin/auth-side.webp"
-  },
   "resources/images/admin/header-banner.webp": {
     "file": "assets/header-banner-Gj75mfsL.webp",
     "src": "resources/images/admin/header-banner.webp"
@@ -102,7 +98,7 @@
     "isEntry": true
   },
   "resources/scss/admin.scss": {
-    "file": "assets/admin-CpXhLxGM.css",
+    "file": "assets/admin-Adl3ycaW.css",
     "src": "resources/scss/admin.scss",
     "isEntry": true,
     "name": "admin",

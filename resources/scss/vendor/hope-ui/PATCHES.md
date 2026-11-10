@@ -1,8 +1,7 @@
 # Changes to the vendored Hope UI source
 
 Source: https://github.com/iqonicdesignofficial/hope-ui-html-admin-dashboard
-(`src/assets/scss/bootstrap`, `src/assets/scss/hope-ui-design-system` and
-`src/assets/scss/custom/auth/_authentication.scss`),
+(`src/assets/scss/bootstrap` and `src/assets/scss/hope-ui-design-system`),
 MIT licence (see LICENSE). Copied unchanged except:
 
 1. Every literal `!important` was removed (project rule: no `!important`).
