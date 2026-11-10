@@ -91,7 +91,7 @@ final class HomePageTest extends TestCase
 
     public function test_menu_pages_exist_and_are_not_indexed_yet(): void
     {
-        foreach (['about', 'products.index', 'certificates', 'contact'] as $routeName) {
+        foreach (['products.index', 'contact'] as $routeName) {
             $this->get(route($routeName))
                 ->assertOk()
                 ->assertSee('<meta name="robots" content="noindex, nofollow">', false);

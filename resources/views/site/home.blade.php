@@ -5,5 +5,6 @@
     @include('site.home.industries')
     @include('site.home.stats')
     @include('site.home.why-us')
+    @include('site.home.certificates')
     @include('site.home.clients')
 </x-site.layout>

@@ -6,6 +6,7 @@ namespace App\Http\Requests\Admin;
 
 use App\Enums\AboutSection;
 use App\Http\Requests\Admin\Concerns\HandlesPageSectionImages;
+use App\Http\Requests\Admin\Concerns\HasPageBannerFields;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
@@ -15,6 +16,7 @@ use Illuminate\Foundation\Http\FormRequest;
 final class UpdateAboutPageRequest extends FormRequest
 {
     use HandlesPageSectionImages;
+    use HasPageBannerFields;
 
     public function authorize(): bool
     {
@@ -26,10 +28,7 @@ final class UpdateAboutPageRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'banner.eyebrow' => ['nullable', 'string', 'max:80'],
-            'banner.title' => ['required', 'string', 'max:80'],
-        ] + $this->imageRules(AboutSection::cases());
+        return $this->bannerRules() + $this->imageRules(AboutSection::cases());
     }
 
     /**
@@ -37,11 +36,7 @@ final class UpdateAboutPageRequest extends FormRequest
      */
     public function attributes(): array
     {
-        return [
-            'banner.eyebrow' => 'small text above the title',
-            'banner.title' => 'page title',
-            'banner_background_image' => 'background photo',
-        ];
+        return $this->bannerAttributes();
     }
 
     /**

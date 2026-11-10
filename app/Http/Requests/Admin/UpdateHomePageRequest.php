@@ -73,6 +73,10 @@ final class UpdateHomePageRequest extends FormRequest
             'why_us.footer_text' => ['nullable', 'string', 'max:200'],
             'why_us.link_label' => ['nullable', 'string', 'max:40'],
             'why_us.link_url' => $link,
+
+            'certificates.eyebrow' => ['nullable', 'string', 'max:80'],
+            'certificates.heading' => ['required', 'string', 'max:120'],
+            'certificates.link_label' => ['nullable', 'string', 'max:40'],
         ];
 
         $rules += $this->imageRules(HomeSection::cases());
@@ -103,6 +107,7 @@ final class UpdateHomePageRequest extends FormRequest
             'about.heading' => 'about heading',
             'industries.heading' => 'industries heading',
             'why_us.heading' => 'why choose us heading',
+            'certificates.heading' => 'certificates heading',
         ];
     }
 

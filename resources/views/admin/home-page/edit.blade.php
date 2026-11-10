@@ -24,6 +24,7 @@
                 <li><a class="segmented__item" href="#industries" data-section-link>Industries</a></li>
                 <li><a class="segmented__item" href="#counters" data-section-link>Counters</a></li>
                 <li><a class="segmented__item" href="#why-us" data-section-link>Why choose us</a></li>
+                <li><a class="segmented__item" href="#certificates" data-section-link>Certificates</a></li>
             </ul>
         </nav>
 
@@ -141,6 +142,17 @@
                         <x-admin.form.input name="why_us[link_label]" label="Link text" :value="$whyUs['link_label']" maxlength="40" />
                         <x-admin.form.input name="why_us[link_url]" label="Link" :value="$whyUs['link_url']" maxlength="255" />
                     </div>
+                </div>
+            </x-admin.card>
+
+            <x-admin.card id="certificates" title="Certificates" description="Shows the first {{ \App\Models\Certificate::HOME_LIMIT }} active certificates. Upload them in Certificates; the section is hidden while there are none.">
+                <div class="form-stack">
+                    <div class="form-grid">
+                        <x-admin.form.input name="certificates[eyebrow]" label="Small text above the heading" :value="$certificates['eyebrow']" maxlength="80" />
+                        <x-admin.form.input name="certificates[heading]" label="Heading" :value="$certificates['heading']" required maxlength="120" />
+                    </div>
+                    <x-admin.form.input name="certificates[link_label]" label="Link text" :value="$certificates['link_label']" maxlength="40" hint="Link to the Certificates page under the cards. Leave empty to hide." />
+                    <p class="mb-0"><a href="{{ route('admin.certificates.index') }}">Manage certificates</a></p>
                 </div>
             </x-admin.card>
 

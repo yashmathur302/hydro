@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Admin\CertificateController;
+use App\Http\Controllers\Admin\CertificatesPageController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EnquiryController;
@@ -63,6 +65,9 @@ Route::middleware(['auth', 'auth.session'])->group(function (): void {
 
     Route::resource('industries', IndustryController::class)->except('show');
     Route::resource('clients', ClientController::class)->except('show');
+    Route::resource('certificates', CertificateController::class)->except('show');
+    Route::get('certificates-page', [CertificatesPageController::class, 'edit'])->name('certificates-page.edit');
+    Route::put('certificates-page', [CertificatesPageController::class, 'update'])->name('certificates-page.update');
 
     Route::resource('pages', PageController::class)->except('show');
 

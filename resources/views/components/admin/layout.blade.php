@@ -47,6 +47,7 @@
                     <x-admin.nav-link :href="route('admin.about-page.edit')" icon="info" :active="request()->routeIs('admin.about-page.*')">About Us page</x-admin.nav-link>
                     <x-admin.nav-link :href="route('admin.industries.index')" icon="factory" :active="request()->routeIs('admin.industries.*')">Industries</x-admin.nav-link>
                     <x-admin.nav-link :href="route('admin.clients.index')" icon="handshake" :active="request()->routeIs('admin.clients.*')">Clients</x-admin.nav-link>
+                    <x-admin.nav-link :href="route('admin.certificates.index')" icon="award" :active="request()->routeIs('admin.certificates.*', 'admin.certificates-page.*')">Certificates</x-admin.nav-link>
                     <x-admin.nav-link :href="route('admin.pages.index')" icon="file" :active="request()->routeIs('admin.pages.*')">Static pages</x-admin.nav-link>
                     <x-admin.nav-link :href="route('admin.settings.edit')" icon="settings" :active="request()->routeIs('admin.settings.*')">Site settings</x-admin.nav-link>
                 </ul>

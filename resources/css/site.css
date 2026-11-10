@@ -160,6 +160,19 @@ main:focus {
     display: none;
 }
 
+/* Text for screen readers only. */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* --------------------------------------------------------------------------
    3. Shared components: buttons, eyebrow, titles, lists, placeholders
    -------------------------------------------------------------------------- */
@@ -1306,6 +1319,150 @@ main:focus {
         grid-template-columns: none;
         grid-auto-columns: minmax(0, 1fr);
         grid-auto-flow: column;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   10b. Certificates: cards (home section and Certificates page)
+   -------------------------------------------------------------------------- */
+.certificate-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    max-width: 63.5rem;
+    margin-inline: auto;
+}
+
+.certificate-card,
+.certificate-card__link {
+    height: 100%;
+}
+
+.certificate-card__link {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    color: inherit;
+    background: var(--color-surface);
+    border: 1px solid #eef0f1;
+    border-radius: 6px;
+    box-shadow: 0 12px 30px rgb(13 43 49 / 0.05);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.certificate-card__link:hover {
+    box-shadow: 0 16px 36px rgb(13 43 49 / 0.1);
+    transform: translateY(-4px);
+}
+
+.certificate-card__link:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+/* Portrait frame like a printed certificate; the whole page stays visible. */
+.certificate-card__frame {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 5;
+    background: var(--color-surface-alt);
+    border-bottom: 1px solid #eef0f1;
+}
+
+/* Positioned so a tall image can never stretch the frame past 4:5. */
+.certificate-card__image {
+    position: absolute;
+    inset: 1.25rem;
+    width: calc(100% - 2.5rem);
+    height: calc(100% - 2.5rem);
+    object-fit: contain;
+    filter: drop-shadow(0 6px 14px rgb(13 43 49 / 0.14));
+}
+
+.certificate-card__frame--placeholder {
+    gap: 0.75rem;
+    align-content: center;
+    background:
+        radial-gradient(70% 60% at 50% 40%, var(--color-white), transparent 75%),
+        var(--color-band);
+}
+
+.certificate-card__icon {
+    width: 5rem;
+    height: 5rem;
+    color: var(--color-primary);
+}
+
+.certificate-card__type {
+    padding: 0.125rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-white);
+    background: var(--color-accent);
+    border-radius: 3px;
+}
+
+.certificate-card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding: 1.25rem 1.5rem 1.5rem;
+    text-align: center;
+}
+
+.certificate-card__name {
+    font-family: var(--font-heading);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--color-heading);
+}
+
+.certificate-card__issuer {
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+}
+
+.certificate-card__action {
+    display: inline-flex;
+    gap: 0.375rem;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0.75rem;
+    margin-top: auto;
+    font-weight: 600;
+    color: var(--color-accent);
+}
+
+.certificate-card__link:hover .certificate-card__action {
+    color: var(--color-accent-dark);
+}
+
+.certificates__empty {
+    padding-block: 2rem;
+    font-size: 1.0625rem;
+    color: var(--color-muted);
+    text-align: center;
+}
+
+.certificates__more {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    text-align: center;
+}
+
+@media (min-width: 576px) {
+    .certificate-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 992px) {
+    .certificate-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.875rem;
     }
 }
 

@@ -134,6 +134,7 @@ final class HomePageManagementTest extends TestCase
             'about' => ['heading' => 'About heading', 'points' => ['First point', '', 'Second point']],
             'industries' => ['heading' => 'Industries heading'],
             'why_us' => ['heading' => 'Why heading'],
+            'certificates' => ['heading' => 'Certificates heading'],
         ], $overrides);
     }
 }

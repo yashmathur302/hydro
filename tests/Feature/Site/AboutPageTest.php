@@ -20,7 +20,21 @@ final class AboutPageTest extends TestCase
             ->assertSee('<h1 class="page-banner__title" id="page-title">About Us</h1>', false)
             ->assertSee('Pipeline Pigging Experts')
             ->assertSee('page-banner--no-image', false)
-            ->assertSee('<title>About Us', false);
+            ->assertSee('<title>About Us', false)
+            ->assertDontSee('noindex', false);
+    }
+
+    public function test_about_page_repeats_the_home_sections_without_the_more_about_us_button(): void
+    {
+        \App\Models\Client::factory()->create(['name' => 'Acme Pipelines']);
+
+        $this->get(route('about'))
+            ->assertOk()
+            ->assertSeeInOrder(['page-banner', 'about-heading', 'why-us-heading', 'Acme Pipelines', 'Key figures'], false)
+            ->assertSee('Pigging Products Built To Perform In Every Pipeline')
+            ->assertDontSee('More About Us');
+
+        $this->get(route('home'))->assertSee('More About Us');
     }
 
     public function test_banner_text_is_escaped_and_empty_eyebrow_is_hidden(): void

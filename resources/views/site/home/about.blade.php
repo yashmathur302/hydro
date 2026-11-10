@@ -77,7 +77,7 @@
                     </div>
                 @endif
 
-                @if ($about['button_label'] && $about['button_url'])
+                @if (($showButton ?? true) && $about['button_label'] && $about['button_url'])
                     <a class="btn btn--dark" href="{{ $about['button_url'] }}">{{ $about['button_label'] }}</a>
                 @endif
             </div>

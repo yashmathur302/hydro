@@ -1,4 +1,4 @@
-# Uploaded files only (product images, logos, brochures). Never execute anything here.
+# Uploaded files only (product images, logos, brochures, certificates). Never execute anything here.
 Options -Indexes -ExecCGI
 <IfModule mod_php.c>
     php_flag engine off
@@ -14,3 +14,12 @@ RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .phar
 <FilesMatch "\.(?i:php\d?|phtml|phar|pl|py|cgi|sh|htaccess)$">
     Require all denied
 </FilesMatch>
+
+# Certificate and brochure PDFs open in the browser tab instead of downloading.
+AddType application/pdf .pdf
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    <FilesMatch "\.(?i:pdf)$">
+        Header set Content-Disposition "inline"
+    </FilesMatch>
+</IfModule>

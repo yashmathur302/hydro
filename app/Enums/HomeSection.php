@@ -17,6 +17,7 @@ enum HomeSection: string implements EditablePageSection
     case Industries = 'industries';
     case Stats = 'stats';
     case WhyUs = 'why_us';
+    case Certificates = 'certificates';
 
     public const MAX_ABOUT_POINTS = 5;
 
@@ -37,6 +38,7 @@ enum HomeSection: string implements EditablePageSection
             self::Industries => 'Industries',
             self::Stats => 'Counters',
             self::WhyUs => 'Why choose us',
+            self::Certificates => 'Certificates',
         };
     }
 
@@ -101,6 +103,11 @@ enum HomeSection: string implements EditablePageSection
                 'link_label' => 'View our products',
                 'link_url' => '/products',
             ],
+            self::Certificates => [
+                'eyebrow' => 'Quality You Can Verify',
+                'heading' => 'Certified To Recognised Standards',
+                'link_label' => 'View All Certificates',
+            ],
         };
     }
 
@@ -123,7 +130,7 @@ enum HomeSection: string implements EditablePageSection
                 'signature_image' => 400,
                 'decoration_image' => 700,
             ],
-            self::Industries, self::WhyUs => [],
+            self::Industries, self::WhyUs, self::Certificates => [],
             self::Stats => [
                 'word_image' => 1600,
             ],

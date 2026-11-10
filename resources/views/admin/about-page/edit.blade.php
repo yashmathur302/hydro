@@ -1,9 +1,3 @@
-@php
-    use App\Http\Requests\Admin\UpdateAboutPageRequest as Rules;
-
-    $maxMb = Rules::IMAGE_MAX_KILOBYTES / 1024;
-@endphp
-
 <x-admin.layout title="About Us page">
     <x-slot:header>
         <x-admin.page-header title="About Us page" description="Text and images of the About Us page. The header and footer are shared with the whole website.">
@@ -18,14 +12,13 @@
 
             <x-admin.error-summary />
 
-            <x-admin.card id="banner" title="Banner" description="The photo strip under the header with the page title.">
-                <div class="form-stack">
-                    <div class="form-grid">
-                        <x-admin.form.input name="banner[eyebrow]" label="Small text above the title" :value="$banner['eyebrow']" maxlength="80" hint="Shown in orange. Leave empty to hide." />
-                        <x-admin.form.input name="banner[title]" label="Page title" :value="$banner['title']" required maxlength="80" />
-                    </div>
-                    <x-admin.form.image-upload name="banner_background_image" label="Background photo" :current-url="$banner['background_image_url']" accept="image/jpeg,image/png,image/webp" remove-name="remove_banner_background_image" hint="Wide landscape photo, at least 1920 × 500 px. JPG, PNG or WebP up to {{ $maxMb }} MB. A dark overlay keeps the title readable." />
-                </div>
+            @include('admin.partials.page-banner-card')
+
+            <x-admin.card title="Other sections" description="Shown on this page with the same content as the home page.">
+                <ul class="mb-0 ps-3 d-grid gap-2">
+                    <li>About us, Why choose us and Counters: edit them in <a href="{{ route('admin.home-page.edit') }}">Home page</a>.</li>
+                    <li>Client logos: edit them in <a href="{{ route('admin.clients.index') }}">Clients</a>.</li>
+                </ul>
             </x-admin.card>
 
             <div class="savebar">

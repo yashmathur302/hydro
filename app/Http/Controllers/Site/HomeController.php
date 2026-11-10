@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Enums\HomeSection;
 use App\Http\Controllers\Controller;
+use App\Models\Certificate;
 use App\Models\Client;
 use App\Models\Industry;
 use App\Services\PageSectionService;
@@ -27,6 +28,8 @@ final class HomeController extends Controller
             'stats' => $pageSections->section(HomeSection::Stats),
             'whyUs' => $pageSections->section(HomeSection::WhyUs),
             'clients' => Client::query()->active()->ordered()->get(),
+            'certificatesSection' => $pageSections->section(HomeSection::Certificates),
+            'certificates' => Certificate::query()->active()->ordered()->limit(Certificate::HOME_LIMIT)->get(),
         ]);
     }
 }

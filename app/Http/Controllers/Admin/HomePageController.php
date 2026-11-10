@@ -21,6 +21,7 @@ final class HomePageController extends Controller
             'industries' => $pageSections->section(HomeSection::Industries),
             'stats' => $pageSections->section(HomeSection::Stats),
             'whyUs' => $pageSections->section(HomeSection::WhyUs),
+            'certificates' => $pageSections->section(HomeSection::Certificates),
         ]);
     }
 
