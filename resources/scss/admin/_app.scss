@@ -1216,15 +1216,25 @@ $chart-contact: $info;
     }
 }
 
+// The form sits in a card, as in the original Hope UI sign-in page.
 .auth__form {
     width: 100%;
-    max-width: 24rem;
+    max-width: 27rem;
+    padding: $spacer * 2 $spacer * 1.25;
     margin: auto;
+    background: $white;
+    border: $border-width solid $border-color;
+    border-radius: $border-radius-lg;
+    box-shadow: 0 0.625rem 1.875rem rgba($dark, 0.06);
+
+    @include media-breakpoint-up(sm) {
+        padding: $spacer * 2.5;
+    }
 }
 
 .auth__brand {
     display: inline-flex;
-    margin: 0 0 $spacer * 3;
+    margin: 0 0 $spacer * 2;
 
     .brand-logo {
         max-width: 11rem;
