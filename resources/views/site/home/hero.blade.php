@@ -26,7 +26,7 @@
 
             <div class="hero__actions">
                 @if ($hero['button_label'] && $hero['button_url'])
-                    <a class="btn btn--accent" href="{{ $hero['button_url'] }}">{{ $hero['button_label'] }}</a>
+                    <a class="btn btn--accent" href="{{ \App\Support\SiteLink::href($hero['button_url']) }}">{{ $hero['button_label'] }}</a>
                 @endif
                 @if ($phone)
                     <a class="call-block" href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}">

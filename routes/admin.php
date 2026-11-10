@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EnquiryController;
 use App\Http\Controllers\Admin\HomePageController;
 use App\Http\Controllers\Admin\IndustryController;
+use App\Http\Controllers\Admin\LayoutController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
@@ -60,6 +61,8 @@ Route::middleware(['auth', 'auth.session'])->group(function (): void {
 
     Route::get('home-page', [HomePageController::class, 'edit'])->name('home-page.edit');
     Route::put('home-page', [HomePageController::class, 'update'])->name('home-page.update');
+    Route::get('header-footer', [LayoutController::class, 'edit'])->name('layout.edit');
+    Route::put('header-footer', [LayoutController::class, 'update'])->name('layout.update');
     Route::get('about-page', [AboutPageController::class, 'edit'])->name('about-page.edit');
     Route::put('about-page', [AboutPageController::class, 'update'])->name('about-page.update');
 

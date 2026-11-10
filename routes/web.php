@@ -8,6 +8,8 @@ use App\Http\Controllers\Site\ContactMessageController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\PlaceholderPageController;
 use App\Http\Controllers\Site\ProductEnquiryController;
+use App\Http\Controllers\Site\StaticPageController;
+use App\Models\Page;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,3 +30,10 @@ Route::middleware('throttle:enquiries')->group(function (): void {
     Route::post('enquiries', [ProductEnquiryController::class, 'store'])->name('enquiries.store');
     Route::post('contact', [ContactMessageController::class, 'store'])->name('contact.store');
 });
+
+// Static pages (privacy policy, terms, ...). Must stay last: it matches any
+// single-segment path that no route above has claimed. Reserved paths (such
+// as /admin, registered after this file) are excluded.
+Route::get('{slug}', StaticPageController::class)
+    ->where('slug', '(?!(?:'.implode('|', array_map('preg_quote', Page::RESERVED_SLUGS)).')$)[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->name('pages.show');

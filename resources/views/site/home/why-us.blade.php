@@ -24,7 +24,7 @@
                 <p class="why-us__footer">
                     {{ $whyUs['footer_text'] }}
                     @if ($whyUs['link_label'] && $whyUs['link_url'])
-                        <a class="why-us__link" href="{{ $whyUs['link_url'] }}">{{ $whyUs['link_label'] }}<span class="why-us__plus" aria-hidden="true">+</span></a>
+                        <a class="why-us__link" href="{{ \App\Support\SiteLink::href($whyUs['link_url']) }}">{{ $whyUs['link_label'] }}<span class="why-us__plus" aria-hidden="true">+</span></a>
                     @endif
                 </p>
             @endif

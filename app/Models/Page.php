@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * A static content page such as the privacy policy. Content is Markdown.
+ * A static content page such as the privacy policy, shown at /{slug}.
+ * Content is Markdown.
  *
  * @property int $id
  * @property string $title
@@ -43,9 +44,27 @@ class Page extends Model
         'meta_keywords',
     ];
 
+    /**
+     * First path segments used by other parts of the site; a page may not use
+     * them as its slug.
+     */
+    public const RESERVED_SLUGS = [
+        'about-us', 'products', 'certificates', 'contact-us', 'contact', 'enquiries',
+        'admin', 'login', 'logout', 'build', 'storage', 'uploads', 'up', 'vendor',
+        'robots', 'sitemap', 'favicon',
+    ];
+
     protected function slugSourceColumn(): string
     {
         return 'title';
+    }
+
+    /**
+     * @return list<string>
+     */
+    protected function reservedSlugs(): array
+    {
+        return self::RESERVED_SLUGS;
     }
 
     #[Scope]

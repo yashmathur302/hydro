@@ -78,7 +78,7 @@
                 @endif
 
                 @if (($showButton ?? true) && $about['button_label'] && $about['button_url'])
-                    <a class="btn btn--dark" href="{{ $about['button_url'] }}">{{ $about['button_label'] }}</a>
+                    <a class="btn btn--dark" href="{{ \App\Support\SiteLink::href($about['button_url']) }}">{{ $about['button_label'] }}</a>
                 @endif
             </div>
         </div>

@@ -1,15 +1,16 @@
 /**
- * Add/remove rows in a repeatable field group (product specifications).
- * New rows are cloned from the first row; field names are renumbered so the
- * submitted order matches the order on screen.
+ * Add/remove rows in a repeatable field group (product specifications, menu
+ * items). New rows are cloned from the first row; field names are renumbered
+ * as <data-repeater-name>[index][field] (ids <data-repeater-id-prefix>-index-field)
+ * so the submitted order matches the order on screen.
  */
-function renumber(rowsContainer) {
+function renumber(rowsContainer, name, idPrefix) {
     rowsContainer.querySelectorAll('[data-repeater-row]').forEach((row, index) => {
         row.querySelectorAll('[data-repeater-field]').forEach((input) => {
             const field = input.dataset.repeaterField;
-            const id = `spec-${index}-${field}`;
+            const id = `${idPrefix}-${index}-${field}`;
 
-            input.name = `specifications[${index}][${field}]`;
+            input.name = `${name}[${index}][${field}]`;
             input.id = id;
             input.previousElementSibling?.setAttribute('for', id);
         });
@@ -21,6 +22,8 @@ export function initRepeaters() {
         const rows = repeater.querySelector('[data-repeater-rows]');
         const addButton = repeater.querySelector('[data-repeater-add]');
         const max = Number(repeater.dataset.repeaterMax) || Infinity;
+        const name = repeater.dataset.repeaterName || 'specifications';
+        const idPrefix = repeater.dataset.repeaterIdPrefix || 'spec';
         const template = rows.querySelector('[data-repeater-row]').cloneNode(true);
 
         const updateAddButton = () => {
@@ -37,7 +40,7 @@ export function initRepeaters() {
             row.querySelectorAll('.field__error').forEach((error) => error.remove());
 
             rows.append(row);
-            renumber(rows);
+            renumber(rows, name, idPrefix);
             updateAddButton();
             row.querySelector('input')?.focus();
         });
@@ -59,7 +62,7 @@ export function initRepeaters() {
                 row.remove();
             }
 
-            renumber(rows);
+            renumber(rows, name, idPrefix);
             updateAddButton();
             addButton.focus();
         });

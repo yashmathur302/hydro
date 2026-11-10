@@ -7,6 +7,7 @@ namespace App\Http\Requests\Admin;
 use App\Http\Requests\Concerns\ValidatesSeoFields;
 use App\Models\Page;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 final class SavePageRequest extends FormRequest
 {
@@ -26,7 +27,7 @@ final class SavePageRequest extends FormRequest
 
         return [
             'title' => ['required', 'string', 'max:150'],
-            'slug' => $this->slugRules('pages', $page instanceof Page ? $page->id : null),
+            'slug' => [...$this->slugRules('pages', $page instanceof Page ? $page->id : null), Rule::notIn(Page::RESERVED_SLUGS)],
             'content' => ['nullable', 'string', 'max:100000'],
             'is_active' => ['nullable', 'boolean'],
             ...$this->seoRules(),
@@ -38,7 +39,10 @@ final class SavePageRequest extends FormRequest
      */
     public function messages(): array
     {
-        return ['slug.regex' => $this->slugMessage()];
+        return [
+            'slug.regex' => $this->slugMessage(),
+            'slug.not_in' => 'This address is used by another part of the website. Choose a different one.',
+        ];
     }
 
     /**

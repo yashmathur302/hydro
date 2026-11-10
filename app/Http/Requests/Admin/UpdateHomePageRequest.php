@@ -6,7 +6,9 @@ namespace App\Http\Requests\Admin;
 
 use App\Enums\FeatureIcon;
 use App\Enums\HomeSection;
+use App\Http\Requests\Admin\Concerns\CleansRepeatedRows;
 use App\Http\Requests\Admin\Concerns\HandlesPageSectionImages;
+use App\Support\SiteLink;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -16,12 +18,8 @@ use Illuminate\Validation\Rule;
  */
 final class UpdateHomePageRequest extends FormRequest
 {
+    use CleansRepeatedRows;
     use HandlesPageSectionImages;
-
-    /**
-     * Relative path ("/products") or an http(s) URL. Blocks javascript: and similar schemes.
-     */
-    private const LINK_PATTERN = '/^(\/[^\s]*|https?:\/\/[^\s]+)$/';
 
     public function authorize(): bool
     {
@@ -33,7 +31,7 @@ final class UpdateHomePageRequest extends FormRequest
      */
     public function rules(): array
     {
-        $link = ['nullable', 'string', 'max:255', 'regex:'.self::LINK_PATTERN];
+        $link = ['nullable', 'string', 'max:255', 'regex:'.SiteLink::PATTERN];
 
         $rules = [
             'hero.eyebrow' => ['nullable', 'string', 'max:80'],
@@ -136,27 +134,5 @@ final class UpdateHomePageRequest extends FormRequest
         }
 
         return $text;
-    }
-
-    /**
-     * Keep only rows whose required field is filled, with just the known keys, in order.
-     *
-     * @param  array<int|string, mixed>  $rows
-     * @param  list<string>  $keys
-     * @return list<array<string, string>>
-     */
-    private function filledRows(array $rows, string $requiredKey, array $keys): array
-    {
-        $clean = [];
-
-        foreach ($rows as $row) {
-            if (! is_array($row) || blank($row[$requiredKey] ?? null)) {
-                continue;
-            }
-
-            $clean[] = array_map(static fn (string $key): string => (string) ($row[$key] ?? ''), array_combine($keys, $keys));
-        }
-
-        return $clean;
     }
 }

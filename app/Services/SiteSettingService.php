@@ -47,6 +47,24 @@ final class SiteSettingService
     }
 
     /**
+     * Social profile links that are filled in, keyed by icon name.
+     *
+     * @return array<string, array{label: string, url: string}>
+     */
+    public function socialLinks(): array
+    {
+        $links = [
+            'facebook' => ['label' => 'Facebook', 'url' => $this->get(SiteSettingKey::FacebookUrl)],
+            'linkedin' => ['label' => 'LinkedIn', 'url' => $this->get(SiteSettingKey::LinkedinUrl)],
+            'x' => ['label' => 'X (Twitter)', 'url' => $this->get(SiteSettingKey::XUrl)],
+            'youtube' => ['label' => 'YouTube', 'url' => $this->get(SiteSettingKey::YoutubeUrl)],
+            'instagram' => ['label' => 'Instagram', 'url' => $this->get(SiteSettingKey::InstagramUrl)],
+        ];
+
+        return array_filter($links, static fn (array $link): bool => $link['url'] !== null);
+    }
+
+    /**
      * @return array<string, string|null> setting values keyed by SiteSettingKey value
      */
     public function all(): array

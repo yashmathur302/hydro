@@ -1,6 +1,6 @@
 {{--
     Public website shell. Every page passes a SeoMeta object built with
-    App\Support\Seo\SeoMetaFactory. The footer is added with its design.
+    App\Support\Seo\SeoMetaFactory.
 --}}
 @props(['seo'])
 
@@ -28,6 +28,8 @@
     <main id="main-content" tabindex="-1">
         {{ $slot }}
     </main>
+
+    <x-site.footer />
 
     <a class="back-to-top" href="#main-content" data-back-to-top aria-label="Back to top">
         <x-site.icon name="arrow-up" />

@@ -1,9 +1,11 @@
 {{--
     Site header: contact top bar (desktop) and main bar with logo, menu, phone,
     search and the "Get a quote" button. On small screens the menu becomes a drawer.
-    All contact details and links come from Site settings.
+    Contact details and social links come from Site settings; the menu from
+    Header & Footer (LayoutSection::Menu).
 --}}
 @inject('siteSettings', 'App\Services\SiteSettingService')
+@inject('pageSections', 'App\Services\PageSectionService')
 
 @php
     use App\Enums\SiteSettingKey as Key;
@@ -14,21 +16,9 @@
     $phone = $siteSettings->get(Key::ContactPhone);
     $phoneHref = $phone ? 'tel:'.preg_replace('/[^0-9+]/', '', $phone) : null;
 
-    $socialLinks = array_filter([
-        'facebook' => ['label' => 'Facebook', 'url' => $siteSettings->get(Key::FacebookUrl)],
-        'linkedin' => ['label' => 'LinkedIn', 'url' => $siteSettings->get(Key::LinkedinUrl)],
-        'x' => ['label' => 'X (Twitter)', 'url' => $siteSettings->get(Key::XUrl)],
-        'youtube' => ['label' => 'YouTube', 'url' => $siteSettings->get(Key::YoutubeUrl)],
-        'instagram' => ['label' => 'Instagram', 'url' => $siteSettings->get(Key::InstagramUrl)],
-    ], static fn (array $link): bool => $link['url'] !== null);
+    $socialLinks = $siteSettings->socialLinks();
 
-    $menu = [
-        ['label' => 'Home', 'route' => 'home'],
-        ['label' => 'About Us', 'route' => 'about'],
-        ['label' => 'Products', 'route' => 'products.index'],
-        ['label' => 'Certificates', 'route' => 'certificates'],
-        ['label' => 'Contact Us', 'route' => 'contact'],
-    ];
+    $menu = $pageSections->section(\App\Enums\LayoutSection::Menu)['items'];
 @endphp
 
 <header class="site-header" data-site-header>
@@ -46,15 +36,7 @@
             @if ($socialLinks !== [])
                 <div class="topbar__social">
                     <span>Follow Us :</span>
-                    <ul class="social-list">
-                        @foreach ($socialLinks as $icon => $link)
-                            <li>
-                                <a class="social-list__link" href="{{ $link['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $link['label'] }}">
-                                    <x-site.icon :name="$icon" />
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
+                    <x-site.social-links />
                 </div>
             @endif
         </div>
@@ -80,9 +62,9 @@
                 </div>
                 <ul class="site-nav__list">
                     @foreach ($menu as $item)
-                        @php($isCurrent = request()->routeIs($item['route'] === 'products.index' ? 'products.*' : $item['route']))
+                        @php($isCurrent = \App\Support\SiteLink::isCurrent($item['url']))
                         <li>
-                            <a @class(['site-nav__link', 'is-current' => $isCurrent]) href="{{ route($item['route']) }}" @if ($isCurrent) aria-current="page" @endif>{{ $item['label'] }}</a>
+                            <a @class(['site-nav__link', 'is-current' => $isCurrent]) href="{{ \App\Support\SiteLink::href($item['url']) }}" @if ($isCurrent) aria-current="page" @endif @if (\App\Support\SiteLink::isExternal($item['url'])) target="_blank" rel="noopener" @endif>{{ $item['label'] }}</a>
                         </li>
                     @endforeach
                 </ul>

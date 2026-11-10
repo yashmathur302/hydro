@@ -43,6 +43,7 @@
 
                     <li><hr class="hr-horizontal"></li>
                     <x-admin.nav-heading>Content</x-admin.nav-heading>
+                    <x-admin.nav-link :href="route('admin.layout.edit')" icon="list" :active="request()->routeIs('admin.layout.*')">Header & Footer</x-admin.nav-link>
                     <x-admin.nav-link :href="route('admin.home-page.edit')" icon="home" :active="request()->routeIs('admin.home-page.*')">Home page</x-admin.nav-link>
                     <x-admin.nav-link :href="route('admin.about-page.edit')" icon="info" :active="request()->routeIs('admin.about-page.*')">About Us page</x-admin.nav-link>
                     <x-admin.nav-link :href="route('admin.industries.index')" icon="factory" :active="request()->routeIs('admin.industries.*')">Industries</x-admin.nav-link>

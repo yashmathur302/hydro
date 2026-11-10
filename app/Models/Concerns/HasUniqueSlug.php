@@ -8,7 +8,8 @@ use Illuminate\Support\Str;
 
 /**
  * Fills the "slug" column from a source column (default "name") when it is
- * left empty, adding -2, -3 ... until the slug is unique in the table.
+ * left empty, adding -2, -3 ... until the slug is unique in the table and not
+ * one of the model's reserved slugs.
  */
 trait HasUniqueSlug
 {
@@ -31,6 +32,16 @@ trait HasUniqueSlug
         return 'name';
     }
 
+    /**
+     * Slugs that may never be generated (e.g. paths used by other pages).
+     *
+     * @return list<string>
+     */
+    protected function reservedSlugs(): array
+    {
+        return [];
+    }
+
     private function generateUniqueSlug(string $source): string
     {
         $base = Str::limit(Str::slug($source), 150, '') ?: Str::lower(Str::random(8));
@@ -47,6 +58,10 @@ trait HasUniqueSlug
 
     private function slugExists(string $slug): bool
     {
+        if (in_array($slug, $this->reservedSlugs(), true)) {
+            return true;
+        }
+
         return static::query()
             ->where('slug', $slug)
             ->when($this->exists, fn ($query) => $query->whereKeyNot($this->getKey()))
