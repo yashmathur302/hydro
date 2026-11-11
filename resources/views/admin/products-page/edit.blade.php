@@ -2,7 +2,7 @@
     <x-slot:header>
         <x-admin.page-header title="Products page" description="The banner and the heading above the product grid. The products themselves are managed in Products.">
             <x-admin.button :href="route('products.index')" variant="secondary" icon="globe" target="_blank" rel="noopener">View page</x-admin.button>
-            <x-admin.button :href="route('admin.products.index')" variant="secondary">Back to products</x-admin.button>
+            <x-admin.button :href="route('admin.products.index')" variant="secondary">Manage products</x-admin.button>
         </x-admin.page-header>
     </x-slot:header>
 

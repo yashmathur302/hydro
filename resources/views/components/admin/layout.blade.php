@@ -33,7 +33,7 @@
 
                     <li><hr class="hr-horizontal"></li>
                     <x-admin.nav-heading>Catalog</x-admin.nav-heading>
-                    <x-admin.nav-link tone="orange" :href="route('admin.products.index')" icon="box" :active="request()->routeIs('admin.products.*', 'admin.products-page.*')">Products</x-admin.nav-link>
+                    <x-admin.nav-link tone="orange" :href="route('admin.products.index')" icon="box" :active="request()->routeIs('admin.products.*')">Products</x-admin.nav-link>
                     <x-admin.nav-link tone="lime" :href="route('admin.categories.index')" icon="folder" :active="request()->routeIs('admin.categories.*')">Categories</x-admin.nav-link>
 
                     <li><hr class="hr-horizontal"></li>
@@ -46,6 +46,7 @@
                     <x-admin.nav-link tone="indigo" :href="route('admin.layout.edit')" icon="list" :active="request()->routeIs('admin.layout.*')">Header & Footer</x-admin.nav-link>
                     <x-admin.nav-link tone="violet" :href="route('admin.home-page.edit')" icon="home" :active="request()->routeIs('admin.home-page.*')">Home page</x-admin.nav-link>
                     <x-admin.nav-link tone="sky" :href="route('admin.about-page.edit')" icon="info" :active="request()->routeIs('admin.about-page.*')">About Us page</x-admin.nav-link>
+                    <x-admin.nav-link tone="emerald" :href="route('admin.products-page.edit')" icon="image" :active="request()->routeIs('admin.products-page.*')">Products Page</x-admin.nav-link>
                     <x-admin.nav-link tone="teal" :href="route('admin.contact-page.edit')" icon="phone" :active="request()->routeIs('admin.contact-page.*')">Contact Us page</x-admin.nav-link>
                     <x-admin.nav-link tone="red" :href="route('admin.industries.index')" icon="factory" :active="request()->routeIs('admin.industries.*')">Industries</x-admin.nav-link>
                     <x-admin.nav-link tone="purple" :href="route('admin.clients.index')" icon="handshake" :active="request()->routeIs('admin.clients.*')">Clients</x-admin.nav-link>

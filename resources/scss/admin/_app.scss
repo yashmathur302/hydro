@@ -132,6 +132,7 @@ $nav-tones: (
     'amber': #d4920b,
     'pink': #db2777,
     'slate': #64748b,
+    'emerald': #059669,
 );
 
 @each $name, $color in $nav-tones {

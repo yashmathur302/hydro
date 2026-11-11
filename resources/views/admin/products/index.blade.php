@@ -1,7 +1,6 @@
 <x-admin.layout title="Products">
     <x-slot:header>
         <x-admin.page-header title="Products" description="Everything shown in the product catalogue on the website.">
-            <x-admin.button :href="route('admin.products-page.edit')" variant="secondary" icon="image">Page settings</x-admin.button>
             <x-admin.button :href="route('admin.products.create')" icon="plus">Add product</x-admin.button>
         </x-admin.page-header>
     </x-slot:header>
