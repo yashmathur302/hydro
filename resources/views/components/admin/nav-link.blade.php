@@ -1,6 +1,6 @@
 {{--
     Sidebar link in the Hope UI menu markup, with an optional unread count.
-    "tone" colours the icon badge (see $nav-tones in resources/scss/admin/_app.scss).
+    "tone" colours the icon (see $nav-tones in resources/scss/admin/_app.scss).
 --}}
 @props(['href', 'icon', 'active' => false, 'count' => 0, 'tone' => 'blue'])
 
