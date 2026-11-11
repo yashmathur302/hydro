@@ -900,14 +900,30 @@ $nav-tones: (
 .gallery__fields {
     display: grid;
     gap: $spacer * 0.5;
+    min-width: 0;
     padding: $spacer * 0.75;
 }
 
 .gallery__row {
     display: flex;
-    gap: $spacer * 0.75;
+    flex-wrap: wrap;
+    gap: $spacer * 0.5 $spacer * 0.75;
     align-items: center;
     justify-content: space-between;
+
+    .form-check {
+        display: inline-flex;
+        gap: $spacer * 0.375;
+        align-items: center;
+        min-height: 0;
+        padding-left: 0;
+        font-size: $font-size-sm;
+
+        .form-check-input {
+            float: none;
+            margin: 0;
+        }
+    }
 }
 
 .gallery__order {
@@ -918,7 +934,7 @@ $nav-tones: (
     color: $secondary;
 
     .form-control {
-        width: 4.5rem;
+        width: 3.75rem;
     }
 }
 
@@ -1301,17 +1317,68 @@ $chart-contact: $info;
 // Confirmation dialog (native <dialog> with modal styling)
 // --------------------------------------------------------------------------
 .confirm-dialog {
-    width: min(28rem, calc(100vw - 2rem));
+    width: min(26rem, calc(100vw - 2rem));
     padding: 0;
-    background: transparent;
+    color: $body-color;
+    background: $white;
     border: 0;
+    border-radius: $border-radius-lg;
+    box-shadow: 0 1.5rem 3rem rgba($dark, 0.25);
 
     &::backdrop {
         background: rgba($dark, 0.45);
+        backdrop-filter: blur(2px);
     }
 
-    .modal-content {
-        box-shadow: $box-shadow-lg;
+    &[open] {
+        animation: confirm-dialog-in 0.18s ease-out;
+    }
+}
+
+.confirm-dialog__box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $spacer * 2 $spacer * 1.75 $spacer * 1.5;
+    text-align: center;
+}
+
+.confirm-dialog__icon {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: $spacer;
+    color: $danger;
+    background: rgba($danger, 0.1);
+    border-radius: 50%;
+    box-shadow: 0 0 0 0.5rem rgba($danger, 0.05);
+}
+
+.confirm-dialog__title {
+    margin-bottom: $spacer * 0.5;
+    font-size: 1.25rem;
+    font-weight: $font-weight-semibold;
+    color: $app-heading-color;
+}
+
+.confirm-dialog__message {
+    margin-bottom: $spacer * 1.5;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.confirm-dialog__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacer * 0.75;
+    width: 100%;
+}
+
+@keyframes confirm-dialog-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.5rem) scale(0.98);
     }
 }
 

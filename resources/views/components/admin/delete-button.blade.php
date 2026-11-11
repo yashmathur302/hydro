@@ -1,7 +1,7 @@
 {{-- DELETE form behind the shared confirmation dialog. --}}
-@props(['action', 'confirm', 'label' => 'Delete', 'iconOnly' => false])
+@props(['action', 'confirm', 'confirmTitle' => 'Delete this item?', 'label' => 'Delete', 'iconOnly' => false])
 
-<form method="POST" action="{{ $action }}" class="d-inline" data-confirm="{{ $confirm }}">
+<form method="POST" action="{{ $action }}" class="d-inline" data-confirm-title="{{ $confirmTitle }}" data-confirm="{{ $confirm }}">
     @csrf
     @method('DELETE')
     @if ($iconOnly)

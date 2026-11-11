@@ -53,7 +53,7 @@
                                 <td data-label="Order">{{ $category->sort_order }}</td>
                                 <td class="data-table__actions">
                                     <a class="btn btn-sm btn-icon btn-soft-primary" href="{{ route('admin.categories.edit', $category) }}" title="Edit" aria-label="Edit {{ $category->name }}"><x-admin.icon name="edit" class="icon-18" /></a>
-                                    <x-admin.delete-button :action="route('admin.categories.destroy', $category)" confirm="Delete the category &quot;{{ $category->name }}&quot;?" label="Delete {{ $category->name }}" icon-only />
+                                    <x-admin.delete-button :action="route('admin.categories.destroy', $category)" confirm-title="Delete this category?" confirm="“{{ $category->name }}” will be removed. This cannot be undone." label="Delete {{ $category->name }}" icon-only />
                                 </td>
                             </tr>
                         @endforeach

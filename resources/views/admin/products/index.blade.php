@@ -1,6 +1,6 @@
 <x-admin.layout title="Products">
     <x-slot:header>
-        <x-admin.page-header title="Products" description="Everything shown in the product catalogue on the website.">
+        <x-admin.page-header title="Products">
             <x-admin.button :href="route('admin.products.create')" icon="plus">Add product</x-admin.button>
         </x-admin.page-header>
     </x-slot:header>
@@ -71,7 +71,7 @@
                                 <td data-label="Updated"><time datetime="{{ $product->updated_at->toIso8601String() }}">{{ $product->updated_at->format('d M Y') }}</time></td>
                                 <td class="data-table__actions">
                                     <a class="btn btn-sm btn-icon btn-soft-primary" href="{{ route('admin.products.edit', $product) }}" title="Edit" aria-label="Edit {{ $product->name }}"><x-admin.icon name="edit" class="icon-18" /></a>
-                                    <x-admin.delete-button :action="route('admin.products.destroy', $product)" confirm="Delete &quot;{{ $product->name }}&quot;? Its images and brochure will be removed too." label="Delete {{ $product->name }}" icon-only />
+                                    <x-admin.delete-button :action="route('admin.products.destroy', $product)" confirm-title="Delete this product?" confirm="“{{ $product->name }}”, its images and its brochure will be removed. This cannot be undone." label="Delete {{ $product->name }}" icon-only />
                                 </td>
                             </tr>
                         @endforeach

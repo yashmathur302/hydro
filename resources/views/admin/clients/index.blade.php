@@ -45,7 +45,7 @@
                                 <td data-label="Order">{{ $client->sort_order }}</td>
                                 <td class="data-table__actions">
                                     <a class="btn btn-sm btn-icon btn-soft-primary" href="{{ route('admin.clients.edit', $client) }}" title="Edit" aria-label="Edit {{ $client->name }}"><x-admin.icon name="edit" class="icon-18" /></a>
-                                    <x-admin.delete-button :action="route('admin.clients.destroy', $client)" confirm="Delete the client &quot;{{ $client->name }}&quot;?" label="Delete {{ $client->name }}" icon-only />
+                                    <x-admin.delete-button :action="route('admin.clients.destroy', $client)" confirm-title="Delete this client?" confirm="“{{ $client->name }}” and its logo will be removed from the website. This cannot be undone." label="Delete {{ $client->name }}" icon-only />
                                 </td>
                             </tr>
                         @endforeach

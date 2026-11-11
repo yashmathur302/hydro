@@ -110,7 +110,7 @@
             <x-admin.card title="Delete">
                 <p class="text-secondary mb-0">Permanently removes this {{ mb_strtolower($enquiry->type->label()) }}.</p>
                 <x-slot:footer>
-                    <x-admin.delete-button :action="route('admin.enquiries.destroy', $enquiry)" confirm="Delete this message from {{ $enquiry->name }}? This cannot be undone." />
+                    <x-admin.delete-button :action="route('admin.enquiries.destroy', $enquiry)" confirm-title="Delete this {{ mb_strtolower($enquiry->type->label()) }}?" confirm="The {{ mb_strtolower($enquiry->type->label()) }} from {{ $enquiry->name }} will be permanently deleted. This cannot be undone." />
                 </x-slot:footer>
             </x-admin.card>
         </aside>

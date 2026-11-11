@@ -43,7 +43,7 @@
                                 <td data-label="Updated"><time datetime="{{ $page->updated_at->toIso8601String() }}">{{ $page->updated_at->format('d M Y') }}</time></td>
                                 <td class="data-table__actions">
                                     <a class="btn btn-sm btn-icon btn-soft-primary" href="{{ route('admin.pages.edit', $page) }}" title="Edit" aria-label="Edit {{ $page->title }}"><x-admin.icon name="edit" class="icon-18" /></a>
-                                    <x-admin.delete-button :action="route('admin.pages.destroy', $page)" confirm="Delete the page &quot;{{ $page->title }}&quot;?" label="Delete {{ $page->title }}" icon-only />
+                                    <x-admin.delete-button :action="route('admin.pages.destroy', $page)" confirm-title="Delete this page?" confirm="“{{ $page->title }}” will be removed from the website. This cannot be undone." label="Delete {{ $page->title }}" icon-only />
                                 </td>
                             </tr>
                         @endforeach

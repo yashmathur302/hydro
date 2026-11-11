@@ -8,7 +8,7 @@
 
 <x-admin.layout :title="$isEdit ? 'Edit product' : 'Add product'">
     <x-slot:header>
-        <x-admin.page-header :title="$isEdit ? $product->name : 'Add product'" :description="$isEdit ? 'Last updated '.$product->updated_at->diffForHumans().'.' : 'Fill in the details shown on the product page.'">
+        <x-admin.page-header :title="$isEdit ? $product->name : 'Add product'">
             <x-admin.button :href="route('admin.products.index')" variant="secondary">Back to products</x-admin.button>
         </x-admin.page-header>
     </x-slot:header>
@@ -137,8 +137,8 @@
             </x-admin.card>
 
             @if ($isEdit)
-                <x-admin.card title="Danger zone">
-                    <p class="text-secondary mb-0">Deleting removes the product, its images and its brochure. Past enquiries are kept.</p>
+                <x-admin.card title="Delete product">
+                    <p class="text-secondary mb-0">Removes the product, its images and its brochure from the website. Past enquiries about it are kept.</p>
                     <x-slot:footer>
                         <x-admin.button type="submit" variant="danger" icon="trash" form="delete-product-form">Delete product</x-admin.button>
                     </x-slot:footer>
@@ -149,7 +149,7 @@
 
     @if ($isEdit)
         {{-- Kept outside the main form (forms cannot be nested); the button above targets it by id. --}}
-        <form id="delete-product-form" method="POST" action="{{ route('admin.products.destroy', $product) }}" data-confirm="Delete &quot;{{ $product->name }}&quot;? This cannot be undone.">
+        <form id="delete-product-form" method="POST" action="{{ route('admin.products.destroy', $product) }}" data-confirm-title="Delete this product?" data-confirm="“{{ $product->name }}”, its images and its brochure will be removed. This cannot be undone.">
             @csrf
             @method('DELETE')
         </form>

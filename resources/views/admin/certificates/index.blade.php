@@ -61,7 +61,7 @@
                                 <td data-label="PDF"><a href="{{ $certificate->fileUrl() }}" target="_blank" rel="noopener">Open<span class="visually-hidden"> {{ $certificate->name }} (PDF, new tab)</span></a></td>
                                 <td class="data-table__actions">
                                     <a class="btn btn-sm btn-icon btn-soft-primary" href="{{ route('admin.certificates.edit', $certificate) }}" title="Edit" aria-label="Edit {{ $certificate->name }}"><x-admin.icon name="edit" class="icon-18" /></a>
-                                    <x-admin.delete-button :action="route('admin.certificates.destroy', $certificate)" confirm="Delete the certificate &quot;{{ $certificate->name }}&quot; and its PDF?" label="Delete {{ $certificate->name }}" icon-only />
+                                    <x-admin.delete-button :action="route('admin.certificates.destroy', $certificate)" confirm-title="Delete this certificate?" confirm="“{{ $certificate->name }}” and its PDF will be removed from the website. This cannot be undone." label="Delete {{ $certificate->name }}" icon-only />
                                 </td>
                             </tr>
                         @endforeach
