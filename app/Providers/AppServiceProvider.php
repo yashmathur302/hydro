@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Services\PageSectionService;
 use App\Services\Images\PlainBackgroundDetector;
 use App\Services\Images\WebpImageProcessor;
+use App\Services\PageSectionService;
 use App\Services\ProductService;
 use App\Services\SiteSettingService;
+use App\Session\PrivateDatabaseSessionHandler;
 use App\View\Composers\AdminNavigationComposer;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -47,6 +49,14 @@ final class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // The "database" session driver, without visitor IP addresses or browser strings.
+        Session::extend('database', static fn ($app): PrivateDatabaseSessionHandler => new PrivateDatabaseSessionHandler(
+            $app['db']->connection($app['config']->get('session.connection')),
+            (string) $app['config']->get('session.table'),
+            (int) $app['config']->get('session.lifetime'),
+            $app,
+        ));
+
         // Surface lazy loading (N+1 queries) and silently discarded attributes during development.
         Model::shouldBeStrict(! $this->app->isProduction());
 
