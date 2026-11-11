@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Site\AboutController;
 use App\Http\Controllers\Site\CertificatesController;
+use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\ContactMessageController;
 use App\Http\Controllers\Site\HomeController;
-use App\Http\Controllers\Site\PlaceholderPageController;
 use App\Http\Controllers\Site\ProductController;
 use App\Http\Controllers\Site\ProductEnquiryController;
 use App\Http\Controllers\Site\StaticPageController;
@@ -23,9 +23,7 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('about-us', AboutController::class)->name('about');
 Route::get('certificates', CertificatesController::class)->name('certificates');
 Route::get('products', [ProductController::class, 'index'])->name('products.index');
-
-// Temporary pages until each design is built (replaced by real controllers).
-Route::get('contact-us', PlaceholderPageController::class)->defaults('title', 'Contact Us')->name('contact');
+Route::get('contact-us', ContactController::class)->name('contact');
 
 Route::middleware('throttle:enquiries')->group(function (): void {
     Route::post('enquiries', [ProductEnquiryController::class, 'store'])->name('enquiries.store');

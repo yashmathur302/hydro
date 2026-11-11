@@ -78,7 +78,8 @@ final class SecurityHeaders
             'img-src' => ["'self'", 'data:', 'blob:', ...self::THIRD_PARTY_SOURCES['img-src'], ...$devServer],
             'font-src' => ["'self'", ...$devServer],
             'connect-src' => ["'self'", ...self::THIRD_PARTY_SOURCES['connect-src'], ...$devServer],
-            'frame-src' => ["'none'"],
+            // Only Google Maps embeds (Contact Us page and its admin preview).
+            'frame-src' => ['https://www.google.com', 'https://maps.google.com'],
             'object-src' => ["'none'"],
             'base-uri' => ["'self'"],
             'form-action' => ["'self'"],

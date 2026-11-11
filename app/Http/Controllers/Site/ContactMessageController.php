@@ -23,6 +23,6 @@ final class ContactMessageController extends Controller
 
         return $request->expectsJson()
             ? response()->json(['message' => self::SUCCESS_MESSAGE], 201)
-            : back()->with('contact_status', self::SUCCESS_MESSAGE);
+            : redirect()->to(url()->previous().'#contact-form')->with('contact_status', self::SUCCESS_MESSAGE);
     }
 }

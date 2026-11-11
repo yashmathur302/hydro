@@ -39,6 +39,14 @@ final class SubmitContactMessageRequest extends FormRequest
         return ['phone.regex' => 'Enter a valid phone number.'];
     }
 
+    /**
+     * On errors, return to the form itself rather than the top of the page.
+     */
+    protected function getRedirectUrl(): string
+    {
+        return url()->previous().'#contact-form';
+    }
+
     public function isSpam(): bool
     {
         return filled($this->input(SubmitProductEnquiryRequest::HONEYPOT_FIELD));

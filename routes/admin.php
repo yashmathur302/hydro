@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\CertificatesPageController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\ContactPageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EnquiryController;
 use App\Http\Controllers\Admin\HomePageController;
@@ -64,6 +65,8 @@ Route::middleware(['auth', 'auth.session'])->group(function (): void {
     Route::put('home-page', [HomePageController::class, 'update'])->name('home-page.update');
     Route::get('header-footer', [LayoutController::class, 'edit'])->name('layout.edit');
     Route::put('header-footer', [LayoutController::class, 'update'])->name('layout.update');
+    Route::get('contact-page', [ContactPageController::class, 'edit'])->name('contact-page.edit');
+    Route::put('contact-page', [ContactPageController::class, 'update'])->name('contact-page.update');
     Route::get('about-page', [AboutPageController::class, 'edit'])->name('about-page.edit');
     Route::put('about-page', [AboutPageController::class, 'update'])->name('about-page.update');
 

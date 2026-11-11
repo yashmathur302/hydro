@@ -88,13 +88,4 @@ final class HomePageTest extends TestCase
             ->assertDontSee('<script>alert(1)</script>', false)
             ->assertSee('&lt;script&gt;alert(1)&lt;/script&gt;', false);
     }
-
-    public function test_menu_pages_exist_and_are_not_indexed_yet(): void
-    {
-        foreach (['contact'] as $routeName) {
-            $this->get(route($routeName))
-                ->assertOk()
-                ->assertSee('<meta name="robots" content="noindex, nofollow">', false);
-        }
-    }
 }

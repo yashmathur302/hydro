@@ -61,7 +61,7 @@
     ]
   },
   "resources/css/site.css": {
-    "file": "assets/site-CeNs-CVJ.css",
+    "file": "assets/site-DPtR8id4.css",
     "src": "resources/css/site.css",
     "isEntry": true,
     "name": "site",
@@ -94,7 +94,7 @@
     "isEntry": true
   },
   "resources/scss/admin.scss": {
-    "file": "assets/admin-CL1TFW2N.css",
+    "file": "assets/admin-DQ6CirZI.css",
     "src": "resources/scss/admin.scss",
     "isEntry": true,
     "name": "admin",
