@@ -1,0 +1,79 @@
+/*!
+ * Admin panel stylesheet.
+ * Design: Hope UI by Iqonic Design (MIT licence, see vendor/hope-ui/LICENSE),
+ * compiled from its source with only the parts the admin uses, Bootstrap's
+ * important-flag utilities switched off and the font served from our own domain.
+ * Project-specific pieces live in ./admin/.
+ */
+
+// Configuration (overrides must come before the vendor defaults)
+$enable-important-utilities: false;
+// A lighter, calmer blue than the template's #3a57e8 (white text still passes
+// WCAG AA on it), and a slate grey instead of the template's near-black navy
+// "secondary" for muted text.
+$blue: #4b6fe0;
+$secondary: #64748b;
+// 14px body text (the template uses 16px), the usual size for admin screens.
+// Headings, buttons, inputs and the menu all scale from this.
+$font-size-base: 0.875rem;
+$font-family-sans-serif: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+@import "vendor/hope-ui/bootstrap/functions";
+@import "vendor/hope-ui/hope-ui-design-system/variable";
+@import "vendor/hope-ui/hope-ui-design-system/variables/index";
+@import "vendor/hope-ui/bootstrap/variables";
+@import "vendor/hope-ui/bootstrap/maps";
+@import "vendor/hope-ui/bootstrap/mixins";
+@import "vendor/hope-ui/bootstrap/utilities";
+
+@import "vendor/hope-ui/hope-ui-design-system/helper/functions";
+@import "vendor/hope-ui/hope-ui-design-system/helper/mixins";
+@import "vendor/hope-ui/hope-ui-design-system/helper/reboot";
+
+// Bootstrap layout and components used by the admin
+@import "vendor/hope-ui/hope-ui-design-system/helper/root";
+@import "vendor/hope-ui/bootstrap/root";
+@import "vendor/hope-ui/bootstrap/reboot";
+@import "vendor/hope-ui/bootstrap/type";
+@import "vendor/hope-ui/bootstrap/images";
+@import "vendor/hope-ui/bootstrap/containers";
+@import "vendor/hope-ui/bootstrap/grid";
+@import "vendor/hope-ui/bootstrap/tables";
+@import "vendor/hope-ui/bootstrap/forms";
+@import "vendor/hope-ui/bootstrap/buttons";
+@import "vendor/hope-ui/bootstrap/transitions";
+@import "vendor/hope-ui/bootstrap/dropdown";
+@import "vendor/hope-ui/bootstrap/nav";
+@import "vendor/hope-ui/bootstrap/navbar";
+@import "vendor/hope-ui/bootstrap/card";
+@import "vendor/hope-ui/bootstrap/pagination";
+@import "vendor/hope-ui/bootstrap/badge";
+@import "vendor/hope-ui/bootstrap/alert";
+@import "vendor/hope-ui/bootstrap/list-group";
+@import "vendor/hope-ui/bootstrap/close";
+@import "vendor/hope-ui/bootstrap/modal";
+@import "vendor/hope-ui/bootstrap/helpers";
+@import "vendor/hope-ui/bootstrap/utilities/api";
+
+// Hope UI components and layout
+@import "vendor/hope-ui/hope-ui-design-system/components/alert/alert";
+@import "vendor/hope-ui/hope-ui-design-system/components/card/card";
+@import "vendor/hope-ui/hope-ui-design-system/components/card/icon-box";
+@import "vendor/hope-ui/hope-ui-design-system/components/dropdown/bs-dropdown";
+@import "vendor/hope-ui/hope-ui-design-system/components/button/bs-btn";
+@import "vendor/hope-ui/hope-ui-design-system/components/button/soft-btn";
+@import "vendor/hope-ui/hope-ui-design-system/components/button/icon-btn";
+@import "vendor/hope-ui/hope-ui-design-system/components/button/bs-btn-close";
+@import "vendor/hope-ui/hope-ui-design-system/components/forms/form-check";
+@import "vendor/hope-ui/hope-ui-design-system/components/table/bs-table";
+@import "vendor/hope-ui/hope-ui-design-system/components/modal/modal";
+@import "vendor/hope-ui/hope-ui-design-system/components/nav/navbar";
+@import "vendor/hope-ui/hope-ui-design-system/components/nav/header";
+@import "vendor/hope-ui/hope-ui-design-system/components/nav/header-banner";
+@import "vendor/hope-ui/hope-ui-design-system/components/menu-style/index";
+@import "vendor/hope-ui/hope-ui-design-system/layout-style/index";
+@import "vendor/hope-ui/hope-ui-design-system/components/widgets/progress-widget";
+@import "vendor/hope-ui/hope-ui-design-system/helper/utilities";
+
+// Project-specific pieces, styled with the same Hope UI tokens
+@import "admin/app";
