@@ -33,7 +33,7 @@
 
                     <li><hr class="hr-horizontal"></li>
                     <x-admin.nav-heading>Catalog</x-admin.nav-heading>
-                    <x-admin.nav-link :href="route('admin.products.index')" icon="box" :active="request()->routeIs('admin.products.*')">Products</x-admin.nav-link>
+                    <x-admin.nav-link :href="route('admin.products.index')" icon="box" :active="request()->routeIs('admin.products.*', 'admin.products-page.*')">Products</x-admin.nav-link>
                     <x-admin.nav-link :href="route('admin.categories.index')" icon="folder" :active="request()->routeIs('admin.categories.*')">Categories</x-admin.nav-link>
 
                     <li><hr class="hr-horizontal"></li>

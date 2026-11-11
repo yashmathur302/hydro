@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Services\Images\PlainBackgroundDetector;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
@@ -46,6 +47,14 @@ class ProductImage extends Model
     public function thumbnailUrl(): string
     {
         return Storage::disk('public')->url($this->thumbnail_path);
+    }
+
+    /**
+     * Whether the photo is a product cut-out on a plain white background.
+     */
+    public function hasPlainBackground(): bool
+    {
+        return app(PlainBackgroundDetector::class)->hasPlainBackground($this->thumbnail_path);
     }
 
     /**

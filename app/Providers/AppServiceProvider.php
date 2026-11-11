@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Services\PageSectionService;
+use App\Services\Images\PlainBackgroundDetector;
 use App\Services\Images\WebpImageProcessor;
 use App\Services\ProductService;
 use App\Services\SiteSettingService;
@@ -23,6 +24,11 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->singleton(SiteSettingService::class, static fn ($app): SiteSettingService => new SiteSettingService(
             $app->make(CacheRepository::class),
             Storage::disk('public'),
+        ));
+
+        $this->app->bind(PlainBackgroundDetector::class, static fn ($app): PlainBackgroundDetector => new PlainBackgroundDetector(
+            Storage::disk('public'),
+            $app->make(CacheRepository::class),
         ));
 
         $this->app->bind(WebpImageProcessor::class, static fn (): WebpImageProcessor => new WebpImageProcessor(Storage::disk('public')));

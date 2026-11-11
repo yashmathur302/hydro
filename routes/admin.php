@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\LayoutController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductsPageController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,6 +70,8 @@ Route::middleware(['auth', 'auth.session'])->group(function (): void {
     Route::resource('industries', IndustryController::class)->except('show');
     Route::resource('clients', ClientController::class)->except('show');
     Route::resource('certificates', CertificateController::class)->except('show');
+    Route::get('products-page', [ProductsPageController::class, 'edit'])->name('products-page.edit');
+    Route::put('products-page', [ProductsPageController::class, 'update'])->name('products-page.update');
     Route::get('certificates-page', [CertificatesPageController::class, 'edit'])->name('certificates-page.edit');
     Route::put('certificates-page', [CertificatesPageController::class, 'update'])->name('certificates-page.update');
 
