@@ -60,6 +60,8 @@ Route::middleware(['auth', 'auth.session'])->group(function (): void {
     Route::get('enquiries/{enquiry}', [EnquiryController::class, 'show'])->whereNumber('enquiry')->name('enquiries.show');
     Route::put('enquiries/{enquiry}', [EnquiryController::class, 'update'])->whereNumber('enquiry')->name('enquiries.update');
     Route::delete('enquiries/{enquiry}', [EnquiryController::class, 'destroy'])->whereNumber('enquiry')->name('enquiries.destroy');
+    Route::post('enquiries/{enquiry}/reveal-sender', [EnquiryController::class, 'revealSender'])
+        ->whereNumber('enquiry')->middleware('throttle:30,1')->name('enquiries.reveal-sender');
 
     Route::get('home-page', [HomePageController::class, 'edit'])->name('home-page.edit');
     Route::put('home-page', [HomePageController::class, 'update'])->name('home-page.update');

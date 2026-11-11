@@ -11,6 +11,7 @@ use App\Http\Requests\Admin\UpdateEnquiryRequest;
 use App\Models\Enquiry;
 use App\Support\SearchTerm;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -68,6 +69,28 @@ final class EnquiryController extends Controller
         ])->save();
 
         return redirect()->route('admin.enquiries.show', $enquiry)->with('status', 'Enquiry updated.');
+    }
+
+    /**
+     * Decrypts the sender's IP address and browser for this enquiry and shows
+     * them once. Every reveal is written to the security log.
+     */
+    public function revealSender(Request $request, Enquiry $enquiry): RedirectResponse
+    {
+        try {
+            $details = ['ip_address' => $enquiry->ip_address, 'user_agent' => $enquiry->user_agent];
+        } catch (DecryptException) {
+            return redirect()->route('admin.enquiries.show', $enquiry)
+                ->with('error', 'These details cannot be decrypted. They were saved with a different security key (APP_KEY).');
+        }
+
+        Log::channel('security')->notice('Enquiry sender details revealed', [
+            'enquiry_id' => $enquiry->id,
+            'admin_id' => $request->user()?->getAuthIdentifier(),
+            'ip' => $request->ip(),
+        ]);
+
+        return redirect()->route('admin.enquiries.show', $enquiry)->with('revealed_sender', $details);
     }
 
     public function destroy(Request $request, Enquiry $enquiry): RedirectResponse

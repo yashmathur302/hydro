@@ -89,6 +89,16 @@ class Enquiry extends Model
     }
 
     /**
+     * Never included when the model is converted to an array or JSON.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'ip_address',
+        'user_agent',
+    ];
+
+    /**
      * @return array<string, string>
      */
     protected function casts(): array
@@ -97,6 +107,9 @@ class Enquiry extends Model
             'type' => EnquiryType::class,
             'status' => EnquiryStatus::class,
             'read_at' => 'datetime',
+            // Sender's IP address and browser: stored encrypted with APP_KEY.
+            'ip_address' => 'encrypted',
+            'user_agent' => 'encrypted',
         ];
     }
 }

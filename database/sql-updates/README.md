@@ -12,3 +12,4 @@ from the deployment package instead.
 | 003-certificates.sql | 2026_11_10_000001_create_certificates_table |
 | 004-products.sql | (content only: the product import, sent separately, not a migration) |
 | 005-clear-session-ip.sql | 2026_11_11_000001_clear_session_request_information |
+| 006-encrypt-enquiry-sender-details.sql | 2026_11_11_000002_encrypt_enquiry_sender_details |

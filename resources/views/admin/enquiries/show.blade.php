@@ -87,6 +87,26 @@
                 </x-slot:footer>
             </x-admin.card>
 
+            <x-admin.card title="Technical details" description="The sender's IP address and browser, stored encrypted. Revealing them is recorded in the security log.">
+                @php($revealed = session('revealed_sender'))
+                @if ($revealed)
+                    <dl class="row-list">
+                        <div class="row-list__item"><dt>IP address</dt><dd>{{ $revealed['ip_address'] ?? 'Not recorded' }}</dd></div>
+                        <div class="row-list__item row-list__item--stacked"><dt>Browser</dt><dd class="small text-break">{{ $revealed['user_agent'] ?? 'Not recorded' }}</dd></div>
+                    </dl>
+                @elseif ($enquiry->getRawOriginal('ip_address') === null && $enquiry->getRawOriginal('user_agent') === null)
+                    <p class="text-secondary mb-0">Not recorded for this {{ mb_strtolower($enquiry->type->label()) }}.</p>
+                @else
+                    <p class="text-secondary mb-0"><x-admin.icon name="lock" class="icon-18" /> Hidden (encrypted)</p>
+                    <x-slot:footer>
+                        <form method="POST" action="{{ route('admin.enquiries.reveal-sender', $enquiry) }}">
+                            @csrf
+                            <x-admin.button type="submit" variant="secondary" size="small" icon="eye">Reveal</x-admin.button>
+                        </form>
+                    </x-slot:footer>
+                @endif
+            </x-admin.card>
+
             <x-admin.card title="Delete">
                 <p class="text-secondary mb-0">Permanently removes this {{ mb_strtolower($enquiry->type->label()) }}.</p>
                 <x-slot:footer>
