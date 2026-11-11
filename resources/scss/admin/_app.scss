@@ -160,6 +160,44 @@ $nav-tones: (
     color: $white;
 }
 
+// Collapsed sidebar: no group titles (the divider lines separate the groups),
+// and every link is a centred square so the active highlight is a neat tile.
+// The template only shrinks the text, which still takes up room and pushes
+// the icon off-centre, so the text is removed from the layout here.
+.sidebar.sidebar-base.sidebar-mini {
+    .sidebar-body {
+        padding-inline: 0;
+    }
+
+    .sidebar-list .navbar-nav {
+        .nav-item.static-item {
+            display: none;
+        }
+
+        .nav-item {
+            padding-inline: 0;
+        }
+
+        .nav-item .nav-link:not(.static-item) {
+            justify-content: center;
+            width: 2.75rem;
+            height: 2.75rem;
+            padding: 0;
+            margin-inline: auto;
+        }
+
+        .nav-link .item-name,
+        .nav-link .nav-count {
+            display: none;
+        }
+
+        .nav-link .icon {
+            justify-content: center;
+            margin: 0;
+        }
+    }
+}
+
 // Account menu in the top bar: arrow that flips when the menu is open.
 .account-toggle__arrow {
     color: $secondary;
