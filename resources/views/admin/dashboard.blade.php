@@ -18,7 +18,7 @@
 <x-admin.layout title="Dashboard">
     <x-slot:header>
         <x-admin.page-header title="Hello, {{ Str::before(auth()->user()->name, ' ') }}!" description="Here is what is happening on your website.">
-            <x-admin.button :href="route('home')" icon="globe" target="_blank" rel="noopener">Open site</x-admin.button>
+            <x-admin.button :href="route('home')" icon="globe" target="_blank" rel="noopener">Visit Website</x-admin.button>
         </x-admin.page-header>
     </x-slot:header>
 

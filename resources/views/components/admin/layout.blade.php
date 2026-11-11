@@ -29,29 +29,29 @@
             <div class="sidebar-list">
                 <ul class="navbar-nav iq-main-menu" id="sidebar-menu">
                     <x-admin.nav-heading>Home</x-admin.nav-heading>
-                    <x-admin.nav-link :href="route('admin.dashboard')" icon="dashboard" :active="request()->routeIs('admin.dashboard')">Dashboard</x-admin.nav-link>
+                    <x-admin.nav-link tone="blue" :href="route('admin.dashboard')" icon="dashboard" :active="request()->routeIs('admin.dashboard')">Dashboard</x-admin.nav-link>
 
                     <li><hr class="hr-horizontal"></li>
                     <x-admin.nav-heading>Catalog</x-admin.nav-heading>
-                    <x-admin.nav-link :href="route('admin.products.index')" icon="box" :active="request()->routeIs('admin.products.*', 'admin.products-page.*')">Products</x-admin.nav-link>
-                    <x-admin.nav-link :href="route('admin.categories.index')" icon="folder" :active="request()->routeIs('admin.categories.*')">Categories</x-admin.nav-link>
+                    <x-admin.nav-link tone="orange" :href="route('admin.products.index')" icon="box" :active="request()->routeIs('admin.products.*', 'admin.products-page.*')">Products</x-admin.nav-link>
+                    <x-admin.nav-link tone="lime" :href="route('admin.categories.index')" icon="folder" :active="request()->routeIs('admin.categories.*')">Categories</x-admin.nav-link>
 
                     <li><hr class="hr-horizontal"></li>
                     <x-admin.nav-heading>Inbox</x-admin.nav-heading>
-                    <x-admin.nav-link :href="route('admin.enquiries.index')" icon="inbox" :count="$unreadCounts['product']" :active="request()->routeIs('admin.enquiries.index') || $enquiryType === \App\Enums\EnquiryType::Product">Enquiries</x-admin.nav-link>
-                    <x-admin.nav-link :href="route('admin.contact-messages.index')" icon="mail" :count="$unreadCounts['contact']" :active="request()->routeIs('admin.contact-messages.*') || $enquiryType === \App\Enums\EnquiryType::Contact">Messages</x-admin.nav-link>
+                    <x-admin.nav-link tone="green" :href="route('admin.enquiries.index')" icon="inbox" :count="$unreadCounts['product']" :active="request()->routeIs('admin.enquiries.index') || $enquiryType === \App\Enums\EnquiryType::Product">Enquiries</x-admin.nav-link>
+                    <x-admin.nav-link tone="cyan" :href="route('admin.contact-messages.index')" icon="mail" :count="$unreadCounts['contact']" :active="request()->routeIs('admin.contact-messages.*') || $enquiryType === \App\Enums\EnquiryType::Contact">Messages</x-admin.nav-link>
 
                     <li><hr class="hr-horizontal"></li>
                     <x-admin.nav-heading>Content</x-admin.nav-heading>
-                    <x-admin.nav-link :href="route('admin.layout.edit')" icon="list" :active="request()->routeIs('admin.layout.*')">Header & Footer</x-admin.nav-link>
-                    <x-admin.nav-link :href="route('admin.home-page.edit')" icon="home" :active="request()->routeIs('admin.home-page.*')">Home page</x-admin.nav-link>
-                    <x-admin.nav-link :href="route('admin.about-page.edit')" icon="info" :active="request()->routeIs('admin.about-page.*')">About Us page</x-admin.nav-link>
-                    <x-admin.nav-link :href="route('admin.contact-page.edit')" icon="phone" :active="request()->routeIs('admin.contact-page.*')">Contact Us page</x-admin.nav-link>
-                    <x-admin.nav-link :href="route('admin.industries.index')" icon="factory" :active="request()->routeIs('admin.industries.*')">Industries</x-admin.nav-link>
-                    <x-admin.nav-link :href="route('admin.clients.index')" icon="handshake" :active="request()->routeIs('admin.clients.*')">Clients</x-admin.nav-link>
-                    <x-admin.nav-link :href="route('admin.certificates.index')" icon="award" :active="request()->routeIs('admin.certificates.*', 'admin.certificates-page.*')">Certificates</x-admin.nav-link>
-                    <x-admin.nav-link :href="route('admin.pages.index')" icon="file" :active="request()->routeIs('admin.pages.*')">Static pages</x-admin.nav-link>
-                    <x-admin.nav-link :href="route('admin.settings.edit')" icon="settings" :active="request()->routeIs('admin.settings.*')">Site settings</x-admin.nav-link>
+                    <x-admin.nav-link tone="indigo" :href="route('admin.layout.edit')" icon="list" :active="request()->routeIs('admin.layout.*')">Header & Footer</x-admin.nav-link>
+                    <x-admin.nav-link tone="violet" :href="route('admin.home-page.edit')" icon="home" :active="request()->routeIs('admin.home-page.*')">Home page</x-admin.nav-link>
+                    <x-admin.nav-link tone="sky" :href="route('admin.about-page.edit')" icon="info" :active="request()->routeIs('admin.about-page.*')">About Us page</x-admin.nav-link>
+                    <x-admin.nav-link tone="teal" :href="route('admin.contact-page.edit')" icon="phone" :active="request()->routeIs('admin.contact-page.*')">Contact Us page</x-admin.nav-link>
+                    <x-admin.nav-link tone="red" :href="route('admin.industries.index')" icon="factory" :active="request()->routeIs('admin.industries.*')">Industries</x-admin.nav-link>
+                    <x-admin.nav-link tone="purple" :href="route('admin.clients.index')" icon="handshake" :active="request()->routeIs('admin.clients.*')">Clients</x-admin.nav-link>
+                    <x-admin.nav-link tone="amber" :href="route('admin.certificates.index')" icon="award" :active="request()->routeIs('admin.certificates.*', 'admin.certificates-page.*')">Certificates</x-admin.nav-link>
+                    <x-admin.nav-link tone="pink" :href="route('admin.pages.index')" icon="file" :active="request()->routeIs('admin.pages.*')">Static pages</x-admin.nav-link>
+                    <x-admin.nav-link tone="slate" :href="route('admin.settings.edit')" icon="settings" :active="request()->routeIs('admin.settings.*')">Site settings</x-admin.nav-link>
                 </ul>
             </div>
         </div>
@@ -76,21 +76,18 @@
                     </button>
 
                     <ul class="navbar-nav ms-auto align-items-center navbar-list flex-row gap-2">
-                        <li class="nav-item d-none d-sm-block">
-                            <a class="btn btn-soft-primary btn-sm d-flex gap-2 align-items-center" href="{{ route('home') }}" target="_blank" rel="noopener">
-                                <x-admin.icon name="globe" class="icon-18" />
-                                <span>View website</span>
-                            </a>
-                        </li>
                         <li class="nav-item dropdown" data-dropdown>
-                            <button type="button" class="py-0 nav-link d-flex align-items-center bg-transparent border-0" data-dropdown-toggle aria-expanded="false" aria-haspopup="true">
+                            <button type="button" class="py-0 nav-link d-flex align-items-center bg-transparent border-0 account-toggle" data-dropdown-toggle aria-expanded="false" aria-haspopup="true">
+                                <span class="visually-hidden">Account menu:</span>
                                 <span class="avatar avatar-50 avatar-rounded avatar-initial" aria-hidden="true">{{ mb_strtoupper(mb_substr($admin->name, 0, 1)) }}</span>
                                 <span class="caption ms-3 d-none d-md-block text-start">
                                     <span class="mb-0 caption-title d-block">{{ $admin->name }}</span>
                                     <span class="mb-0 caption-sub-title d-block">Administrator</span>
                                 </span>
+                                <x-admin.icon name="chevron-down" class="icon-18 ms-2 account-toggle__arrow" />
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" data-dropdown-menu>
+                                <li><a class="dropdown-item" href="{{ route('home') }}" target="_blank" rel="noopener">View website</a></li>
                                 <li><a class="dropdown-item" href="{{ route('admin.account.edit') }}">My account</a></li>
                                 <li><a class="dropdown-item" href="{{ route('admin.settings.edit') }}">Site settings</a></li>
                                 <li><hr class="dropdown-divider"></li>

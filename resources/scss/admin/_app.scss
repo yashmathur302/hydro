@@ -115,6 +115,70 @@ button.sidebar-toggle {
 }
 
 // --------------------------------------------------------------------------
+// Sidebar: coloured icon badges (tone set per link in the layout)
+// --------------------------------------------------------------------------
+$nav-tones: (
+    'blue': #4b6fe0,
+    'orange': #ea7a1f,
+    'lime': #5f9b0f,
+    'green': #16a34a,
+    'cyan': #0891b2,
+    'indigo': #5b4fe0,
+    'violet': #8b5cf6,
+    'sky': #0284c7,
+    'teal': #0d9488,
+    'red': #e0484f,
+    'purple': #a345d6,
+    'amber': #d4920b,
+    'pink': #db2777,
+    'slate': #64748b,
+);
+
+@each $name, $color in $nav-tones {
+    .sidebar .nav-tone--#{$name} {
+        --nav-tone: #{$color};
+        --nav-tone-soft: #{rgba($color, 0.12)};
+        --nav-tone-hover: #{rgba($color, 0.2)};
+    }
+}
+
+.sidebar .nav-link .icon {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    color: var(--nav-tone, #{$primary});
+    background: var(--nav-tone-soft, #{rgba($primary, 0.12)});
+    border-radius: $border-radius;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.sidebar .nav-link .icon svg {
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.sidebar .nav-link:not(.active):hover .icon {
+    background: var(--nav-tone-hover);
+}
+
+.sidebar .nav-link.active .icon {
+    color: $white;
+    background: rgba($white, 0.2);
+}
+
+// Account menu in the top bar: arrow that flips when the menu is open.
+.account-toggle__arrow {
+    color: $secondary;
+    transition: transform 0.2s;
+}
+
+.account-toggle[aria-expanded='true'] .account-toggle__arrow {
+    transform: rotate(180deg);
+}
+
+// --------------------------------------------------------------------------
 // Sidebar extras: unread counts, small-screen backdrop
 // --------------------------------------------------------------------------
 .sidebar .nav-count {
