@@ -964,6 +964,12 @@ main:focus {
     margin-inline: auto;
 }
 
+/* Wider so a typical "why choose us" headline fits on two lines. */
+.why-us .section-head--center .section-title {
+    max-width: 62rem;
+    text-wrap: balance;
+}
+
 /* --------------------------------------------------------------------------
    8. Home: industries we serve
    -------------------------------------------------------------------------- */
