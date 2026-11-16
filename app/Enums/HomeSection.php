@@ -56,7 +56,6 @@ enum HomeSection: string implements EditablePageSection
                 'text' => 'We design and manufacture gauging pigs, brush pigs and pipeline cleaning equipment that keep pipelines clean, safe and running at full capacity.',
                 'button_label' => 'All Products',
                 'button_url' => '/products',
-                'watermark' => 'Pigging',
             ],
             self::About => [
                 'eyebrow' => 'Trusted Pipeline Partner',

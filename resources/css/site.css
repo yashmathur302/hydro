@@ -657,21 +657,6 @@ main:focus {
     max-width: 38rem;
 }
 
-.hero__watermark {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    font-family: var(--font-heading);
-    font-size: clamp(6rem, 16vw, 14rem);
-    font-weight: 700;
-    line-height: 1;
-    color: transparent;
-    white-space: nowrap;
-    pointer-events: none;
-    -webkit-text-stroke: 1px rgb(255 255 255 / 0.1);
-    transform: translateY(-62%);
-}
-
 .hero__eyebrow {
     font-size: 1.125rem;
     font-weight: 500;

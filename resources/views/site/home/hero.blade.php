@@ -11,10 +11,6 @@
     @endif
 
     <div class="container hero__inner">
-        @if ($hero['watermark'])
-            <span class="hero__watermark" aria-hidden="true">{{ $hero['watermark'] }}</span>
-        @endif
-
         <div class="hero__content">
             @if ($hero['eyebrow'])
                 <p class="hero__eyebrow">{{ $hero['eyebrow'] }}</p>

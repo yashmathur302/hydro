@@ -36,10 +36,7 @@
 
             <x-admin.card id="banner" title="Banner" description="The large first section with the background photo.">
                 <div class="form-stack">
-                    <div class="form-grid">
-                        <x-admin.form.input name="hero[eyebrow]" label="Small text above the heading" :value="$hero['eyebrow']" maxlength="80" />
-                        <x-admin.form.input name="hero[watermark]" label="Faint background word" :value="$hero['watermark']" maxlength="20" hint="Large outlined word behind the heading. Leave empty to hide." />
-                    </div>
+                    <x-admin.form.input name="hero[eyebrow]" label="Small text above the heading" :value="$hero['eyebrow']" maxlength="80" />
                     <x-admin.form.input name="hero[heading]" label="Heading" :value="$hero['heading']" required maxlength="120" counter />
                     <x-admin.form.textarea name="hero[text]" label="Text" :value="$hero['text']" maxlength="400" counter rows="3" />
                     <div class="form-grid">

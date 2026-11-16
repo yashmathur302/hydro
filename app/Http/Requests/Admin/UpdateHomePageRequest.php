@@ -39,7 +39,6 @@ final class UpdateHomePageRequest extends FormRequest
             'hero.text' => ['nullable', 'string', 'max:400'],
             'hero.button_label' => ['nullable', 'string', 'max:40'],
             'hero.button_url' => $link,
-            'hero.watermark' => ['nullable', 'string', 'max:20'],
 
             'about.eyebrow' => ['nullable', 'string', 'max:80'],
             'about.heading' => ['required', 'string', 'max:120'],
