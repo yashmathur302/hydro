@@ -52,7 +52,7 @@ final class UpdateHomePageRequest extends FormRequest
             'industries.eyebrow' => ['nullable', 'string', 'max:80'],
             'industries.heading' => ['required', 'string', 'max:120'],
 
-            'stats.word' => ['nullable', 'string', 'max:20'],
+            'stats.word' => ['nullable', 'string', 'max:100'],
             'stats.subtitle' => ['nullable', 'string', 'max:160'],
             'stats.items' => ['nullable', 'array', 'max:'.HomeSection::STAT_COUNT],
             'stats.items.*.value' => ['nullable', 'string', 'max:12', 'required_with:stats.items.*.label'],

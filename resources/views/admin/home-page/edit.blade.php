@@ -89,13 +89,13 @@
                 </x-slot:footer>
             </x-admin.card>
 
-            <x-admin.card id="counters" title="Counters" description="The big word filled with a photo, and the counters that count up when visitors scroll to them.">
+            <x-admin.card id="counters" title="Counters" description="The headline, and the counters that count up when visitors scroll to them.">
                 <div class="form-stack">
                     <div class="form-grid">
-                        <x-admin.form.input name="stats[word]" label="Big word" :value="$stats['word']" maxlength="20" hint="One short word looks best, e.g. Hydro. Leave empty to hide." />
+                        <x-admin.form.input name="stats[word]" label="Headline" :value="$stats['word']" maxlength="100" counter hint="Up to 100 characters. Leave empty to hide." />
                         <x-admin.form.input name="stats[subtitle]" label="Line below the word" :value="$stats['subtitle']" maxlength="160" />
                     </div>
-                    <x-admin.form.image-upload name="stats_word_image" label="Photo inside the big word" :current-url="$stats['word_image_url']" accept="image/jpeg,image/png,image/webp" remove-name="remove_stats_word_image" hint="Wide colourful photo, about 1600 × 500 px. Without it the word is shown in the brand colours." />
+                    <x-admin.form.image-upload name="stats_word_image" label="Photo inside the headline (optional)" :current-url="$stats['word_image_url']" accept="image/jpeg,image/png,image/webp" remove-name="remove_stats_word_image" hint="Wide colourful photo, about 1600 × 500 px. Without it the headline is shown in the brand colour." />
 
                     <fieldset class="fieldset">
                         <legend class="form-label">Counters</legend>
