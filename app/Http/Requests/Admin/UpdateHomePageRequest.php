@@ -46,8 +46,6 @@ final class UpdateHomePageRequest extends FormRequest
             'about.subheading' => ['nullable', 'string', 'max:160'],
             'about.points' => ['nullable', 'array', 'max:'.HomeSection::MAX_ABOUT_POINTS],
             'about.points.*' => ['nullable', 'string', 'max:120'],
-            'about.badge_number' => ['nullable', 'string', 'max:10'],
-            'about.badge_label' => ['nullable', 'string', 'max:20'],
             'about.button_label' => ['nullable', 'string', 'max:40'],
             'about.button_url' => $link,
 

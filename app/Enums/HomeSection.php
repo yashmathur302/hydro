@@ -67,8 +67,6 @@ enum HomeSection: string implements EditablePageSection
                     'Built To Project Specifications And Standards',
                     'Quick Support From Enquiry To Delivery',
                 ],
-                'badge_number' => '1999',
-                'badge_label' => 'Since',
                 'button_label' => 'Know More',
                 'button_url' => '/about-us',
             ],

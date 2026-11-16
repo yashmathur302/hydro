@@ -68,8 +68,6 @@
                     </fieldset>
 
                     <div class="form-grid">
-                        <x-admin.form.input name="about[badge_number]" label="Badge number" :value="$about['badge_number']" maxlength="10" hint="e.g. the founding year 1999." />
-                        <x-admin.form.input name="about[badge_label]" label="Badge label" :value="$about['badge_label']" maxlength="20" />
                         <x-admin.form.input name="about[button_label]" label="Button text" :value="$about['button_label']" maxlength="40" />
                         <x-admin.form.input name="about[button_url]" label="Button link" :value="$about['button_url']" maxlength="255" />
                     </div>

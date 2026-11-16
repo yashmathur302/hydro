@@ -21,14 +21,6 @@
                     </figure>
                 @endforeach
 
-                @if ($about['badge_number'])
-                    <p class="collage__badge">
-                        <span class="collage__badge-number">{{ $about['badge_number'] }}</span>
-                        @if ($about['badge_label'])
-                            <span class="collage__badge-label">{{ $about['badge_label'] }}</span>
-                        @endif
-                    </p>
-                @endif
                 <span class="collage__dots" aria-hidden="true"></span>
             </div>
         </div>

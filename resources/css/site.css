@@ -868,48 +868,6 @@ main:focus {
     height: 42.4%;
 }
 
-.collage__badge {
-    position: absolute;
-    top: 74.6%;
-    left: 0;
-    z-index: 3;
-    display: grid;
-    align-content: center;
-    width: 43%;
-    height: 24.4%;
-    padding: 0 8% 0 14%;
-    color: var(--color-white);
-    background: var(--color-green);
-    border-radius: 999px;
-}
-
-/* L-shaped line in front of the number, as in the design. */
-.collage__badge::before {
-    position: absolute;
-    top: 22%;
-    bottom: 22%;
-    left: 15%;
-    width: 22%;
-    content: '';
-    border-bottom: 2px solid rgb(255 255 255 / 0.85);
-    border-left: 2px solid rgb(255 255 255 / 0.85);
-}
-
-.collage__badge-number {
-    font-family: var(--font-heading);
-    font-size: clamp(1.75rem, 4vw, 3.125rem);
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: -0.02em;
-}
-
-.collage__badge-label {
-    font-family: var(--font-heading);
-    font-size: clamp(0.875rem, 1.6vw, 1.125rem);
-    font-weight: 700;
-    text-align: right;
-}
-
 .collage__dots {
     position: absolute;
     top: 88%;
