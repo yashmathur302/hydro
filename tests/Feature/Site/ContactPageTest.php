@@ -6,7 +6,6 @@ namespace Tests\Feature\Site;
 
 use App\Enums\ContactPageSection;
 use App\Models\Admin;
-use App\Models\Enquiry;
 use App\Services\PageSectionService;
 use App\Services\SiteSettingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;

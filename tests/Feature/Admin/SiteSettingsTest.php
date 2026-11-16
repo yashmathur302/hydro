@@ -87,6 +87,30 @@ final class SiteSettingsTest extends TestCase
             ->assertSessionHasErrors(SiteSettingKey::FacebookUrl->value);
     }
 
+    public function test_hash_placeholder_is_accepted_for_social_links(): void
+    {
+        $this->actingAs(Admin::factory()->create())
+            ->put(route('admin.settings.update'), $this->validPayload([
+                SiteSettingKey::FacebookUrl->value => '#',
+                SiteSettingKey::LinkedinUrl->value => 'https://www.linkedin.com/company/example',
+            ]))
+            ->assertSessionHasNoErrors();
+
+        $html = $this->get(route('home'))->assertOk()->getContent();
+
+        $this->assertMatchesRegularExpression('/class="social-list__link" href="#"\s+aria-label="Facebook"/', $html);
+        $this->assertMatchesRegularExpression('/href="https:\/\/www\.linkedin\.com\/company\/example"\s+target="_blank"/', $html);
+    }
+
+    public function test_hash_with_other_text_is_still_rejected_for_social_links(): void
+    {
+        $this->actingAs(Admin::factory()->create())
+            ->put(route('admin.settings.update'), $this->validPayload([
+                SiteSettingKey::FacebookUrl->value => '#javascript:alert(1)',
+            ]))
+            ->assertSessionHasErrors(SiteSettingKey::FacebookUrl->value);
+    }
+
     public function test_logo_is_stored_under_a_random_name(): void
     {
         $this->actingAs(Admin::factory()->create())

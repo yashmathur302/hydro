@@ -7,7 +7,7 @@
     <ul {{ $attributes->merge(['class' => 'social-list']) }}>
         @foreach ($socialLinks as $icon => $link)
             <li>
-                <a class="social-list__link" href="{{ $link['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $link['label'] }}">
+                <a class="social-list__link" href="{{ $link['url'] }}" @unless (\App\Support\SiteLink::isPlaceholder($link['url'])) target="_blank" rel="noopener noreferrer" @endunless aria-label="{{ $link['label'] }}">
                     <x-site.icon :name="$icon" />
                 </a>
             </li>

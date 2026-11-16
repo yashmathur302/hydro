@@ -6,7 +6,7 @@
                 @foreach ($clients as $client)
                     <li class="client-logos__item">
                         @if ($client->website_url)
-                            <a href="{{ $client->website_url }}" target="_blank" rel="noopener noreferrer nofollow">
+                            <a href="{{ $client->website_url }}" @unless (\App\Support\SiteLink::isPlaceholder($client->website_url)) target="_blank" rel="noopener noreferrer nofollow" @endunless>
                                 <img src="{{ $client->logoUrl() }}" alt="{{ $client->name }}" loading="lazy" decoding="async">
                             </a>
                         @else

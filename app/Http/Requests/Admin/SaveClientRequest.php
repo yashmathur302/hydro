@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin;
 
 use App\Models\Client;
+use App\Support\SiteLink;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
@@ -30,7 +31,7 @@ final class SaveClientRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:100'],
             'logo' => [$isNew ? 'required' : 'nullable', 'file', 'image', 'mimes:png,jpg,jpeg,webp', 'max:'.self::LOGO_MAX_KILOBYTES, 'dimensions:max_width=4000,max_height=4000'],
-            'website_url' => ['nullable', 'string', 'url:http,https', 'max:255'],
+            'website_url' => SiteLink::webAddressRules($this->input('website_url')),
             'is_active' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:100000'],
         ];

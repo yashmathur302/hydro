@@ -57,7 +57,7 @@
                     <x-admin.button variant="secondary" size="small" icon="plus" data-repeater-add>Add menu item</x-admin.button>
                 </div>
                 <p class="form-text mb-0 mt-3">
-                    Links: a page path such as <code>/about-us</code>, <code>/products</code>, <code>/certificates</code>, <code>/contact-us</code> or a static page like <code>/privacy-policy</code>; or a full https:// address (opens in a new tab). Up to {{ LayoutSection::MAX_MENU_ITEMS }} items.
+                    Links: a page path such as <code>/about-us</code>, <code>/products</code>, <code>/certificates</code>, <code>/contact-us</code> or a static page like <code>/privacy-policy</code>; a full https:// address (opens in a new tab); or <code>#</code> as a placeholder. Up to {{ LayoutSection::MAX_MENU_ITEMS }} items.
                 </p>
             </x-admin.card>
 

@@ -20,7 +20,7 @@
                 <div class="form-stack">
                     <x-admin.form.input name="name" label="Client name" :value="$client->name" required maxlength="100" hint="Used as the logo's alternative text for screen readers and search engines." />
                     <x-admin.form.image-upload name="logo" label="Logo" :current-url="$isEdit ? $client->logoUrl() : null" accept="image/png,image/jpeg,image/webp" hint="PNG with transparent background works best, up to {{ \App\Http\Requests\Admin\SaveClientRequest::LOGO_MAX_KILOBYTES / 1024 }} MB." />
-                    <x-admin.form.input name="website_url" type="url" label="Website (optional)" :value="$client->website_url" maxlength="255" placeholder="https://" hint="If filled in, the logo links to this website (opens in a new tab)." />
+                    <x-admin.form.input name="website_url" inputmode="url" label="Website (optional)" :value="$client->website_url" maxlength="255" placeholder="https://" hint="If filled in, the logo links to this website (opens in a new tab). Use # if the link is not ready yet." />
                 </div>
             </x-admin.card>
         </div>

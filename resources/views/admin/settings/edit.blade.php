@@ -50,13 +50,13 @@
                 </div>
             </x-admin.card>
 
-            <x-admin.card id="social" title="Social profiles" description="Full profile links. Leave a field empty to hide that icon.">
+            <x-admin.card id="social" title="Social profiles" description="Full profile links, or # to show the icon before the page is ready. Leave a field empty to hide that icon.">
                 <div class="form-grid">
-                    <x-admin.form.input :name="Key::FacebookUrl->value" type="url" label="Facebook" :value="$settings[Key::FacebookUrl->value] ?? null" maxlength="255" placeholder="https://www.facebook.com/…" />
-                    <x-admin.form.input :name="Key::InstagramUrl->value" type="url" label="Instagram" :value="$settings[Key::InstagramUrl->value] ?? null" maxlength="255" placeholder="https://www.instagram.com/…" />
-                    <x-admin.form.input :name="Key::LinkedinUrl->value" type="url" label="LinkedIn" :value="$settings[Key::LinkedinUrl->value] ?? null" maxlength="255" placeholder="https://www.linkedin.com/…" />
-                    <x-admin.form.input :name="Key::YoutubeUrl->value" type="url" label="YouTube" :value="$settings[Key::YoutubeUrl->value] ?? null" maxlength="255" placeholder="https://www.youtube.com/…" />
-                    <x-admin.form.input :name="Key::XUrl->value" type="url" label="X (Twitter)" :value="$settings[Key::XUrl->value] ?? null" maxlength="255" placeholder="https://x.com/…" />
+                    <x-admin.form.input :name="Key::FacebookUrl->value" inputmode="url" label="Facebook" :value="$settings[Key::FacebookUrl->value] ?? null" maxlength="255" placeholder="https://www.facebook.com/…" />
+                    <x-admin.form.input :name="Key::InstagramUrl->value" inputmode="url" label="Instagram" :value="$settings[Key::InstagramUrl->value] ?? null" maxlength="255" placeholder="https://www.instagram.com/…" />
+                    <x-admin.form.input :name="Key::LinkedinUrl->value" inputmode="url" label="LinkedIn" :value="$settings[Key::LinkedinUrl->value] ?? null" maxlength="255" placeholder="https://www.linkedin.com/…" />
+                    <x-admin.form.input :name="Key::YoutubeUrl->value" inputmode="url" label="YouTube" :value="$settings[Key::YoutubeUrl->value] ?? null" maxlength="255" placeholder="https://www.youtube.com/…" />
+                    <x-admin.form.input :name="Key::XUrl->value" inputmode="url" label="X (Twitter)" :value="$settings[Key::XUrl->value] ?? null" maxlength="255" placeholder="https://x.com/…" />
                 </div>
             </x-admin.card>
 

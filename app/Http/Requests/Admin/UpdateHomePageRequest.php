@@ -88,9 +88,9 @@ final class UpdateHomePageRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'hero.button_url.regex' => 'Use a page path such as /products, or a full https:// link.',
-            'about.button_url.regex' => 'Use a page path such as /about-us, or a full https:// link.',
-            'why_us.link_url.regex' => 'Use a page path such as /products, or a full https:// link.',
+            'hero.button_url.regex' => 'Use a page path such as /products, a full https:// link, or # for now.',
+            'about.button_url.regex' => 'Use a page path such as /about-us, a full https:// link, or # for now.',
+            'why_us.link_url.regex' => 'Use a page path such as /products, a full https:// link, or # for now.',
             'stats.items.*.value.required_with' => 'Enter the number for this counter.',
         ];
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Site;
 
 use App\Enums\AboutSection;
+use App\Models\Client;
 use App\Services\PageSectionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -26,7 +27,7 @@ final class AboutPageTest extends TestCase
 
     public function test_about_page_repeats_the_home_sections_without_the_more_about_us_button(): void
     {
-        \App\Models\Client::factory()->create(['name' => 'Acme Pipelines']);
+        Client::factory()->create(['name' => 'Acme Pipelines']);
 
         $this->get(route('about'))
             ->assertOk()

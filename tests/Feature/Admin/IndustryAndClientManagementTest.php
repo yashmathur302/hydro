@@ -108,4 +108,16 @@ final class IndustryAndClientManagementTest extends TestCase
             ])
             ->assertSessionHasErrors('website_url');
     }
+
+    public function test_client_website_accepts_the_hash_placeholder(): void
+    {
+        $this->actingAs(Admin::factory()->create())
+            ->post(route('admin.clients.store'), [
+                'name' => 'Acme', 'website_url' => '#', 'is_active' => '1',
+                'logo' => UploadedFile::fake()->image('logo.png'),
+            ])
+            ->assertSessionHasNoErrors();
+
+        $this->assertSame('#', Client::query()->sole()->website_url);
+    }
 }

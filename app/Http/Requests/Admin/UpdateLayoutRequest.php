@@ -54,7 +54,7 @@ final class UpdateLayoutRequest extends FormRequest
      */
     public function messages(): array
     {
-        $linkHint = 'Use a page path such as /contact-us, or a full https:// link.';
+        $linkHint = 'Use a page path such as /contact-us, a full https:// link, or # for now.';
 
         return [
             'menu.items.*.url.regex' => $linkHint,

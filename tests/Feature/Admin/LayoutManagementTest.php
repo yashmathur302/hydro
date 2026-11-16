@@ -85,6 +85,21 @@ final class LayoutManagementTest extends TestCase
         $this->assertDatabaseMissing('page_sections', ['page' => 'layout']);
     }
 
+    public function test_hash_placeholder_links_are_accepted(): void
+    {
+        $this->actingAs(Admin::factory()->create())
+            ->put(route('admin.layout.update'), $this->payload([
+                'menu' => ['items' => [['label' => 'Coming soon', 'url' => '#'], ['label' => 'Contact', 'url' => '#contact']]],
+                'footer_cta' => ['eyebrow' => '', 'heading' => 'Talk To Us', 'button_label' => 'Go', 'button_url' => '#'],
+            ]))
+            ->assertSessionHasNoErrors();
+
+        $html = $this->get(route('certificates'))->assertOk()->getContent();
+
+        $this->assertMatchesRegularExpression('/href="#"\s*>Coming soon</', $html);
+        $this->assertStringContainsString('href="#contact"', $html);
+    }
+
     /**
      * @param  array<string, mixed>  $overrides
      * @return array<string, mixed>

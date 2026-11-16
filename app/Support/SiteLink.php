@@ -5,17 +5,41 @@ declare(strict_types=1);
 namespace App\Support;
 
 /**
- * Links typed in the admin panel: a page path on this site ("/products") or a
- * full http(s) address. Paths are resolved against the site's base URL, so
+ * Links typed in the admin panel: a page path on this site ("/products"), a
+ * full http(s) address, or "#" as a placeholder until the real link is known. Paths are resolved against the site's base URL, so
  * they keep working when the site runs in a subfolder (e.g. /hydro).
  */
 final class SiteLink
 {
     /**
-     * Allowed link formats. Blocks javascript:, data: and protocol-relative
-     * ("//host") links.
+     * Placeholder link: stays on the current page and never opens a new tab.
      */
-    public const PATTERN = '/^(\/(?!\/)[^\s]*|https?:\/\/[^\s]+)$/';
+    public const PLACEHOLDER = '#';
+
+    /**
+     * Allowed link formats: "#" or "#section", a site path, or an http(s)
+     * address. Blocks javascript:, data: and protocol-relative ("//host") links.
+     */
+    public const PATTERN = '/^(#[^\s]*|\/(?!\/)[^\s]*|https?:\/\/[^\s]+)$/';
+
+    /**
+     * Validation for fields that take a full web address (social profiles,
+     * client websites) and also accept the "#" placeholder.
+     *
+     * @return list<mixed>
+     */
+    public static function webAddressRules(mixed $value): array
+    {
+        return [
+            'nullable', 'string', 'max:255',
+            ...($value === self::PLACEHOLDER ? [] : ['url:http,https']),
+        ];
+    }
+
+    public static function isPlaceholder(?string $link): bool
+    {
+        return $link !== null && str_starts_with($link, '#');
+    }
 
     public static function href(?string $link): ?string
     {

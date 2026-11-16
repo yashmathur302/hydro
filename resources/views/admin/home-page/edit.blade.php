@@ -44,7 +44,7 @@
                     <x-admin.form.textarea name="hero[text]" label="Text" :value="$hero['text']" maxlength="400" counter rows="3" />
                     <div class="form-grid">
                         <x-admin.form.input name="hero[button_label]" label="Button text" :value="$hero['button_label']" maxlength="40" />
-                        <x-admin.form.input name="hero[button_url]" label="Button link" :value="$hero['button_url']" maxlength="255" hint="A page path such as /products, or a full https:// link." />
+                        <x-admin.form.input name="hero[button_url]" label="Button link" :value="$hero['button_url']" maxlength="255" hint="A page path such as /products, a full https:// link, or # for now." />
                     </div>
                     <x-admin.form.image-upload name="hero_background_image" label="Background photo" :current-url="$hero['background_image_url']" accept="image/jpeg,image/png,image/webp" remove-name="remove_hero_background_image" hint="Wide landscape photo, at least 1920 × 900 px. JPG, PNG or WebP up to {{ $maxMb }} MB." />
                     <p class="text-secondary mb-0">The phone number next to the button comes from Site settings › Contact.</p>

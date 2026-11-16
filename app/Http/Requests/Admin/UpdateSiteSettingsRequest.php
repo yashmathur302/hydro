@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin;
 
 use App\Enums\SiteSettingKey;
+use App\Support\SiteLink;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class UpdateSiteSettingsRequest extends FormRequest
@@ -19,12 +20,10 @@ final class UpdateSiteSettingsRequest extends FormRequest
     }
 
     /**
-     * @return array<string, list<string>>
+     * @return array<string, list<mixed>>
      */
     public function rules(): array
     {
-        $optionalUrl = ['nullable', 'string', 'url:http,https', 'max:255'];
-
         return [
             SiteSettingKey::SiteName->value => ['required', 'string', 'max:100'],
             SiteSettingKey::SiteTagline->value => ['nullable', 'string', 'max:150'],
@@ -40,11 +39,11 @@ final class UpdateSiteSettingsRequest extends FormRequest
             SiteSettingKey::WhatsappNumber->value => ['nullable', 'string', 'regex:/^[1-9][0-9]{7,14}$/'],
             SiteSettingKey::EnquiryNotificationEmail->value => ['nullable', 'string', 'email', 'max:191'],
 
-            SiteSettingKey::FacebookUrl->value => $optionalUrl,
-            SiteSettingKey::InstagramUrl->value => $optionalUrl,
-            SiteSettingKey::LinkedinUrl->value => $optionalUrl,
-            SiteSettingKey::YoutubeUrl->value => $optionalUrl,
-            SiteSettingKey::XUrl->value => $optionalUrl,
+            SiteSettingKey::FacebookUrl->value => SiteLink::webAddressRules($this->input(SiteSettingKey::FacebookUrl->value)),
+            SiteSettingKey::InstagramUrl->value => SiteLink::webAddressRules($this->input(SiteSettingKey::InstagramUrl->value)),
+            SiteSettingKey::LinkedinUrl->value => SiteLink::webAddressRules($this->input(SiteSettingKey::LinkedinUrl->value)),
+            SiteSettingKey::YoutubeUrl->value => SiteLink::webAddressRules($this->input(SiteSettingKey::YoutubeUrl->value)),
+            SiteSettingKey::XUrl->value => SiteLink::webAddressRules($this->input(SiteSettingKey::XUrl->value)),
 
             SiteSettingKey::DefaultMetaTitle->value => ['nullable', 'string', 'max:120'],
             SiteSettingKey::DefaultMetaDescription->value => ['nullable', 'string', 'max:300'],
@@ -67,6 +66,10 @@ final class UpdateSiteSettingsRequest extends FormRequest
             SiteSettingKey::Ga4MeasurementId->value.'.regex' => 'A GA4 Measurement ID looks like G-XXXXXXXXXX.',
             SiteSettingKey::FacebookPixelId->value.'.regex' => 'A Pixel ID contains digits only, e.g. 123456789012345.',
             SiteSettingKey::GoogleSiteVerification->value.'.regex' => 'Paste only the code from the content="..." part of the Google meta tag.',
+            ...array_fill_keys(array_map(
+                static fn (SiteSettingKey $key): string => $key->value.'.url',
+                [SiteSettingKey::FacebookUrl, SiteSettingKey::InstagramUrl, SiteSettingKey::LinkedinUrl, SiteSettingKey::YoutubeUrl, SiteSettingKey::XUrl],
+            ), 'Enter the full link starting with https://, or # for now.'),
         ];
     }
 
