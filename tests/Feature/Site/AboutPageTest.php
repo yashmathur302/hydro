@@ -33,9 +33,9 @@ final class AboutPageTest extends TestCase
             ->assertOk()
             ->assertSeeInOrder(['page-banner', 'about-heading', 'why-us-heading', 'Acme Pipelines', 'Key figures'], false)
             ->assertSee('Pigging Products Built To Perform In Every Pipeline')
-            ->assertDontSee('More About Us');
+            ->assertDontSee('Know More');
 
-        $this->get(route('home'))->assertSee('More About Us');
+        $this->get(route('home'))->assertSee('Know More');
     }
 
     public function test_banner_text_is_escaped_and_empty_eyebrow_is_hidden(): void

@@ -54,33 +54,11 @@
                 </ul>
             @endif
 
-            <div class="about__footer">
-                @if ($about['person_name'] || $about['signature_image_url'])
-                    <div class="author">
-                        <span class="author__photo">
-                            @if ($about['person_photo_url'])
-                                <img src="{{ $about['person_photo_url'] }}" alt="" width="54" height="54" loading="lazy">
-                            @else
-                                {{ mb_strtoupper(mb_substr((string) $about['person_name'], 0, 1)) }}
-                            @endif
-                        </span>
-                        <span class="author__text">
-                            @if ($about['signature_image_url'])
-                                <img class="author__signature" src="{{ $about['signature_image_url'] }}" alt="{{ $about['person_name'] }}" loading="lazy">
-                            @else
-                                <span class="author__name">{{ $about['person_name'] }}</span>
-                            @endif
-                            @if ($about['person_role'])
-                                <span class="author__role">{{ $about['person_role'] }}</span>
-                            @endif
-                        </span>
-                    </div>
-                @endif
-
-                @if (($showButton ?? true) && $about['button_label'] && $about['button_url'])
+            @if (($showButton ?? true) && $about['button_label'] && $about['button_url'])
+                <div class="about__footer">
                     <a class="btn btn--dark" href="{{ \App\Support\SiteLink::href($about['button_url']) }}">{{ $about['button_label'] }}</a>
-                @endif
-            </div>
+                </div>
+            @endif
         </div>
     </div>
 

@@ -70,8 +70,6 @@
                     <div class="form-grid">
                         <x-admin.form.input name="about[badge_number]" label="Badge number" :value="$about['badge_number']" maxlength="10" hint="e.g. the founding year 1999." />
                         <x-admin.form.input name="about[badge_label]" label="Badge label" :value="$about['badge_label']" maxlength="20" />
-                        <x-admin.form.input name="about[person_name]" label="Person name" :value="$about['person_name']" maxlength="80" hint="Shown when no signature image is uploaded." />
-                        <x-admin.form.input name="about[person_role]" label="Person role" :value="$about['person_role']" maxlength="80" />
                         <x-admin.form.input name="about[button_label]" label="Button text" :value="$about['button_label']" maxlength="40" />
                         <x-admin.form.input name="about[button_url]" label="Button link" :value="$about['button_url']" maxlength="255" />
                     </div>
@@ -79,8 +77,6 @@
                     <x-admin.form.image-upload name="about_image_main" label="Main photo (tall)" :current-url="$about['image_main_url']" accept="image/jpeg,image/png,image/webp" remove-name="remove_about_image_main" hint="Portrait, about 620 × 740 px." />
                     <x-admin.form.image-upload name="about_image_top" label="Small photo (top right)" :current-url="$about['image_top_url']" accept="image/jpeg,image/png,image/webp" remove-name="remove_about_image_top" hint="About 330 × 360 px." />
                     <x-admin.form.image-upload name="about_image_bottom" label="Photo (bottom)" :current-url="$about['image_bottom_url']" accept="image/jpeg,image/png,image/webp" remove-name="remove_about_image_bottom" hint="Landscape, about 500 × 420 px." />
-                    <x-admin.form.image-upload name="about_person_photo" label="Person photo" :current-url="$about['person_photo_url']" accept="image/jpeg,image/png,image/webp" remove-name="remove_about_person_photo" hint="Square, at least 120 × 120 px." />
-                    <x-admin.form.image-upload name="about_signature_image" label="Signature" :current-url="$about['signature_image_url']" accept="image/png,image/webp" remove-name="remove_about_signature_image" hint="PNG with transparent background." />
                     <x-admin.form.image-upload name="about_decoration_image" label="Side image (bottom right)" :current-url="$about['decoration_image_url']" accept="image/png,image/webp" remove-name="remove_about_decoration_image" hint="Optional cut-out product photo with transparent background (PNG). Shown on large screens." />
                 </div>
             </x-admin.card>
