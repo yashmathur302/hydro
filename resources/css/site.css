@@ -327,11 +327,17 @@ main:focus {
 .social-list__link {
     display: grid;
     place-items: center;
-    width: 1.75rem;
-    height: 1.75rem;
-    font-size: 0.9375rem;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
     color: var(--color-heading);
     transition: color var(--transition);
+}
+
+/* Brand glyphs touch the edge of their 24px box; let them draw past it
+   instead of being clipped when rounded to whole pixels. */
+.social-list__link .site-icon {
+    overflow: visible;
 }
 
 .social-list__link:hover {
