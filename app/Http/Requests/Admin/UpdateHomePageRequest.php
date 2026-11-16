@@ -67,6 +67,10 @@ final class UpdateHomePageRequest extends FormRequest
             'why_us.link_label' => ['nullable', 'string', 'max:40'],
             'why_us.link_url' => $link,
 
+            'products.eyebrow' => ['nullable', 'string', 'max:80'],
+            'products.heading' => ['required', 'string', 'max:120'],
+            'products.link_label' => ['nullable', 'string', 'max:40'],
+
             'certificates.eyebrow' => ['nullable', 'string', 'max:80'],
             'certificates.heading' => ['required', 'string', 'max:120'],
             'certificates.link_label' => ['nullable', 'string', 'max:40'],
@@ -98,6 +102,7 @@ final class UpdateHomePageRequest extends FormRequest
         return [
             'hero.heading' => 'banner heading',
             'about.heading' => 'about heading',
+            'products.heading' => 'products heading',
             'industries.heading' => 'industries heading',
             'why_us.heading' => 'why choose us heading',
             'certificates.heading' => 'certificates heading',

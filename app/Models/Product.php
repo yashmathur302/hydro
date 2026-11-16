@@ -32,6 +32,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Product extends Model
 {
+    /**
+     * How many products the home page shows (featured ones first).
+     */
+    public const HOME_LIMIT = 6;
+
     /** @use HasFactory<ProductFactory> */
     use HasFactory;
 

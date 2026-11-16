@@ -18,6 +18,7 @@ final class HomePageController extends Controller
         return view('admin.home-page.edit', [
             'hero' => $pageSections->section(HomeSection::Hero),
             'about' => $pageSections->section(HomeSection::About),
+            'products' => $pageSections->section(HomeSection::Products),
             'industries' => $pageSections->section(HomeSection::Industries),
             'stats' => $pageSections->section(HomeSection::Stats),
             'whyUs' => $pageSections->section(HomeSection::WhyUs),

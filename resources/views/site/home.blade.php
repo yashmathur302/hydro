@@ -2,6 +2,7 @@
 <x-site.layout :seo="$seo">
     @include('site.home.hero')
     @include('site.home.about')
+    @include('site.home.products')
     @include('site.home.industries')
     @include('site.home.stats')
     @include('site.home.why-us')

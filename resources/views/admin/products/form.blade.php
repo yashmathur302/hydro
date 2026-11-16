@@ -106,7 +106,7 @@
                 <div class="form-stack">
                     <x-admin.form.select name="product_category_id" label="Category" :options="$categories" :value="$product->product_category_id" placeholder="Choose a category" required />
                     <x-admin.form.toggle name="is_active" label="Show on website" :checked="$product->is_active" hint="Hidden products cannot be viewed or enquired about." />
-                    <x-admin.form.toggle name="is_featured" label="Featured" :checked="$product->is_featured" hint="Highlight on the home page." />
+                    <x-admin.form.toggle name="is_featured" label="Featured" :checked="$product->is_featured" hint="Featured products are shown first on the home page." />
                     <x-admin.form.input name="sort_order" type="number" label="Sort order" :value="$product->sort_order ?? 0" min="0" max="100000" hint="Lower numbers appear first." />
                 </div>
 

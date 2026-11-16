@@ -16,17 +16,7 @@
             @else
                 <ul class="product-grid">
                     @foreach ($products as $product)
-                        <li class="product-card">
-                            @php($image = $product->primaryImage)
-                            <div @class(['product-card__frame', 'product-card__frame--cutout' => $image?->hasPlainBackground()])>
-                                @if ($image)
-                                    <img class="product-card__image" src="{{ $image->thumbnailUrl() }}" alt="{{ $image->alt_text ?: $product->name }}" @if ($loop->index >= 3) loading="lazy" @endif decoding="async">
-                                @else
-                                    <x-site.icon name="image" class="product-card__placeholder" />
-                                @endif
-                            </div>
-                            <h3 class="product-card__name">{{ $product->name }}</h3>
-                        </li>
+                        <li><x-site.product-card :product="$product" :lazy="$loop->index >= 3" /></li>
                     @endforeach
                 </ul>
             @endif

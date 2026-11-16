@@ -8,6 +8,8 @@ use App\Enums\HomeSection;
 use App\Enums\SiteSettingKey;
 use App\Models\Client;
 use App\Models\Industry;
+use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Services\PageSectionService;
 use App\Services\SiteSettingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -87,5 +89,37 @@ final class HomePageTest extends TestCase
         $this->get(route('home'))
             ->assertDontSee('<script>alert(1)</script>', false)
             ->assertSee('&lt;script&gt;alert(1)&lt;/script&gt;', false);
+    }
+
+    public function test_products_section_is_hidden_without_products(): void
+    {
+        $this->get(route('home'))->assertOk()->assertDontSee('home-products-heading');
+    }
+
+    public function test_products_section_shows_featured_products_first_and_respects_the_limit(): void
+    {
+        $category = ProductCategory::factory()->create();
+
+        Product::factory()->count(Product::HOME_LIMIT)->for($category, 'category')
+            ->sequence(fn ($sequence) => ['name' => 'Regular Pig '.$sequence->index, 'sort_order' => $sequence->index])
+            ->create();
+        Product::factory()->for($category, 'category')->create(['name' => 'Star Gauging Pig', 'is_featured' => true, 'sort_order' => 99]);
+        Product::factory()->for($category, 'category')->inactive()->create(['name' => 'Hidden Pig', 'is_featured' => true]);
+        Product::factory()->for(ProductCategory::factory()->create(['is_active' => false]), 'category')->create(['name' => 'Hidden Category Pig', 'is_featured' => true]);
+
+        $html = $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('Pigging Equipment For Every Pipeline')
+            ->assertSee('href="'.route('products.index').'"', false)
+            ->assertDontSee('Hidden Pig')
+            ->assertDontSee('Hidden Category Pig')
+            ->getContent();
+
+        $section = substr($html, (int) strpos($html, 'home-products-heading'));
+        $section = substr($section, 0, (int) strpos($section, '</section>'));
+
+        $this->assertSame(Product::HOME_LIMIT, substr_count($section, 'class="product-card__name"'));
+        $this->assertLessThan(strpos($section, 'Regular Pig 0'), strpos($section, 'Star Gauging Pig'));
+        $this->assertStringNotContainsString('Regular Pig '.(Product::HOME_LIMIT - 1), $section);
     }
 }

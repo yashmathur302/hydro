@@ -14,6 +14,7 @@ enum HomeSection: string implements EditablePageSection
 {
     case Hero = 'hero';
     case About = 'about';
+    case Products = 'products';
     case Industries = 'industries';
     case Stats = 'stats';
     case WhyUs = 'why_us';
@@ -35,6 +36,7 @@ enum HomeSection: string implements EditablePageSection
         return match ($this) {
             self::Hero => 'Banner',
             self::About => 'About us',
+            self::Products => 'Products',
             self::Industries => 'Industries',
             self::Stats => 'Counters',
             self::WhyUs => 'Why choose us',
@@ -69,6 +71,11 @@ enum HomeSection: string implements EditablePageSection
                 ],
                 'button_label' => 'Know More',
                 'button_url' => '/about-us',
+            ],
+            self::Products => [
+                'eyebrow' => 'Our Products',
+                'heading' => 'Pigging Equipment For Every Pipeline',
+                'link_label' => 'View All Products',
             ],
             self::Industries => [
                 'eyebrow' => 'Industries We Serve',
@@ -123,7 +130,7 @@ enum HomeSection: string implements EditablePageSection
                 'image_bottom' => 700,
                 'decoration_image' => 700,
             ],
-            self::Industries, self::WhyUs, self::Certificates => [],
+            self::Products, self::Industries, self::WhyUs, self::Certificates => [],
             self::Stats => [
                 'word_image' => 1600,
             ],

@@ -132,6 +132,7 @@ final class HomePageManagementTest extends TestCase
         return array_replace([
             'hero' => ['heading' => 'New banner heading', 'button_label' => 'Products', 'button_url' => '/products'],
             'about' => ['heading' => 'About heading', 'points' => ['First point', '', 'Second point']],
+            'products' => ['heading' => 'Products heading'],
             'industries' => ['heading' => 'Industries heading'],
             'why_us' => ['heading' => 'Why heading'],
             'certificates' => ['heading' => 'Certificates heading'],

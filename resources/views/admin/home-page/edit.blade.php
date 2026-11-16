@@ -21,6 +21,7 @@
             <ul class="segmented__list">
                 <li><a class="segmented__item" href="#banner" data-section-link>Banner</a></li>
                 <li><a class="segmented__item" href="#about" data-section-link>About us</a></li>
+                <li><a class="segmented__item" href="#products" data-section-link>Products</a></li>
                 <li><a class="segmented__item" href="#industries" data-section-link>Industries</a></li>
                 <li><a class="segmented__item" href="#counters" data-section-link>Counters</a></li>
                 <li><a class="segmented__item" href="#why-us" data-section-link>Why choose us</a></li>
@@ -76,6 +77,17 @@
                     <x-admin.form.image-upload name="about_image_top" label="Small photo (top right)" :current-url="$about['image_top_url']" accept="image/jpeg,image/png,image/webp" remove-name="remove_about_image_top" hint="About 330 × 360 px." />
                     <x-admin.form.image-upload name="about_image_bottom" label="Photo (bottom)" :current-url="$about['image_bottom_url']" accept="image/jpeg,image/png,image/webp" remove-name="remove_about_image_bottom" hint="Landscape, about 500 × 420 px." />
                     <x-admin.form.image-upload name="about_decoration_image" label="Side image (bottom right)" :current-url="$about['decoration_image_url']" accept="image/png,image/webp" remove-name="remove_about_decoration_image" hint="Optional cut-out product photo with transparent background (PNG). Shown on large screens." />
+                </div>
+            </x-admin.card>
+
+            <x-admin.card id="products" title="Products" description="Shows up to {{ \App\Models\Product::HOME_LIMIT }} active products: those marked Featured first, then the rest in catalogue order. The section is hidden while there are none.">
+                <div class="form-stack">
+                    <div class="form-grid">
+                        <x-admin.form.input name="products[eyebrow]" label="Small text above the heading" :value="$products['eyebrow']" maxlength="80" />
+                        <x-admin.form.input name="products[heading]" label="Heading" :value="$products['heading']" required maxlength="120" />
+                    </div>
+                    <x-admin.form.input name="products[link_label]" label="Button text" :value="$products['link_label']" maxlength="40" hint="Button to the Products page under the cards. Leave empty to hide." />
+                    <p class="mb-0"><a href="{{ route('admin.products.index') }}">Manage products</a></p>
                 </div>
             </x-admin.card>
 

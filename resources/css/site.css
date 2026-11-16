@@ -1350,7 +1350,8 @@ main:focus {
     text-align: center;
 }
 
-.certificates__more {
+.certificates__more,
+.home-products__more {
     margin-top: clamp(2rem, 4vw, 3rem);
     text-align: center;
 }
