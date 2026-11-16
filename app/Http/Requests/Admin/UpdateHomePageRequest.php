@@ -63,9 +63,6 @@ final class UpdateHomePageRequest extends FormRequest
             'why_us.items' => ['nullable', 'array', 'max:'.HomeSection::MAX_WHY_ITEMS],
             'why_us.items.*.icon' => ['nullable', Rule::enum(FeatureIcon::class)],
             'why_us.items.*.title' => ['nullable', 'string', 'max:60'],
-            'why_us.footer_text' => ['nullable', 'string', 'max:200'],
-            'why_us.link_label' => ['nullable', 'string', 'max:40'],
-            'why_us.link_url' => $link,
 
             'products.eyebrow' => ['nullable', 'string', 'max:80'],
             'products.heading' => ['required', 'string', 'max:120'],
@@ -89,7 +86,6 @@ final class UpdateHomePageRequest extends FormRequest
         return [
             'hero.button_url.regex' => 'Use a page path such as /products, a full https:// link, or # for now.',
             'about.button_url.regex' => 'Use a page path such as /about-us, a full https:// link, or # for now.',
-            'why_us.link_url.regex' => 'Use a page path such as /products, a full https:// link, or # for now.',
             'stats.items.*.value.required_with' => 'Enter the number for this counter.',
         ];
     }

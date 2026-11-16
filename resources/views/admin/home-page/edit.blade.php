@@ -139,12 +139,6 @@
                         </div>
                         <p class="form-text mb-0">Cards without a title are hidden.</p>
                     </fieldset>
-
-                    <x-admin.form.input name="why_us[footer_text]" label="Line below the cards" :value="$whyUs['footer_text']" maxlength="200" hint="Leave empty to hide." />
-                    <div class="form-grid">
-                        <x-admin.form.input name="why_us[link_label]" label="Link text" :value="$whyUs['link_label']" maxlength="40" />
-                        <x-admin.form.input name="why_us[link_url]" label="Link" :value="$whyUs['link_url']" maxlength="255" />
-                    </div>
                 </div>
             </x-admin.card>
 

@@ -101,9 +101,6 @@ enum HomeSection: string implements EditablePageSection
                     ['icon' => 'delivery', 'title' => 'On-Time Delivery'],
                     ['icon' => 'support', 'title' => 'Expert Technical Support'],
                 ],
-                'footer_text' => 'Engineering, quality and support in one place.',
-                'link_label' => 'View our products',
-                'link_url' => '/products',
             ],
             self::Certificates => [
                 'eyebrow' => 'Quality You Can Verify',
