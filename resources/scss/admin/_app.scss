@@ -435,6 +435,32 @@ $nav-tones: (
 }
 
 // Image upload preview
+// Certificate cover, made from page 1 of the PDF (portrait thumbnail).
+.pdf-cover__frame {
+    display: grid;
+    place-items: center;
+    width: 7.5rem;
+    aspect-ratio: 3 / 4;
+    margin-bottom: $spacer * 0.5;
+    overflow: hidden;
+    color: $secondary;
+    background: $gray-100;
+    border: $border-width solid $border-color;
+    border-radius: $border-radius;
+}
+
+.pdf-cover__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+.pdf-cover__placeholder svg {
+    width: 2rem;
+    height: 2rem;
+}
+
 .upload__preview {
     display: grid;
     flex-shrink: 0;

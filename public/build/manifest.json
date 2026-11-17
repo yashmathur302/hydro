@@ -70,10 +70,13 @@
     ]
   },
   "resources/js/admin.js": {
-    "file": "assets/admin-1bCaadWb.js",
+    "file": "assets/admin-I2KBaxj4.js",
     "name": "admin",
     "src": "resources/js/admin.js",
     "isEntry": true,
+    "dynamicImports": [
+      "resources/js/admin/pdf-first-page.js"
+    ],
     "css": [
       "assets/admin-BsATLV94.css"
     ],
@@ -87,6 +90,12 @@
       "assets/inter-latin-wght-normal-Dx4kXJAl.woff2"
     ]
   },
+  "resources/js/admin/pdf-first-page.js": {
+    "file": "assets/pdf-first-page-_1JjS_nD.js",
+    "name": "pdf-first-page",
+    "src": "resources/js/admin/pdf-first-page.js",
+    "isDynamicEntry": true
+  },
   "resources/js/site.js": {
     "file": "assets/site-DXXXQxc2.js",
     "name": "site",
@@ -94,7 +103,7 @@
     "isEntry": true
   },
   "resources/scss/admin.scss": {
-    "file": "assets/admin-BYoCJwJ-.css",
+    "file": "assets/admin-sR66YN48.css",
     "src": "resources/scss/admin.scss",
     "isEntry": true,
     "name": "admin",

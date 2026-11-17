@@ -16,6 +16,7 @@ import { initFilters } from './admin/filters';
 import { initConfirmDialog } from './admin/confirm-dialog';
 import { initDismissibleAlerts, focusFirstInvalidField } from './admin/alerts';
 import { initDashboardCharts } from './admin/dashboard-charts';
+import { initPdfCovers } from './admin/pdf-cover';
 
 initSidebar();
 initDropdowns();
@@ -31,3 +32,4 @@ initFilters();
 initDismissibleAlerts();
 focusFirstInvalidField();
 initDashboardCharts();
+initPdfCovers();

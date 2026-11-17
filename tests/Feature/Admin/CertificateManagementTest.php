@@ -121,6 +121,50 @@ final class CertificateManagementTest extends TestCase
         Storage::disk('public')->assertExists($certificate->file_path);
     }
 
+    public function test_replacing_the_pdf_replaces_the_cover_made_from_it(): void
+    {
+        $admin = Admin::factory()->create();
+        $this->actingAs($admin)->post(route('admin.certificates.store'), [
+            'name' => 'Original', 'file' => $this->pdf(), 'cover_image' => UploadedFile::fake()->image('page-1.jpg', 1200, 1600),
+        ]);
+        $certificate = Certificate::query()->sole();
+        $firstCover = $certificate->cover_image_path;
+
+        $this->actingAs($admin)->put(route('admin.certificates.update', $certificate), [
+            'name' => 'Original', 'file' => $this->pdf(), 'cover_image' => UploadedFile::fake()->image('page-1.jpg', 1200, 1600),
+        ])->assertSessionHasNoErrors();
+
+        $newCover = $certificate->fresh()->cover_image_path;
+        $this->assertNotNull($newCover);
+        $this->assertNotSame($firstCover, $newCover);
+        Storage::disk('public')->assertMissing($firstCover);
+
+        // New PDF but no cover (the browser could not read it): the old cover must not stay.
+        $this->actingAs($admin)->put(route('admin.certificates.update', $certificate), [
+            'name' => 'Original', 'file' => $this->pdf(),
+        ])->assertSessionHasNoErrors();
+
+        $this->assertNull($certificate->fresh()->cover_image_path);
+        Storage::disk('public')->assertMissing($newCover);
+    }
+
+    public function test_form_makes_the_cover_from_the_pdf_instead_of_asking_for_an_upload(): void
+    {
+        $admin = Admin::factory()->create();
+
+        $this->actingAs($admin)->get(route('admin.certificates.create'))
+            ->assertOk()
+            ->assertSee('data-pdf-cover-source', false)
+            ->assertSee('Made automatically from the first page of the PDF.')
+            ->assertDontSee('Cover image (optional)');
+
+        $this->actingAs($admin)->post(route('admin.certificates.store'), ['name' => 'No cover yet', 'file' => $this->pdf()]);
+        $certificate = Certificate::query()->sole();
+
+        $this->actingAs($admin)->get(route('admin.certificates.edit', $certificate))
+            ->assertSee('data-pdf-url="'.$certificate->fileUrl().'"', false);
+    }
+
     public function test_deleting_a_certificate_removes_its_files(): void
     {
         $admin = Admin::factory()->create();

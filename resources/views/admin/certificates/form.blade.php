@@ -37,12 +37,22 @@
                             {{ $isEdit ? 'Replace PDF' : 'Certificate PDF' }}
                             @unless ($isEdit)<span class="text-danger" aria-hidden="true">*</span>@endunless
                         </label>
-                        <input class="form-control @error('file') is-invalid @enderror" type="file" id="field-file" name="file" accept="application/pdf" @required(! $isEdit) aria-describedby="field-file-hint @error('file') field-file-error @enderror" @error('file') aria-invalid="true" @enderror>
+                        <input class="form-control @error('file') is-invalid @enderror" type="file" id="field-file" name="file" accept="application/pdf" data-pdf-cover-source @required(! $isEdit) aria-describedby="field-file-hint @error('file') field-file-error @enderror" @error('file') aria-invalid="true" @enderror>
                         <div class="form-text" id="field-file-hint">PDF up to {{ Rules::PDF_MAX_KILOBYTES / 1024 }} MB. Visitors open it in a new browser tab.</div>
                         @error('file')<div class="invalid-feedback d-block" id="field-file-error">{{ $message }}</div>@enderror
                     </div>
 
-                    <x-admin.form.image-upload name="cover_image" label="Cover image (optional)" :current-url="$certificate->coverUrl()" accept="image/png,image/jpeg,image/webp" remove-name="remove_cover_image" hint="A picture of the certificate for the card, portrait works best. Without one, a PDF icon is shown. Up to {{ Rules::COVER_MAX_KILOBYTES / 1024 }} MB." />
+                    {{-- Filled in by resources/js/admin/pdf-cover.js from page 1 of the PDF. --}}
+                    <div class="pdf-cover" data-pdf-cover @if ($isEdit && ! $certificate->cover_image_path) data-pdf-url="{{ $certificate->fileUrl() }}" @endif>
+                        <p class="form-label mb-2">Cover image</p>
+                        <div class="pdf-cover__frame">
+                            <img class="pdf-cover__image" src="{{ $certificate->coverUrl() }}" alt="Cover made from the first page of the certificate" data-pdf-cover-image @unless ($certificate->coverUrl()) hidden @endunless>
+                            <span class="pdf-cover__placeholder" data-pdf-cover-placeholder @if ($certificate->coverUrl()) hidden @endif><x-admin.icon name="file" /></span>
+                        </div>
+                        <p class="form-text mb-0" data-pdf-cover-status role="status" aria-live="polite">Made automatically from the first page of the PDF.</p>
+                        <input type="file" name="cover_image" accept="image/jpeg" hidden data-pdf-cover-input>
+                        @error('cover_image')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                    </div>
                 </div>
             </x-admin.card>
         </div>

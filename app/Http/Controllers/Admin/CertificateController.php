@@ -68,7 +68,8 @@ final class CertificateController extends Controller
 
         if ($cover = $request->file('cover_image')) {
             $certificate->cover_image_path = $this->images->storeSingle($cover, self::COVER_DIRECTORY, self::COVER_MAX_WIDTH);
-        } elseif ($request->boolean('remove_cover_image')) {
+        } elseif ($request->boolean('remove_cover_image') || $request->hasFile('file')) {
+            // A new PDF without a new cover: drop the old cover rather than show the previous certificate.
             $certificate->cover_image_path = null;
         }
 
