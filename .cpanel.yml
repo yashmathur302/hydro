@@ -1,0 +1,32 @@
+---
+# cPanel "Git Version Control" deployment (Manage > Pull or Deploy > Deploy HEAD Commit).
+#
+# Copies the application from the git checkout into the live folder, using the
+# single-folder layout (code and public files together, see deploy/subfolder).
+#
+# Never touched by a deploy (they exist only on the server):
+#   .env      - passwords and keys
+#   vendor/   - PHP libraries (re-uploaded only when composer.lock changes)
+#   uploads/  - logo, product images and brochures uploaded in the admin
+#   storage/  - logs, sessions, cache
+#
+# DEPLOYPATH must point to the live folder (trailing slash). Change it when
+# moving to another server.
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home2/compueaz/public_html/hydro/
+    - /bin/test -f ${DEPLOYPATH}.env
+    - /bin/test -f ${DEPLOYPATH}vendor/autoload.php
+    - /bin/cp -R app config database resources routes ${DEPLOYPATH}
+    - /bin/mkdir -p ${DEPLOYPATH}bootstrap/cache
+    - /bin/cp bootstrap/app.php bootstrap/providers.php ${DEPLOYPATH}bootstrap/
+    - /bin/cp artisan composer.json composer.lock ${DEPLOYPATH}
+    - /bin/rm -rf ${DEPLOYPATH}build
+    - /bin/cp -R public/build ${DEPLOYPATH}build
+    - /bin/cp public/favicon.ico public/robots.txt ${DEPLOYPATH}
+    - /bin/cp deploy/subfolder/index.php deploy/subfolder/.htaccess ${DEPLOYPATH}
+    - /bin/mkdir -p ${DEPLOYPATH}uploads
+    - /bin/cp deploy/subfolder/uploads/.htaccess ${DEPLOYPATH}uploads/.htaccess
+    # Laravel rebuilds these caches automatically on the next request.
+    - /bin/rm -f ${DEPLOYPATH}bootstrap/cache/packages.php ${DEPLOYPATH}bootstrap/cache/services.php ${DEPLOYPATH}bootstrap/cache/config.php ${DEPLOYPATH}bootstrap/cache/routes-v7.php ${DEPLOYPATH}bootstrap/cache/events.php
+    - /bin/rm -f ${DEPLOYPATH}storage/framework/views/*.php

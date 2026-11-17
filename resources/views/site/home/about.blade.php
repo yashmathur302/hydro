@@ -1,0 +1,60 @@
+{{-- Home "About us" block. $about comes from PageSectionService. --}}
+@php
+    $photos = [
+        'main' => $about['image_main_url'],
+        'top' => $about['image_top_url'],
+        'bottom' => $about['image_bottom_url'],
+    ];
+@endphp
+
+<section class="about section home-band" aria-labelledby="about-heading">
+    <div class="container about__inner">
+        <div class="about__media">
+            <div class="collage">
+                @foreach ($photos as $position => $url)
+                    <figure class="collage__photo collage__photo--{{ $position }}">
+                        @if ($url)
+                            <img src="{{ $url }}" alt="" loading="lazy" decoding="async">
+                        @else
+                            <span class="photo-placeholder"><x-site.icon name="image" /></span>
+                        @endif
+                    </figure>
+                @endforeach
+
+                <span class="collage__dots" aria-hidden="true"></span>
+            </div>
+        </div>
+
+        <div class="about__content">
+            @if ($about['eyebrow'])
+                <p class="eyebrow"><x-site.icon name="bolt" />{{ $about['eyebrow'] }}</p>
+            @endif
+            <h2 class="section-title" id="about-heading">{{ $about['heading'] }}</h2>
+
+            @if ($about['intro'])
+                <p class="about__intro">{{ $about['intro'] }}</p>
+            @endif
+            @if ($about['subheading'])
+                <p class="about__subheading">{{ $about['subheading'] }}</p>
+            @endif
+
+            @if ($about['points'] !== [])
+                <ul class="check-list">
+                    @foreach ($about['points'] as $point)
+                        <li class="check-list__item"><x-site.icon name="check-circle" />{{ $point }}</li>
+                    @endforeach
+                </ul>
+            @endif
+
+            @if (($showButton ?? true) && $about['button_label'] && $about['button_url'])
+                <div class="about__footer">
+                    <a class="btn btn--dark" href="{{ \App\Support\SiteLink::href($about['button_url']) }}">{{ $about['button_label'] }}</a>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    @if ($about['decoration_image_url'])
+        <img class="about__decoration" src="{{ $about['decoration_image_url'] }}" alt="" loading="lazy" decoding="async">
+    @endif
+</section>

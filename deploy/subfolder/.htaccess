@@ -1,0 +1,52 @@
+# Lucky Instru Hydro - single-folder install (code and public files together).
+#
+# SECURITY: this folder also contains the application code, .env, logs and
+# vendor libraries. Only these may ever be served directly:
+#   index.php, favicon.ico, robots.txt, build/..., uploads/...
+# Every other existing file or folder is refused with 403 Forbidden.
+
+Options -Indexes -MultiViews
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Hidden files (.env, .htaccess, .git ...) anywhere: always refuse.
+    RewriteRule (^|/)\. - [F,L]
+
+    # Folder root -> front controller.
+    RewriteRule ^$ index.php [L]
+
+    # Any other real file or folder that is not on the public whitelist: refuse.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule !^(index\.php|favicon\.ico|robots\.txt|build/.+|uploads/.+)$ - [F,L]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Handle X-XSRF-Token Header
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Without mod_rewrite the whitelist cannot work, so refuse everything rather
+# than expose the code.
+<IfModule !mod_rewrite.c>
+    Require all denied
+</IfModule>
+
+# Second layer, independent of mod_rewrite: never serve these files.
+<FilesMatch "^(\.env.*|artisan|composer\.(json|lock)|package(-lock)?\.json|phpunit\.xml|vite\.config\.js|.*\.(sql|log|md|sh|zip|bak))$">
+    Require all denied
+</FilesMatch>
